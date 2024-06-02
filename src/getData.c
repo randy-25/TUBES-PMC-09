@@ -4,11 +4,11 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "header/getData.h"
+#include "../header/getData.h"
 
 void getData(struct dataPasien **pasien, struct riwayat **riwayatPasien, int *jumlahPasien, int *jumlahRiwayatPasien)
 {
-    const char *filename = "data/DataPMC20232024.xlsx";
+    const char *filename = "../data/DataPMC20232024.xlsx";
     // open .xlsx file for reading
     xlsxioreader xlsxioread;
     if ((xlsxioread = xlsxioread_open(filename)) == NULL)

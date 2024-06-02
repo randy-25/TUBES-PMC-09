@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "header/getData.h"
+#include "../header/getData.h"
 
 int main() {
     // Declare pointers to hold patient and medical history data
