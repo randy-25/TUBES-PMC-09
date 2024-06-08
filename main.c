@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "header/getData.h"
+#include "header/riwayatUtil.h"
 
 int main() {
     // Declare pointers to hold patient and medical history data
@@ -13,21 +14,17 @@ int main() {
     // Call getData function to read data from the Excel file
     getData(&pasien, &riwayatPasien, &jumlahPasien, &jumlahRiwayatPasien);
     getBiaya(&biayaPerawatan);
+
+
+    // cariRiwayat(riwayatPasien, jumlahRiwayatPasien);
+    // tambahRiwayat(&riwayatPasien, &jumlahRiwayatPasien);
+    // printRiwayatPasien(riwayatPasien[jumlahRiwayatPasien - 1]);
+    // ubahRiwayat(&riwayatPasien, jumlahRiwayatPasien);
     
-
-    // Print out the patient data
-    printf("Jumlah Pasien: %d\n", jumlahPasien);
-    for (int i = 0; i < jumlahPasien; i++) {
-        printf("\nData Pasien %d\n", i + 1);
-        printDataPasien(pasien[i]);
-    }
-
-    // Print out the medical history data
-    printf("\nJumlah Riwayat Pasien: %d\n", jumlahRiwayatPasien);
-    for (int i = 0; i < jumlahRiwayatPasien; i++) {
-        printf("\nRiwayat Pasien %d\n", i + 1);
-        printRiwayatPasien(riwayatPasien[i]);
-    }
+    // hapusRiwayat(&riwayatPasien, &jumlahRiwayatPasien);
+    // for(int i = 0; i < jumlahRiwayatPasien; i++){
+    //     printRiwayatPasien(riwayatPasien[i]);
+    // }
 
     // Free allocated memory
     for (int i = 0; i < jumlahPasien; i++) {
@@ -47,5 +44,6 @@ int main() {
     }
     free(riwayatPasien);
 
+    free(biayaPerawatan);
     return 0;
 }
