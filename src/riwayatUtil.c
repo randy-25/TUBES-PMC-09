@@ -5,9 +5,6 @@
 #include "../header/getData.h"
 #include "../header/riwayatUtil.h"
 
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-
 void cariRiwayat(struct riwayat *riwayatPasien, int jumlahRiwayatPasien)
 {
     char IdPasien[15];
