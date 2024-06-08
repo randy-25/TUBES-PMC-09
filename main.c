@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "header/getData.h"
 #include "header/riwayatUtil.h"
+#include "header/pasienUtil.h"
 
 int main() {
     // Declare pointers to hold patient and medical history data
@@ -15,12 +16,20 @@ int main() {
     getData(&pasien, &riwayatPasien, &jumlahPasien, &jumlahRiwayatPasien);
     getBiaya(&biayaPerawatan);
 
+    // UBAH DATA PASIEN_DEBUG
+    // cariPasien(pasien, jumlahPasien);
+    // tambahPasien(&pasien, &jumlahPasien);
+    // ubahDataPasien(&pasien, jumlahPasien);
+    // hapusDataPasien(&pasien, &jumlahPasien);
+    // for(int i = 0; i < jumlahPasien; i++){
+    //     printDataPasien(pasien[i]);
+    // }
 
+    // UBAH RIWAYAT_DEBUG
     // cariRiwayat(riwayatPasien, jumlahRiwayatPasien);
     // tambahRiwayat(&riwayatPasien, &jumlahRiwayatPasien);
     // printRiwayatPasien(riwayatPasien[jumlahRiwayatPasien - 1]);
     // ubahRiwayat(&riwayatPasien, jumlahRiwayatPasien);
-    
     // hapusRiwayat(&riwayatPasien, &jumlahRiwayatPasien);
     // for(int i = 0; i < jumlahRiwayatPasien; i++){
     //     printRiwayatPasien(riwayatPasien[i]);
