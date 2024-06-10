@@ -9,19 +9,19 @@ int main(){
     int *jumlahPasien = malloc(sizeof(int));
     int *jumlahRiwayatPasien = malloc(sizeof(int));
 
-    get_DataPasien(&pasien, jumlahPasien);
-    get_RiwayatPasien(&riwayatPasien, jumlahRiwayatPasien);
-    get_BiayaTindakan(&biayaPerawatan);
+    get_DataPasien_CSV(&pasien, jumlahPasien);
+    get_RiwayatPasien_CSV(&riwayatPasien, jumlahRiwayatPasien);
+    get_BiayaTindakan_CSV(&biayaPerawatan);
 
     //print data pasien
     printf("%d\n", jumlahPasien);
     for (int i = 0; i < *jumlahPasien; i++){
-        printDataPasien(pasien[i]);
+        printDataPasien_CSV(pasien[i]);
     }
 
     //print riwayat pasien
     for (int i = 0; i < *jumlahRiwayatPasien; i++){
-        printRiwayatPasien(riwayatPasien[i]);
+        printRiwayatPasien_CSV(riwayatPasien[i]);
     }
 
     // Free allocated memory

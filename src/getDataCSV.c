@@ -5,7 +5,7 @@
 #include "../header/getDataCSV.h"
 
 // Function to get the month number from the month name
-int getMonthNumber(const char *monthName)
+int getMonthNumber_CSV(const char *monthName)
 {
     if (strcmp(monthName, "Jan") == 0 || strcmp(monthName, "Januari") == 0) return 1;
     if (strcmp(monthName, "Feb") == 0 || strcmp(monthName, "Februari") == 0) return 2;
@@ -22,7 +22,7 @@ int getMonthNumber(const char *monthName)
     return -1;
 }
 
-int is_format(char *Date){
+int is_format_CSV(char *Date){
     char *tempDate = strdup(Date);
     char *temp1 = strtok(tempDate, " ");
     char *temp2 = strtok(NULL, " ");
@@ -35,7 +35,7 @@ int is_format(char *Date){
     }
 }
 
-void printDataPasien (struct dataPasien DataPasien){
+void printDataPasien_CSV (struct dataPasien DataPasien){
         printf("No: %d\n", DataPasien.no);
         printf("Nama: %s\n", DataPasien.nama);
         printf("Alamat: %s\n", DataPasien.alamat);
@@ -48,7 +48,7 @@ void printDataPasien (struct dataPasien DataPasien){
         printf("\n");
 }
 
-void printRiwayatPasien (struct riwayat RiwayatPasien){
+void printRiwayatPasien_CSV (struct riwayat RiwayatPasien){
     printf("No: %d\n", RiwayatPasien.no);
     printf("Tanggal Periksa: %d-%d-%d \n",RiwayatPasien.tanggalPeriksa.tanggal, RiwayatPasien.tanggalPeriksa.bulan, RiwayatPasien.tanggalPeriksa.tahun);
     printf("ID Pasien: %s\n", RiwayatPasien.IdPasien);
@@ -60,12 +60,12 @@ void printRiwayatPasien (struct riwayat RiwayatPasien){
 }
 
 
-void parseDate (char *Date, int *day, int *month, int *year){
+void parseDate_CSV (char *Date, int *day, int *month, int *year){
     char *tempmonth;
     char monthName[20];
 
     //handle DD-MM-YY format
-    if(is_format(Date) == 0) {
+    if(is_format_CSV(Date) == 0) {
 
         int *tempyears;
 
@@ -82,7 +82,7 @@ void parseDate (char *Date, int *day, int *month, int *year){
         }
 
         //convert the month to
-        *month = getMonthNumber(tempmonth);
+        *month = getMonthNumber_CSV(tempmonth);
         if (*month == -1){
             printf("failed to parsed date \n");
         }
@@ -92,7 +92,7 @@ void parseDate (char *Date, int *day, int *month, int *year){
         // format1_Date(Date, day, tempmonth, year);
         if (sscanf(Date, "%d %19s %d", day, monthName, year) == 3)
         {   
-            *month = getMonthNumber(monthName);
+            *month = getMonthNumber_CSV(monthName);
             if (*month == -1)
             {
                 printf("Invalid month name.\n");
@@ -105,7 +105,7 @@ void parseDate (char *Date, int *day, int *month, int *year){
     }
 }
 
-void get_DataPasien(struct dataPasien **Data, int *JumlahDataPasien) {
+void get_DataPasien_CSV(struct dataPasien **Data, int *JumlahDataPasien) {
     FILE *file = fopen("data/Data Pasien.csv", "r");
 
     if (file == NULL){
@@ -148,7 +148,7 @@ void get_DataPasien(struct dataPasien **Data, int *JumlahDataPasien) {
 
         current->IdPasien =  strdup(strtok(NULL, "\n"));
 
-        parseDate(tempDate, &current->tanggalLahir.tanggal, &current->tanggalLahir.bulan, &current->tanggalLahir.tahun);
+        parseDate_CSV(tempDate, &current->tanggalLahir.tanggal, &current->tanggalLahir.bulan, &current->tanggalLahir.tahun);
 
         Index++;
 
@@ -157,7 +157,7 @@ void get_DataPasien(struct dataPasien **Data, int *JumlahDataPasien) {
     fclose(file);
 }
 
-void get_RiwayatPasien(struct riwayat **RiwayatPasien, int *JumlahRiwayatPasien){
+void get_RiwayatPasien_CSV(struct riwayat **RiwayatPasien, int *JumlahRiwayatPasien){
     FILE *file = fopen("data/Riwayat Pasien.csv", "r");
 
     if (file == NULL){
@@ -190,8 +190,8 @@ void get_RiwayatPasien(struct riwayat **RiwayatPasien, int *JumlahRiwayatPasien)
         
         current->biaya = atoi(strtok(NULL, "\n"));
         
-        parseDate(tempDatePeriksa, &current->tanggalPeriksa.tanggal, &current->tanggalPeriksa.bulan, &current->tanggalPeriksa.tahun);
-        parseDate(tempDateKontrol, &current->tanggalKontrol.tanggal, &current->tanggalKontrol.bulan, &current->tanggalKontrol.tahun);
+        parseDate_CSV(tempDatePeriksa, &current->tanggalPeriksa.tanggal, &current->tanggalPeriksa.bulan, &current->tanggalPeriksa.tahun);
+        parseDate_CSV(tempDateKontrol, &current->tanggalKontrol.tanggal, &current->tanggalKontrol.bulan, &current->tanggalKontrol.tahun);
 
        Index++;
     }
@@ -199,7 +199,7 @@ void get_RiwayatPasien(struct riwayat **RiwayatPasien, int *JumlahRiwayatPasien)
     fclose(file);
 }
 
-void get_BiayaTindakan (struct biaya **BiayaPerawatan){
+void get_BiayaTindakan_CSV (struct biaya **BiayaPerawatan){
     FILE *file = fopen("data/Biaya Tindakan.csv", "r");
 
     if (file == NULL){
