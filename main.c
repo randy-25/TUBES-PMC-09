@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "header/getData.h"
+#include "header/penyakitperWaktuUtil.h"
 
 int main() {
     // Declare pointers to hold patient and medical history data
@@ -15,19 +16,22 @@ int main() {
     getBiaya(&biayaPerawatan);
     
 
-    // Print out the patient data
-    printf("Jumlah Pasien: %d\n", jumlahPasien);
-    for (int i = 0; i < jumlahPasien; i++) {
-        printf("\nData Pasien %d\n", i + 1);
-        printDataPasien(pasien[i]);
-    }
+    // // Print out the patient data
+    // printf("Jumlah Pasien: %d\n", jumlahPasien);
+    // for (int i = 0; i < jumlahPasien; i++) {
+    //     printf("\nData Pasien %d\n", i + 1);
+    //     printDataPasien(pasien[i]);
+    // }
 
-    // Print out the medical history data
-    printf("\nJumlah Riwayat Pasien: %d\n", jumlahRiwayatPasien);
-    for (int i = 0; i < jumlahRiwayatPasien; i++) {
-        printf("\nRiwayat Pasien %d\n", i + 1);
-        printRiwayatPasien(riwayatPasien[i]);
-    }
+    // // Print out the medical history data
+    // printf("\nJumlah Riwayat Pasien: %d\n", jumlahRiwayatPasien);
+    // for (int i = 0; i < jumlahRiwayatPasien; i++) {
+    //     printf("\nRiwayat Pasien %d\n", i + 1);
+    //     printRiwayatPasien(riwayatPasien[i]);
+    // }
+
+    //debug DataPenyakitperWaktu
+    DataPenyakitperWaktu (riwayatPasien, jumlahRiwayatPasien);
 
     // Free allocated memory
     for (int i = 0; i < jumlahPasien; i++) {

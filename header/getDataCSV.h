@@ -1,5 +1,5 @@
-#ifndef GETDATA_H
-#define GETDATA_H
+#ifndef GETDATACSV_H
+#define GETDATACSV_H
 
 #include "dataType.h"
 
