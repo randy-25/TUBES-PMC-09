@@ -3,6 +3,11 @@
 #include "header/pasienUtil.h"
 #include "header/riwayatUtil.h"
 
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+#define HEADER_HEIGHT 50
+#define FOOTER_HEIGHT 50
+
 // Global variables to store patient data
 struct dataPasien *pasien = NULL;
 struct riwayat *riwayatPasien = NULL;
@@ -28,6 +33,7 @@ GtkWidget *addHeader(GtkWidget *page)
 {
     GtkWidget *fixed = gtk_fixed_new();
     gtk_box_append(GTK_BOX(page), fixed);
+    gtk_widget_set_size_request(fixed, WINDOW_WIDTH, HEADER_HEIGHT);
 
     GtkWidget *header = gtk_label_new("Aplikasi Manajemen Pasien - Klinik X");
     gtk_fixed_put(GTK_FIXED(fixed), header, 0, 0);
@@ -40,8 +46,7 @@ GtkWidget *addFooter(GtkWidget *page)
     gtk_box_append(GTK_BOX(page), fixed);
 
     GtkWidget *footer = gtk_button_new_with_label("Back to Landing Page");
-    gtk_fixed_put(GTK_FIXED(fixed), footer, 0, 600);
-
+    gtk_fixed_put(GTK_FIXED(fixed), footer, 0, FOOTER_HEIGHT);
     g_signal_connect(footer, "clicked", G_CALLBACK(on_button_clicked), (gpointer) "LandingPage");
     return fixed;
 }
@@ -71,7 +76,6 @@ GtkWidget *LandingPage()
 
     gtk_box_append(GTK_BOX(page), label);
     gtk_widget_set_halign(label, GTK_ALIGN_CENTER);
-    gtk_widget_set_valign(label, GTK_ALIGN_CENTER);
 
     char *button_labels[6] = {"Data Pasien", "Riwayat pasien", "Informasi Pasien", "Laporan Pendapatan", "Informasi Penyakit dan Jumlah", "Informasi Kontrol Pasien"};
 
@@ -82,7 +86,6 @@ GtkWidget *LandingPage()
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), TRUE);
     gtk_grid_set_column_spacing(GTK_GRID(grid), 10);
     gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
-    gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(page), grid);
 
     int k = 0;
@@ -103,21 +106,61 @@ GtkWidget *LandingPage()
 
 GtkWidget *DataPasienPage()
 {
-    GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    GtkWidget *header = addHeader(page);
+
+    GtkWidget *mainGrid = gtk_grid_new();
+    gtk_box_append(GTK_BOX(page), mainGrid);
+
+    GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+    gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
+    gtk_widget_set_size_request(mainContent, WINDOW_WIDTH, WINDOW_HEIGHT - HEADER_HEIGHT - FOOTER_HEIGHT);
+    gtk_widget_set_valign(mainContent, GTK_ALIGN_CENTER);
 
     GtkWidget *baseGrid = gtk_grid_new();
+    gtk_widget_set_size_request(baseGrid, WINDOW_WIDTH, -1);
+    gtk_widget_set_vexpand(baseGrid, TRUE);
     gtk_grid_set_column_homogeneous(GTK_GRID(baseGrid), TRUE);
     gtk_grid_set_row_homogeneous(GTK_GRID(baseGrid), TRUE);
-    gtk_box_append(GTK_BOX(page), baseGrid);
+    gtk_box_append(GTK_BOX(mainContent), baseGrid);
 
-    GtkWidget *leftHalf, *rightHalf;
+    GtkWidget *leftHalf = gtk_center_box_new();
+    GtkWidget *leftLabel = gtk_label_new("Data Pasien");
+    gtk_center_box_set_center_widget(GTK_CENTER_BOX(leftHalf), leftLabel);
+    gtk_widget_set_valign(leftLabel, GTK_ALIGN_CENTER);
 
-    leftHalf = gtk_grid_new();
-    GtkWidget *labelLeftHalf[3];
+    GtkWidget *rightHalf = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+    GtkWidget *rightHalfButton = gtk_grid_new();
+    gtk_grid_set_column_homogeneous(GTK_GRID(rightHalfButton), TRUE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(rightHalfButton), TRUE);
+    gtk_grid_set_row_spacing(GTK_GRID(rightHalfButton), 10);
+    gtk_box_append(GTK_BOX(rightHalf), rightHalfButton);
+    gtk_widget_set_halign(rightHalf, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(rightHalf, GTK_ALIGN_CENTER);
 
-    labelLeftHalf[0] = gtk_label_new("Nama Pasien");
+    GtkWidget *funcButton[4];
+    char *button_labels[4] = {"Cari Data Pasien", "Tambah Data Pasien", "Ubah Data Pasien", "Hapus Data Pasien"};
+    char *page_names[4] = {"CariDataPasien", "TambahDataPasien", "UbahDataPasien", "HapusDataPasien"};
 
-    rightHalf = gtk_grid_new();
+    for (int i = 0; i < 4; i++)
+    {
+        funcButton[i] = gtk_button_new_with_label(button_labels[i]);
+        gtk_grid_attach(GTK_GRID(rightHalfButton), funcButton[i], 0, i, 1, 1);
+        gtk_widget_set_size_request(funcButton[i], 150, 50);
+        // g_signal_connect(funcButton[i], "clicked", G_CALLBACK(on_button_clicked), page_names[i]);
+    }
+
+    gtk_grid_attach(GTK_GRID(baseGrid), leftHalf, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(baseGrid), rightHalf, 1, 0, 1, 1);
+
+    // Center the mainContent
+    gtk_grid_set_column_spacing(GTK_GRID(mainGrid), 0);
+    gtk_grid_set_row_spacing(GTK_GRID(mainGrid), 0);
+    gtk_grid_set_column_homogeneous(GTK_GRID(mainGrid), TRUE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(mainGrid), TRUE);
+
+    GtkWidget *footer = addFooter(page);
+    return page;
 }
 
 static void
@@ -136,7 +179,7 @@ activate(GtkApplication *app, gpointer user_data)
     landingPage = LandingPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), landingPage, "LandingPage");
 
-    dataPasienPage = create_page_with_back_button("Data Pasien");
+    dataPasienPage = DataPasienPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), dataPasienPage, "DataPasien");
 
     riwayatPasienPage = create_page_with_back_button("Riwayat Pasien");
