@@ -18,32 +18,53 @@ GtkWidget *laporanPendapatanPage;
 GtkWidget *informasiPenyakitPage;
 GtkWidget *informasiKontrolPage;
 
-
-void on_button_clicked(GtkButton *button, gpointer user_data){
+void on_button_clicked(GtkButton *button, gpointer user_data)
+{
     const char *page_name = user_data;
     gtk_stack_set_visible_child_name(GTK_STACK(stackContainer), page_name);
 }
 
-GtkWidget *create_page_with_back_button(const char *title) {
+GtkWidget *addHeader(GtkWidget *page)
+{
+    GtkWidget *fixed = gtk_fixed_new();
+    gtk_box_append(GTK_BOX(page), fixed);
+
+    GtkWidget *header = gtk_label_new("Aplikasi Manajemen Pasien - Klinik X");
+    gtk_fixed_put(GTK_FIXED(fixed), header, 0, 0);
+    return fixed;
+}
+
+GtkWidget *addFooter(GtkWidget *page)
+{
+    GtkWidget *fixed = gtk_fixed_new();
+    gtk_box_append(GTK_BOX(page), fixed);
+
+    GtkWidget *footer = gtk_button_new_with_label("Back to Landing Page");
+    gtk_fixed_put(GTK_FIXED(fixed), footer, 0, 600);
+
+    g_signal_connect(footer, "clicked", G_CALLBACK(on_button_clicked), (gpointer) "LandingPage");
+    return fixed;
+}
+
+GtkWidget *create_page_with_back_button(const char *title)
+{
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    // add header before the start of the main page
+    GtkWidget *header = addHeader(page);
     GtkWidget *label = gtk_label_new(title);
-    GtkWidget *backButton = gtk_button_new_with_label("Back to Landing Page");
 
     gtk_box_append(GTK_BOX(page), label);
     gtk_widget_set_halign(label, GTK_ALIGN_CENTER);
 
-    gtk_box_append(GTK_BOX(page), backButton);
-    gtk_widget_set_halign(backButton, GTK_ALIGN_CENTER);
-
-    // Connect the back button to switch to the landing page
-    g_signal_connect(backButton, "clicked", G_CALLBACK(on_button_clicked), (gpointer)"LandingPage");
-
+    // add footer after the page ends
+    GtkWidget *footer = addFooter(page);
     return page;
 }
 
 GtkWidget *LandingPage()
 {
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
     GtkWidget *funcButton;
     GtkWidget *grid;
     GtkWidget *label = gtk_label_new("Aplikasi Manajemen Pasien - Klinik X");
@@ -65,8 +86,10 @@ GtkWidget *LandingPage()
     gtk_box_append(GTK_BOX(page), grid);
 
     int k = 0;
-    for(int i = 0; i < 2; i++){
-        for(int j = 0; j < 3; j++){
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
             funcButton = gtk_button_new_with_label(button_labels[k]);
             gtk_grid_attach(GTK_GRID(grid), funcButton, j, i, 1, 1);
 
@@ -78,19 +101,38 @@ GtkWidget *LandingPage()
     return page;
 }
 
+GtkWidget *DataPasienPage()
+{
+    GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+    GtkWidget *baseGrid = gtk_grid_new();
+    gtk_grid_set_column_homogeneous(GTK_GRID(baseGrid), TRUE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(baseGrid), TRUE);
+    gtk_box_append(GTK_BOX(page), baseGrid);
+
+    GtkWidget *leftHalf, *rightHalf;
+
+    leftHalf = gtk_grid_new();
+    GtkWidget *labelLeftHalf[3];
+
+    labelLeftHalf[0] = gtk_label_new("Nama Pasien");
+
+    rightHalf = gtk_grid_new();
+}
+
 static void
 activate(GtkApplication *app, gpointer user_data)
 {
     GtkWidget *window = gtk_application_window_new(app);
+
     stackContainer = gtk_stack_new();
-    
+
     gtk_window_set_title(GTK_WINDOW(window), "Aplikasi Manajemen Pasien - Klinik X");
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 
     gtk_stack_set_transition_type(GTK_STACK(stackContainer), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
     gtk_window_set_child(GTK_WINDOW(window), stackContainer);
 
-    
     landingPage = LandingPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), landingPage, "LandingPage");
 
@@ -112,13 +154,8 @@ activate(GtkApplication *app, gpointer user_data)
     informasiKontrolPage = create_page_with_back_button("Informasi Kontrol Pasien");
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiKontrolPage, "InformasiKontrol");
 
-    
     gtk_widget_set_visible(GTK_WIDGET(window), TRUE);
-
-    
 }
-
-
 
 int main(int argc, char **argv)
 {
