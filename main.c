@@ -1,49 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <xlsxio_read.h> // Include library for reading Excel files
+#include <xlsxio_read.h>
 
-#define MAX_ROWS 1000 // Maximum number of rows to read from the Excel sheet
+#define MAX_ROWS 1000 // Maksimum baris yang akan dibaca dari lembar Excel
 
-// Struct to hold income data
 struct IncomeData {
     int month;
     int year;
     double income;
 };
 
-// Function to calculate average income per year
-double calculateAverageIncome(struct IncomeData *data, int count) {
-    double totalIncome = 0.0;
-    for (int i = 0; i < count; i++) {
-        totalIncome += data[i].income;
-    }
-    return totalIncome / count;
+double calculateAverageIncome(double totalIncome, int totalMonths) {
+    return totalIncome / totalMonths;
 }
 
 int main() {
-    // Initialize variables
     struct IncomeData incomeData[MAX_ROWS];
     int rowCount = 0;
+    double totalIncome = 0.0;
+    double totalIncomePerYear = 0.0;
+    int totalMonthsPerYear = 0;
+    int currentYear = -1; // Tahun saat ini, dimulai dengan -1
 
-    // Open Excel file
+    // Buka file Excel
     xlsxioreader xls = xlsxioread_open("DataPMC20232024.xls");
     if (xls == NULL) {
-        printf("Failed to open Excel file.\n");
+        printf("Gagal membuka file Excel.\n");
         return 1;
     }
 
-    // Open first sheet
+    // Buka lembar pertama
     xlsxioreadersheet sheet = xlsxioread_sheet_open(xls, NULL, XLSXIOREAD_SKIP_EMPTY_ROWS);
     if (sheet == NULL) {
-        printf("Failed to open Excel sheet.\n");
+        printf("Gagal membuka lembar Excel.\n");
         xlsxioread_close(xls);
         return 1;
     }
 
-    // Read income data from Excel
+    // Baca data pendapatan dari Excel
     while (xlsxioread_sheet_next_row(sheet)) {
         if (rowCount >= MAX_ROWS) {
-            printf("Exceeded maximum rows.\n");
+            printf("Melebihi jumlah maksimum baris.\n");
             break;
         }
 
@@ -51,55 +48,66 @@ int main() {
         int columnIndex = 0;
         struct IncomeData data;
 
-        // Read month (assuming it's in first column)
+        // Baca bulan (diasumsikan di kolom pertama)
         cellValue = xlsxioread_sheet_next_cell(sheet);
         if (cellValue != NULL) {
             sscanf(cellValue, "%d", &data.month);
         } else {
-            continue; // Skip empty rows or missing data
+            continue; // Lewati baris kosong atau data yang hilang
         }
 
-        // Read year (assuming it's in second column)
+        // Baca tahun (diasumsikan di kolom kedua)
         cellValue = xlsxioread_sheet_next_cell(sheet);
         if (cellValue != NULL) {
             sscanf(cellValue, "%d", &data.year);
         } else {
-            continue; // Skip empty rows or missing data
+            continue; // Lewati baris kosong atau data yang hilang
         }
 
-        // Read income (assuming it's in third column)
+        // Baca pendapatan (diasumsikan di kolom ketiga)
         cellValue = xlsxioread_sheet_next_cell(sheet);
         if (cellValue != NULL) {
             sscanf(cellValue, "%lf", &data.income);
         } else {
-            continue; // Skip empty rows or missing data
+            continue; // Lewati baris kosong atau data yang hilang
         }
 
+        // Akumulasi pendapatan bulanan
+        totalIncome += data.income;
+
+        // Periksa perubahan tahun
+        if (data.year != currentYear) {
+            // Hitung rata-rata pendapatan per tahun sebelum beralih ke tahun baru
+            if (currentYear != -1) { // Jangan hitung untuk tahun pertama (currentYear == -1)
+                double averageIncomePerYear = calculateAverageIncome(totalIncomePerYear, totalMonthsPerYear);
+                printf("Total pendapatan tahun %d: %.2f\n", currentYear, totalIncomePerYear);
+                printf("Rata-rata pendapatan tahun %d: %.2f\n\n", currentYear, averageIncomePerYear);
+            }
+
+            // Reset variabel untuk tahun baru
+            currentYear = data.year;
+            totalIncomePerYear = 0.0;
+            totalMonthsPerYear = 0;
+        }
+
+        // Akumulasi pendapatan per tahun
+        totalIncomePerYear += data.income;
+        totalMonthsPerYear++;
+
+        // Simpan data bulan ini
         incomeData[rowCount++] = data;
     }
 
-    // Close sheet and Excel file
-    xlsxioread_sheet_close(sheet);
-    xlsxioread_close(xls);
-
-    // Calculate total income and average income per year
-    double totalIncome = 0.0;
-    int yearCount = 0;
-    int currentYear = incomeData[0].year;
-
-    for (int i = 0; i < rowCount; i++) {
-        totalIncome += incomeData[i].income;
-        if (incomeData[i].year != currentYear) {
-            yearCount++;
-            currentYear = incomeData[i].year;
-        }
+    // Output total dan rata-rata pendapatan untuk tahun terakhir
+    if (currentYear != -1) {
+        double averageIncomePerYear = calculateAverageIncome(totalIncomePerYear, totalMonthsPerYear);
+        printf("Total pendapatan tahun %d: %.2f\n", currentYear, totalIncomePerYear);
+        printf("Rata-rata pendapatan tahun %d: %.2f\n", currentYear, averageIncomePerYear);
     }
 
-    double averageIncome = calculateAverageIncome(incomeData, yearCount);
-
-    // Print results
-    printf("Total income:\t%.2f\n", totalIncome);
-    printf("Average income per year:\t%.2f\n", averageIncome);
+    // Tutup lembar dan file Excel
+    xlsxioread_sheet_close(sheet);
+    xlsxioread_close(xls);
 
     return 0;
 }
