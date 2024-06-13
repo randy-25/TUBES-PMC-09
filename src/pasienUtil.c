@@ -6,16 +6,19 @@
 #include "../header/getData.h"
 #include "../header/pasienUtil.h"
 
-void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder)
+void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder, int *confirm)
 {
     // printf("ID Pasien: %s\n", IdPasien);
+    *confirm = 0;
     for (int i = 0; i < jumlahPasien; i++)
     {
         if (strcmp(pasien[i].IdPasien, IdPasien) == 0)
         {
             *dataHolder = pasien[i];
+            *confirm = 1;
         }
     }
+
 }
 
 int hitungUmur(int tanggal, int bulan, int tahun)

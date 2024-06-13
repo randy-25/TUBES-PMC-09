@@ -14,8 +14,7 @@ struct riwayat *riwayatPasien = NULL;
 int jumlahPasien = 0;
 int jumlahRiwayatPasien = 0;
 
-
-//Base Page
+// Base Page
 GtkWidget *stackContainer;
 GtkWidget *landingPage;
 GtkWidget *dataPasienPage;
@@ -25,10 +24,8 @@ GtkWidget *laporanPendapatanPage;
 GtkWidget *informasiPenyakitPage;
 GtkWidget *informasiKontrolPage;
 
-
-GtkWidget *dataPasienPage_Stack ;
+GtkWidget *dataPasienPage_Stack;
 GtkWidget *dataPasienPage_cariData_pasienInfo;
-
 
 // data structure to pass data to callback function
 typedef struct DataCallBack
@@ -36,7 +33,6 @@ typedef struct DataCallBack
     GtkWidget *stackContainer;
     const char *page_name;
 } DataCallBack;
-
 
 // Callback function to switch between base pages
 // only accept page name to switch to, so cant set the stack pages
@@ -139,14 +135,16 @@ void reset_data_pasien_page()
     // Count the children
     GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
     int child_count = 0;
-    while (child != NULL) {
+    while (child != NULL)
+    {
         child = gtk_widget_get_next_sibling(child);
         child_count++;
     }
 
     // Remove all but the last child
     child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
-    for (int i = 0; i < child_count - 1; i++) {
+    for (int i = 0; i < child_count - 1; i++)
+    {
         GtkWidget *next = gtk_widget_get_next_sibling(child);
         gtk_box_remove(GTK_BOX(dataPasienPage_cariData_pasienInfo), child);
         child = next;
@@ -166,11 +164,12 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
 {
     GtkWidget *data = user_data;
     const char *input_text = gtk_editable_get_text(GTK_EDITABLE(data)); // get the input text from the entry
-    
+
     char *idPasien = strdup(input_text); // get the data from the entry
     // printf("Data: %s\n", idPasien);
     struct dataPasien dataHolder;
-    cariPasien(pasien, jumlahPasien, idPasien, &dataHolder); // search the data from the patient data
+    int confirm;
+    cariPasien(pasien, jumlahPasien, idPasien, &dataHolder, &confirm); // search the data from the patient data
     // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
@@ -178,48 +177,55 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
     gtk_editable_set_text(GTK_EDITABLE(data), default_text);
     gtk_editable_set_position(GTK_EDITABLE(data), strlen(default_text));
 
-      // Clear the existing content of the box
+    // Clear the existing content of the box
     GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
-    while (child != NULL) {
+    while (child != NULL)
+    {
         GtkWidget *next = gtk_widget_get_next_sibling(child);
         gtk_box_remove(GTK_BOX(dataPasienPage_cariData_pasienInfo), child);
         child = next;
     }
 
-    // Create new labels to display the data
-    char info[256];  // Ensure that the buffer is large enough
-    
-    snprintf(info, sizeof(info), "ID Pasien: %s", dataHolder.IdPasien);
-    GtkWidget *id_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), id_label);
-    
-    snprintf(info, sizeof(info), "Nama: %s", dataHolder.nama);
-    GtkWidget *nama_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), nama_label);
-    
-    snprintf(info, sizeof(info), "Alamat: %s", dataHolder.alamat);
-    GtkWidget *alamat_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), alamat_label);
-    
-    snprintf(info, sizeof(info), "Kota: %s", dataHolder.kota);
-    GtkWidget *kota_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), kota_label);
-    
-    snprintf(info, sizeof(info), "Tempat Lahir: %s", dataHolder.tempatLahir);
-    GtkWidget *tempat_lahir_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), tempat_lahir_label);
-    
-    snprintf(info, sizeof(info), "Tanggal Lahir: %02d-%02d-%04d", dataHolder.tanggalLahir.tanggal, dataHolder.tanggalLahir.bulan, dataHolder.tanggalLahir.tahun);
-    GtkWidget *tanggal_lahir_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), tanggal_lahir_label);
-    
-    snprintf(info, sizeof(info), "Umur: %d", dataHolder.umur);
-    GtkWidget *umur_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), umur_label);
-    
-    snprintf(info, sizeof(info), "Nomor BPJS: %s", dataHolder.nomorBPJS);
-    GtkWidget *bpjs_label = gtk_label_new(info);
-    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), bpjs_label);
+    if (confirm == 1)
+    {
+        // Create new labels to display the data
+        char info[256]; // Ensure that the buffer is large enough
+
+        snprintf(info, sizeof(info), "ID Pasien: %s", dataHolder.IdPasien);
+        GtkWidget *id_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), id_label);
+
+        snprintf(info, sizeof(info), "Nama: %s", dataHolder.nama);
+        GtkWidget *nama_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), nama_label);
+
+        snprintf(info, sizeof(info), "Alamat: %s", dataHolder.alamat);
+        GtkWidget *alamat_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), alamat_label);
+
+        snprintf(info, sizeof(info), "Kota: %s", dataHolder.kota);
+        GtkWidget *kota_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), kota_label);
+
+        snprintf(info, sizeof(info), "Tempat Lahir: %s", dataHolder.tempatLahir);
+        GtkWidget *tempat_lahir_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), tempat_lahir_label);
+
+        snprintf(info, sizeof(info), "Tanggal Lahir: %02d-%02d-%04d", dataHolder.tanggalLahir.tanggal, dataHolder.tanggalLahir.bulan, dataHolder.tanggalLahir.tahun);
+        GtkWidget *tanggal_lahir_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), tanggal_lahir_label);
+
+        snprintf(info, sizeof(info), "Umur: %d", dataHolder.umur);
+        GtkWidget *umur_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), umur_label);
+
+        snprintf(info, sizeof(info), "Nomor BPJS: %s", dataHolder.nomorBPJS);
+        GtkWidget *bpjs_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), bpjs_label);
+    }else{
+        GtkWidget *not_found_label = gtk_label_new("Data Pasien tidak ditemukan");
+        gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), not_found_label);
+    }
 
     GtkWidget *back_button = gtk_button_new_with_label("Back");
     gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), back_button);
@@ -227,7 +233,6 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
     callBack->stackContainer = dataPasienPage_Stack;
     callBack->page_name = "MainGrid";
     g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_cariDataPasien_gui), callBack);
-    
 }
 
 GtkWidget *DataPasienPage_CariData()
@@ -237,7 +242,7 @@ GtkWidget *DataPasienPage_CariData()
     GtkWidget *button;
 
     page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    
+
     entry = gtk_entry_new();
     GtkWidget *formLabel = gtk_label_new("Masukkan ID Pasien: ");
     gtk_box_append(GTK_BOX(page), formLabel);
@@ -341,7 +346,6 @@ GtkWidget *DataPasienPage()
     return page;
 }
 
-
 // activation function to create the main window
 static void
 activate(GtkApplication *app, gpointer user_data)
@@ -384,7 +388,6 @@ int main(int argc, char **argv)
 {
     // Function to get data from excel file
     getData(&pasien, &riwayatPasien, &jumlahPasien, &jumlahRiwayatPasien);
-
 
     GtkApplication *app;
     int status;
