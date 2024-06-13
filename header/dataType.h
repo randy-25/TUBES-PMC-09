@@ -42,4 +42,32 @@ typedef struct biaya
     int pengobatan;
 } biaya;
 
+typedef struct PerBulan{
+    int jan;
+    int feb;
+    int mar;
+    int apr;
+    int mei;
+    int jun;
+    int jul;
+    int agu;
+    int sep;
+    int okt;
+    int nov;
+    int des;
+}PerBulan;
+
+typedef struct perTahun {
+    char *penyakit;
+    int tahun;
+    int jumlahperTahun;
+    PerBulan *bulan; 
+}perTahun;
+
+typedef struct pendapatanTahun {
+    int tahun;
+    int jumlahperTahun;
+    PerBulan *bulan; 
+}pendapatanTahun;
+
 #endif

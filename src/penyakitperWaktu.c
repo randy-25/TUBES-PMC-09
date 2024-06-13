@@ -128,19 +128,30 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
     int tempindextahun = 0;
     int tempjumlah = 0;
     int tempindex = 0;
+    int validyear=0;
     
 
-    //dimulai dengan mencari tahun terkecil
-    for (int i = 0; i < indexTahun; i++){
-        tahunprint = INT_MAX;
-        //mencari tahun terkecil
-        for (int j = 0; j < indexTahun; j++){
-            if (tahunprint > daftarTahun[j] && daftarTahun[j] != 0){
-                tahunprint = daftarTahun[j];
-                tempindextahun = j;
-            }
+    printf ("Masukkan Tahun yang diinginkan : ");
+    scanf("%d", &tahunprint);
+
+    // Use getchar to consume the newline character left by scanf
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF);
+
+    for (int i = 0; i < indexTahun; i++)
+    {
+        if (daftarTahun[i] == tahunprint)
+        {
+            validyear = 1;
         }
-        daftarTahun[tempindextahun] = INT_MAX;
+    }
+    
+    if (validyear == 0)
+    {
+        printf("Tahun tidak valid \n");
+        return;
+    }
+
         printf("\n");
         printf("Tahun %d \n", tahunprint);
 
@@ -332,7 +343,7 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 printf("%s : %d \n", PenyakitperWaktu[i].penyakit, PenyakitperWaktu[i].jumlahperTahun);
             }
         }
-    }
+    
 
     //free alocationg memori
     for (int i = 0 ; i < jumlahstruct; i++){
