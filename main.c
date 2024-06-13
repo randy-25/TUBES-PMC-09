@@ -1,51 +1,105 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "header/getData.h"
+#include <xlsxio_read.h> // Include library for reading Excel files
+
+#define MAX_ROWS 1000 // Maximum number of rows to read from the Excel sheet
+
+// Struct to hold income data
+struct IncomeData {
+    int month;
+    int year;
+    double income;
+};
+
+// Function to calculate average income per year
+double calculateAverageIncome(struct IncomeData *data, int count) {
+    double totalIncome = 0.0;
+    for (int i = 0; i < count; i++) {
+        totalIncome += data[i].income;
+    }
+    return totalIncome / count;
+}
 
 int main() {
-    // Declare pointers to hold patient and medical history data
-    struct dataPasien *pasien = NULL; // data sheets 1
-    struct riwayat *riwayatPasien = NULL; // data sheets 2
-    struct biaya *biayaPerawatan = NULL; // data sheets 3 (biaya, static)
-    int jumlahPasien = 0;
-    int jumlahRiwayatPasien = 0;
+    // Initialize variables
+    struct IncomeData incomeData[MAX_ROWS];
+    int rowCount = 0;
 
-    // Call getData function to read data from the Excel file
-    getData(&pasien, &riwayatPasien, &jumlahPasien, &jumlahRiwayatPasien);
-    getBiaya(&biayaPerawatan);
-    
-
-    // Print out the patient data
-    printf("Jumlah Pasien: %d\n", jumlahPasien);
-    for (int i = 0; i < jumlahPasien; i++) {
-        printf("\nData Pasien %d\n", i + 1);
-        printDataPasien(pasien[i]);
+    // Open Excel file
+    xlsxioreader xls = xlsxioread_open("DataPMC20232024.xls");
+    if (xls == NULL) {
+        printf("Failed to open Excel file.\n");
+        return 1;
     }
 
-    // Print out the medical history data
-    printf("\nJumlah Riwayat Pasien: %d\n", jumlahRiwayatPasien);
-    for (int i = 0; i < jumlahRiwayatPasien; i++) {
-        printf("\nRiwayat Pasien %d\n", i + 1);
-        printRiwayatPasien(riwayatPasien[i]);
+    // Open first sheet
+    xlsxioreadersheet sheet = xlsxioread_sheet_open(xls, NULL, XLSXIOREAD_SKIP_EMPTY_ROWS);
+    if (sheet == NULL) {
+        printf("Failed to open Excel sheet.\n");
+        xlsxioread_close(xls);
+        return 1;
     }
 
-    // Free allocated memory
-    for (int i = 0; i < jumlahPasien; i++) {
-        free(pasien[i].nama);
-        free(pasien[i].alamat);
-        free(pasien[i].kota);
-        free(pasien[i].tempatLahir);
-        free(pasien[i].nomorBPJS);
-        free(pasien[i].IdPasien);
-    }
-    free(pasien);
+    // Read income data from Excel
+    while (xlsxioread_sheet_next_row(sheet)) {
+        if (rowCount >= MAX_ROWS) {
+            printf("Exceeded maximum rows.\n");
+            break;
+        }
 
-    for (int i = 0; i < jumlahRiwayatPasien; i++) {
-        free(riwayatPasien[i].IdPasien);
-        free(riwayatPasien[i].diagnosis);
-        free(riwayatPasien[i].tindakan);
+        const char *cellValue = NULL;
+        int columnIndex = 0;
+        struct IncomeData data;
+
+        // Read month (assuming it's in first column)
+        cellValue = xlsxioread_sheet_next_cell(sheet);
+        if (cellValue != NULL) {
+            sscanf(cellValue, "%d", &data.month);
+        } else {
+            continue; // Skip empty rows or missing data
+        }
+
+        // Read year (assuming it's in second column)
+        cellValue = xlsxioread_sheet_next_cell(sheet);
+        if (cellValue != NULL) {
+            sscanf(cellValue, "%d", &data.year);
+        } else {
+            continue; // Skip empty rows or missing data
+        }
+
+        // Read income (assuming it's in third column)
+        cellValue = xlsxioread_sheet_next_cell(sheet);
+        if (cellValue != NULL) {
+            sscanf(cellValue, "%lf", &data.income);
+        } else {
+            continue; // Skip empty rows or missing data
+        }
+
+        incomeData[rowCount++] = data;
     }
-    free(riwayatPasien);
+
+    // Close sheet and Excel file
+    xlsxioread_sheet_close(sheet);
+    xlsxioread_close(xls);
+
+    // Calculate total income and average income per year
+    double totalIncome = 0.0;
+    int yearCount = 0;
+    int currentYear = incomeData[0].year;
+
+    for (int i = 0; i < rowCount; i++) {
+        totalIncome += incomeData[i].income;
+        if (incomeData[i].year != currentYear) {
+            yearCount++;
+            currentYear = incomeData[i].year;
+        }
+    }
+
+    double averageIncome = calculateAverageIncome(incomeData, yearCount);
+
+    // Print results
+    printf("Total income:\t%.2f\n", totalIncome);
+    printf("Average income per year:\t%.2f\n", averageIncome);
 
     return 0;
 }
