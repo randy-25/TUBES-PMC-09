@@ -26,6 +26,7 @@ GtkWidget *informasiPenyakitPage;
 GtkWidget *informasiKontrolPage;
 
 
+GtkWidget *dataPasienPage_Stack ;
 GtkWidget *dataPasienPage_cariData_pasienInfo;
 
 
@@ -132,6 +133,34 @@ GtkWidget *LandingPage()
 }
 // DATA PASIEN PAGE
 
+// reset the data pasien page
+void reset_data_pasien_page()
+{
+    // Count the children
+    GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
+    int child_count = 0;
+    while (child != NULL) {
+        child = gtk_widget_get_next_sibling(child);
+        child_count++;
+    }
+
+    // Remove all but the last child
+    child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
+    for (int i = 0; i < child_count - 1; i++) {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_box_remove(GTK_BOX(dataPasienPage_cariData_pasienInfo), child);
+        child = next;
+    }
+}
+
+// Back to previous page button click
+void on_back_cariDataPasien_gui(GtkButton *button, gpointer user_data)
+{
+    reset_data_pasien_page();
+    DataCallBack *data = (DataCallBack *)user_data;
+    gtk_stack_set_visible_child_name(GTK_STACK(data->stackContainer), data->page_name);
+}
+
 // Callback function to search patient data
 void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
 {
@@ -143,6 +172,11 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
     struct dataPasien dataHolder;
     cariPasien(pasien, jumlahPasien, idPasien, &dataHolder); // search the data from the patient data
     // printDataPasien(dataHolder); // print the data to the console
+
+    // Clear the input box entry
+    const gchar *default_text = "KX ";
+    gtk_editable_set_text(GTK_EDITABLE(data), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(data), strlen(default_text));
 
       // Clear the existing content of the box
     GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
@@ -187,8 +221,14 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
     GtkWidget *bpjs_label = gtk_label_new(info);
     gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), bpjs_label);
 
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), back_button);
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "MainGrid";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_cariDataPasien_gui), callBack);
+    
 }
-
 
 GtkWidget *DataPasienPage_CariData()
 {
@@ -218,6 +258,13 @@ GtkWidget *DataPasienPage_CariData()
 
     g_signal_connect(button, "clicked", G_CALLBACK(on_cari_pasien_data_gui), entry);
 
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), back_button);
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "MainGrid";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_cariDataPasien_gui), callBack);
+
     return page;
 }
 
@@ -226,13 +273,13 @@ GtkWidget *DataPasienPage()
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     GtkWidget *header = addHeader(page);
 
-    GtkWidget *dataPasienStack = gtk_stack_new();
-    gtk_stack_set_transition_type(GTK_STACK(dataPasienStack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
+    dataPasienPage_Stack = gtk_stack_new();
+    gtk_stack_set_transition_type(GTK_STACK(dataPasienPage_Stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
 
-    gtk_box_append(GTK_BOX(page), dataPasienStack);
+    gtk_box_append(GTK_BOX(page), dataPasienPage_Stack);
 
     GtkWidget *mainGrid = gtk_grid_new();
-    gtk_stack_add_named(GTK_STACK(dataPasienStack), mainGrid, "MainGrid");
+    gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), mainGrid, "MainGrid");
 
     GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
@@ -282,10 +329,10 @@ GtkWidget *DataPasienPage()
 
     GtkWidget *dataPasienPage_cariData = DataPasienPage_CariData();
 
-    gtk_stack_add_named(GTK_STACK(dataPasienStack), dataPasienPage_cariData, page_names[0]);
+    gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_cariData, page_names[0]);
 
     DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
-    callBack->stackContainer = dataPasienStack;
+    callBack->stackContainer = dataPasienPage_Stack;
     callBack->page_name = page_names[0];
 
     g_signal_connect(funcButton[0], "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
