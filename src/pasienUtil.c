@@ -6,21 +6,14 @@
 #include "../header/getData.h"
 #include "../header/pasienUtil.h"
 
-void cariPasien(struct dataPasien *pasien, int jumlahPasien)
+void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder)
 {
-    char IdPasien[15];
-    char temp[15];
-    printf("Masukkan ID Pasien: KX ");
-    fgets(temp, 15, stdin);
-    strcpy(IdPasien, "KX ");
-    strcat(IdPasien, temp);
-    IdPasien[strcspn(IdPasien, "\n")] = '\0';
-    printf("ID Pasien: %s\n", IdPasien);
+    // printf("ID Pasien: %s\n", IdPasien);
     for (int i = 0; i < jumlahPasien; i++)
     {
         if (strcmp(pasien[i].IdPasien, IdPasien) == 0)
         {
-            printDataPasien(pasien[i]);
+            *dataHolder = pasien[i];
         }
     }
 }
