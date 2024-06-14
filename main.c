@@ -21,7 +21,7 @@ GtkWidget *laporanPendapatanPage;
 GtkWidget *informasiPenyakitPage;
 GtkWidget *informasiKontrolPage;
 
-// DATA PASIEN PAGE VARIABLE
+// ------DATA PASIEN PAGE VARIABLE------
 GtkWidget *dataPasienPage_Stack;
 
 // CARI DATA PASIEN PAGE VARIABLE
@@ -32,6 +32,10 @@ GtkWidget *dataPasienPage_tambahData_pasienInfo;
 
 // UBAH DATA PASIEN PAGE VARIABLE
 GtkWidget *dataPasienPage_ubahData_pasienInfo;
+
+// HAPUS DATA PASIEN PAGE VARIABLE
+GtkWidget *dataPasienPage_hapusData_pasienInfo;
+// ------END OF DATA PASIEN PAGE VARIABLE------
 
 // --------------END OF GLOBAL VARIABLE------------------
 

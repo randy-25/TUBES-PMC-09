@@ -26,7 +26,7 @@ extern GtkWidget *laporanPendapatanPage;
 extern GtkWidget *informasiPenyakitPage;
 extern GtkWidget *informasiKontrolPage;
 
-// DATA PASIEN PAGE
+//---------- DATA PASIEN PAGE ----------
 extern GtkWidget *dataPasienPage_Stack;
 // CARI DATA PASIEN PAGE
 extern GtkWidget *dataPasienPage_cariData_pasienInfo;
@@ -36,5 +36,8 @@ extern GtkWidget *dataPasienPage_tambahData_pasienInfo;
 
 // UBAH DATA PASIEN PAGE VARIABLE
 extern GtkWidget *dataPasienPage_ubahData_pasienInfo;
+
+// HAPUS DATA PASIEN PAGE VARIABLE
+extern GtkWidget *dataPasienPage_hapusData_pasienInfo;
 
 #endif

@@ -181,15 +181,8 @@ void ubahDataPasien(struct dataPasien **pasien, int jumlahPasien, char *IdPasien
     }
 }
 
-void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien)
+void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien, char *IdPasien, int *confirm)
 {
-    char IdPasien[15];
-    char temp[15];
-    printf("Masukkan ID Pasien: KX ");
-    fgets(temp, 15, stdin);
-    strcpy(IdPasien, "KX ");
-    strcat(IdPasien, temp);
-    IdPasien[strcspn(IdPasien, "\n")] = '\0';
 
     int count = 0;
     for (int i = 0; i < *jumlahPasien; i++)
@@ -197,8 +190,6 @@ void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien)
         if (strcmp((*pasien)[i].IdPasien, IdPasien) == 0)
         {
             count = 1;
-            printf("\nData pasien yang akan dihapus %d\n", i + 1);
-            printDataPasien((*pasien)[i]);
 
             for (int j = i; j < *jumlahPasien - 1; j++)
             {
@@ -208,7 +199,11 @@ void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien)
 
             *pasien = (struct dataPasien *)realloc(*pasien, (*jumlahPasien - 1) * sizeof(struct dataPasien));
             *jumlahPasien -= 1;
-            printf("Data pasien berhasil dihapus\n");
+            *confirm = 1;
         }
+    }
+    if (count == 0)
+    {
+        *confirm = 0;
     }
 }

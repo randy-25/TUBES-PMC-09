@@ -96,7 +96,7 @@ GtkWidget *LandingPage()
 
 // DATA PASIEN PAGE
 
-// CARI DATA PASIEN PAGE
+// -------- CARI DATA PASIEN PAGE --------
 // reset the data pasien page
 void reset_cariData_pasien_page()
 {
@@ -245,8 +245,10 @@ GtkWidget *DataPasienPage_CariData()
 
     return page;
 }
+// -------- END OF CARI DATA PASIEN PAGE --------
 
-// TAMBAH DATA PASIEN PAGE
+
+// -------- TAMBAH DATA PASIEN PAGE --------
 void reset_tambahData_pasien_page()
 {
     // Count the children
@@ -382,9 +384,10 @@ void on_submit_data_pasien(GtkButton *button, gpointer user_data)
         }
 
         // Create and show the new patient data page
-        dataPasienPage_tambahData_pasienInfo = ShowNewPatientDataPage(&newPasienHolder, on_back_tambahDataPasien_gui);
-        gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData_pasienInfo, "NewPatientData");
-        gtk_stack_set_visible_child(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData_pasienInfo);
+        GtkWidget *newPatientPage;
+        newPatientPage = ShowNewPatientDataPage(&newPasienHolder, on_back_tambahDataPasien_gui);
+        gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), newPatientPage, "NewPatientData");
+        gtk_stack_set_visible_child(GTK_STACK(dataPasienPage_Stack), newPatientPage);
     }
     else
     {
@@ -412,6 +415,7 @@ void on_submit_data_pasien(GtkButton *button, gpointer user_data)
 
 GtkWidget *DataPasienPage_TambahData()
 {
+    dataPasienPage_tambahData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
     GtkWidget *entry_nama;
@@ -490,11 +494,13 @@ GtkWidget *DataPasienPage_TambahData()
     DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
     callBack->stackContainer = dataPasienPage_Stack;
     callBack->page_name = "MainGrid";
-    g_signal_connect(back_button, "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_tambahDataPasien_gui), callBack);
     return page;
 }
+// -------- END OF TAMBAH DATA PASIEN PAGE --------
 
-// UBAH DATA PASIEN PAGE
+
+// -------- UBAH DATA PASIEN PAGE --------
 void reset_ubahData_pasien_page()
 {
     // Count the children
@@ -844,6 +850,202 @@ GtkWidget *DataPasienPage_UbahData()
 
     return page;
 }
+// -------- END OF UBAH DATA PASIEN PAGE --------
+
+// -------- HAPUS DATA PASIEN PAGE --------
+void reset_hapusData_pasien_page()
+{
+    // Count the children
+    GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_hapusData_pasienInfo));
+    int child_count = 0;
+    while (child != NULL)
+    {
+        child = gtk_widget_get_next_sibling(child);
+        child_count++;
+    }
+
+    // Remove all but the last child
+    child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_hapusData_pasienInfo));
+    for (int i = 0; i < child_count - 1; i++)
+    {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_box_remove(GTK_BOX(dataPasienPage_hapusData_pasienInfo), child);
+        child = next;
+    }
+}
+
+// Back to previous page button click
+void on_back_hapusDataPasien_gui(GtkButton *button, gpointer user_data)
+{
+    reset_hapusData_pasien_page();
+    DataCallBack *data = (DataCallBack *)user_data;
+    gtk_stack_set_visible_child_name(GTK_STACK(data->stackContainer), data->page_name);
+}
+
+void on_confirm_hapusData_pasien_page(GtkButton *button, gpointer user_data)
+{
+    char *IdPasien_data = user_data;
+    // printf("ID Pasien: %s\n", IdPasien_data);
+    int confirm;
+    hapusDataPasien(&pasien, &jumlahPasien, IdPasien_data, &confirm);
+
+    GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "HapusDataPasienFormPage");
+
+    if (tempWidget != NULL)
+    {
+        gtk_stack_remove(GTK_STACK(dataPasienPage_Stack), tempWidget);
+    }
+    GtkWidget *hapusPage = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    GtkWidget *hapusLabel;
+    if (confirm == 1)
+    {
+        hapusLabel = gtk_label_new("Data Pasien berhasil dihapus");
+    }
+    else
+    {
+        hapusLabel = gtk_label_new("Data Pasien tidak ditemukan");
+    }
+    gtk_widget_set_halign(hapusLabel, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(hapusPage), hapusLabel);
+
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(hapusPage), back_button);
+
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "HapusDataPasien";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_hapusDataPasien_gui), callBack);
+    gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), hapusPage, "HapusDataPasienFormPage");
+    gtk_stack_set_visible_child(GTK_STACK(dataPasienPage_Stack), hapusPage);
+
+
+}
+
+void on_cari_pasienData_hapusData_gui(GtkButton *button, gpointer user_data)
+{
+    GtkWidget *data = user_data;
+    const char *input_text = gtk_editable_get_text(GTK_EDITABLE(data)); // get the input text from the entry
+
+    char *idPasien = strdup(input_text); // get the data from the entry
+    // printf("Data: %s\n", idPasien);
+    struct dataPasien dataHolder;
+    int confirm;
+    cariPasien(pasien, jumlahPasien, idPasien, &dataHolder, &confirm); // search the data from the patient data
+    // printDataPasien(dataHolder); // print the data to the console
+
+    // Clear the input box entry
+    const gchar *default_text = "KX ";
+    gtk_editable_set_text(GTK_EDITABLE(data), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(data), strlen(default_text));
+
+    // Clear the existing content of the box
+    GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_hapusData_pasienInfo));
+    while (child != NULL)
+    {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_box_remove(GTK_BOX(dataPasienPage_hapusData_pasienInfo), child);
+        child = next;
+    }
+
+    if (confirm == 1)
+    {
+        // Create new labels to display the data
+        char info[256]; // Ensure that the buffer is large enough
+
+        snprintf(info, sizeof(info), "ID Pasien: %s", dataHolder.IdPasien);
+        GtkWidget *id_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), id_label);
+
+        snprintf(info, sizeof(info), "Nama: %s", dataHolder.nama);
+        GtkWidget *nama_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), nama_label);
+
+        snprintf(info, sizeof(info), "Alamat: %s", dataHolder.alamat);
+        GtkWidget *alamat_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), alamat_label);
+
+        snprintf(info, sizeof(info), "Kota: %s", dataHolder.kota);
+        GtkWidget *kota_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), kota_label);
+
+        snprintf(info, sizeof(info), "Tempat Lahir: %s", dataHolder.tempatLahir);
+        GtkWidget *tempat_lahir_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), tempat_lahir_label);
+
+        snprintf(info, sizeof(info), "Tanggal Lahir: %02d-%02d-%04d", dataHolder.tanggalLahir.tanggal, dataHolder.tanggalLahir.bulan, dataHolder.tanggalLahir.tahun);
+        GtkWidget *tanggal_lahir_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), tanggal_lahir_label);
+
+        snprintf(info, sizeof(info), "Umur: %d", dataHolder.umur);
+        GtkWidget *umur_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), umur_label);
+
+        snprintf(info, sizeof(info), "Nomor BPJS: %s", dataHolder.nomorBPJS);
+        GtkWidget *bpjs_label = gtk_label_new(info);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), bpjs_label);
+
+        GtkWidget *hapus_button = gtk_button_new_with_label("Hapus Data");
+        gtk_widget_set_halign(hapus_button, GTK_ALIGN_CENTER);
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), hapus_button);
+
+        char *tempIdPasien = strdup(dataHolder.IdPasien);
+        g_signal_connect(hapus_button, "clicked", G_CALLBACK(on_confirm_hapusData_pasien_page), tempIdPasien);
+    }
+    else
+    {
+        GtkWidget *not_found_label = gtk_label_new("Data Pasien tidak ditemukan");
+        gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), not_found_label);
+    }
+
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), back_button);
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "MainGrid";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_hapusDataPasien_gui), callBack);
+}
+
+GtkWidget *DataPasienPage_HapusData()
+{
+    GtkWidget *page;
+    GtkWidget *entry;
+    GtkWidget *button;
+
+    page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+    entry = gtk_entry_new();
+    GtkWidget *formLabel = gtk_label_new("Masukkan ID Pasien: ");
+    gtk_box_append(GTK_BOX(page), formLabel);
+
+    const gchar *default_text = "KX ";
+    gtk_editable_set_text(GTK_EDITABLE(entry), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry), strlen(default_text));
+
+    gtk_widget_set_size_request(entry, 200, 30);
+    gtk_box_append(GTK_BOX(page), entry);
+
+    button = gtk_button_new_with_label("Cari");
+    gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
+    // gtk_widget_set_size_request(button, 100, 30);
+    gtk_box_append(GTK_BOX(page), button);
+
+    dataPasienPage_hapusData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_box_append(GTK_BOX(page), dataPasienPage_hapusData_pasienInfo);
+
+    g_signal_connect(button, "clicked", G_CALLBACK(on_cari_pasienData_hapusData_gui), entry);
+
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(dataPasienPage_hapusData_pasienInfo), back_button);
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "MainGrid";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_hapusDataPasien_gui), callBack);
+
+    return page;
+}
 
 // BASE PAGE
 GtkWidget *DataPasienPage()
@@ -928,6 +1130,14 @@ GtkWidget *DataPasienPage()
     callBack->stackContainer = dataPasienPage_Stack;
     callBack->page_name = page_names[2];
     g_signal_connect(funcButton[2], "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
+
+    // Hapus Data Page
+    GtkWidget *dataPasienPage_hapusData = DataPasienPage_HapusData();
+    gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_hapusData, page_names[3]);
+    callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = page_names[3];
+    g_signal_connect(funcButton[3], "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
 
     GtkWidget *footer = addFooter(page);
     return page;

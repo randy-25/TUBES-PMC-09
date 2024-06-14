@@ -38,7 +38,11 @@ void on_confirm_ubahData_pasien_page(GtkButton *button, gpointer user_data);
 void on_cari_pasienData_ubahData_gui(GtkButton *button, gpointer user_data);
 GtkWidget *DataPasienPage_UbahData();
 
+void reset_hapusData_pasien_page();
+void on_back_hapusDataPasien_gui(GtkButton *button, gpointer user_data);
+void on_confirm_hapusData_pasien_page(GtkButton *button, gpointer user_data);
+void on_cari_pasienData_hapusData_gui(GtkButton *button, gpointer user_data);
+GtkWidget *DataPasienPage_HapusData();
 
-GtkWidget *DataPasienPage_UbahData();
 GtkWidget *DataPasienPage();
 #endif
