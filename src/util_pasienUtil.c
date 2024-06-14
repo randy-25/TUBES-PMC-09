@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#include "../header/getData.h"
-#include "../header/pasienUtil.h"
+#include "../header/util_pasienUtil.h"
 
 void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder, int *confirm)
 {

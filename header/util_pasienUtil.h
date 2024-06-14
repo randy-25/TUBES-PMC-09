@@ -1,6 +1,10 @@
 #ifndef PASIENUTIL_H
 #define PASIENUTIL_H
 
+#include <time.h>
+
+#include "util_getData.h"
+
 void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder, int *confirm);
 int hitungUmur(int tanggal, int bulan, int tahun);
 void parseTanggalLahir(char *tanggalLahir_input, int *tanggal, int *bulan, int *tahun);

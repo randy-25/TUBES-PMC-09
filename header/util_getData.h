@@ -1,6 +1,12 @@
 #ifndef GETDATA_H
 #define GETDATA_H
 
+#include <xlsxio_read.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 #include "dataType.h"
 
 void getDataPasien(struct dataPasien *pasien, char *value, int colIndex);

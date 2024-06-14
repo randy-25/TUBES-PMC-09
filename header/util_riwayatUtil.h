@@ -1,7 +1,7 @@
 #ifndef RIWAYATUTIL_H
 #define RIWAYATUTIL_H 
 
-#include "dataType.h"
+#include "util_getData.h"
 
 void cariRiwayat(struct riwayat *riwayatPasien, int jumlahRiwayatPasien);
 int biayaTindakan(char tindakan[100]);

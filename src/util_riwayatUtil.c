@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../header/getData.h"
-#include "../header/riwayatUtil.h"
+#include "../header/util_riwayatUtil.h"
 
 void cariRiwayat(struct riwayat *riwayatPasien, int jumlahRiwayatPasien)
 {

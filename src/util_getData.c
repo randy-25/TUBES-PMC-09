@@ -1,10 +1,4 @@
-#include <xlsxio_read.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-#include "../header/getData.h"
+#include "../header/util_getData.h"
 
 void getData(struct dataPasien **pasien, struct riwayat **riwayatPasien, int *jumlahPasien, int *jumlahRiwayatPasien)
 {
