@@ -24,9 +24,6 @@ GtkWidget *laporanPendapatanPage;
 GtkWidget *informasiPenyakitPage;
 GtkWidget *informasiKontrolPage;
 
-GtkWidget *dataPasienPage_Stack;
-GtkWidget *dataPasienPage_cariData_pasienInfo;
-
 // data structure to pass data to callback function
 typedef struct DataCallBack
 {
@@ -127,10 +124,14 @@ GtkWidget *LandingPage()
     }
     return page;
 }
-// DATA PASIEN PAGE
 
+// DATA PASIEN PAGE
+GtkWidget *dataPasienPage_Stack;
+
+// CARI DATA PASIEN PAGE
+GtkWidget *dataPasienPage_cariData_pasienInfo;
 // reset the data pasien page
-void reset_data_pasien_page()
+void reset_cariData_pasien_page()
 {
     // Count the children
     GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_cariData_pasienInfo));
@@ -154,7 +155,7 @@ void reset_data_pasien_page()
 // Back to previous page button click
 void on_back_cariDataPasien_gui(GtkButton *button, gpointer user_data)
 {
-    reset_data_pasien_page();
+    reset_cariData_pasien_page();
     DataCallBack *data = (DataCallBack *)user_data;
     gtk_stack_set_visible_child_name(GTK_STACK(data->stackContainer), data->page_name);
 }
@@ -222,12 +223,15 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
         snprintf(info, sizeof(info), "Nomor BPJS: %s", dataHolder.nomorBPJS);
         GtkWidget *bpjs_label = gtk_label_new(info);
         gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), bpjs_label);
-    }else{
+    }
+    else
+    {
         GtkWidget *not_found_label = gtk_label_new("Data Pasien tidak ditemukan");
         gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), not_found_label);
     }
 
     GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), back_button);
     DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
     callBack->stackContainer = dataPasienPage_Stack;
@@ -255,7 +259,8 @@ GtkWidget *DataPasienPage_CariData()
     gtk_box_append(GTK_BOX(page), entry);
 
     button = gtk_button_new_with_label("Cari");
-    gtk_widget_set_size_request(button, 100, 30);
+    gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
+    // gtk_widget_set_size_request(button, 100, 30);
     gtk_box_append(GTK_BOX(page), button);
 
     dataPasienPage_cariData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -264,12 +269,271 @@ GtkWidget *DataPasienPage_CariData()
     g_signal_connect(button, "clicked", G_CALLBACK(on_cari_pasien_data_gui), entry);
 
     GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(dataPasienPage_cariData_pasienInfo), back_button);
     DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
     callBack->stackContainer = dataPasienPage_Stack;
     callBack->page_name = "MainGrid";
     g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_cariDataPasien_gui), callBack);
 
+    return page;
+}
+
+// TAMBAH DATA PASIEN PAGE
+GtkWidget *dataPasienPage_tambahData_pasienInfo;
+
+typedef struct DataPasienEntry
+{
+    GtkWidget *entry_nama;
+    GtkWidget *entry_alamat;
+    GtkWidget *entry_kota;
+    GtkWidget *entry_tempat_lahir;
+    GtkWidget *entry_tanggal_lahir;
+    GtkWidget *entry_no_bpjs;
+} DataPasienEntry;
+
+void reset_tambahData_pasien_page()
+{
+    // Count the children
+    GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_tambahData_pasienInfo));
+    int child_count = 0;
+    while (child != NULL)
+    {
+        child = gtk_widget_get_next_sibling(child);
+        child_count++;
+    }
+
+    // Remove all but the last child
+    child = gtk_widget_get_first_child(GTK_WIDGET(dataPasienPage_tambahData_pasienInfo));
+    for (int i = 0; i < child_count - 1; i++)
+    {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_box_remove(GTK_BOX(dataPasienPage_tambahData_pasienInfo), child);
+        child = next;
+    }
+}
+
+void on_back_tambahDataPasien_gui(GtkButton *button, gpointer user_data)
+{
+    reset_tambahData_pasien_page();
+    DataCallBack *data = (DataCallBack *)user_data;
+    gtk_stack_set_visible_child_name(GTK_STACK(data->stackContainer), data->page_name);
+}
+
+GtkWidget *ShowNewPatientDataPage(struct dataPasien *new_patient)
+{
+    GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+    // Title
+    GtkWidget *title = gtk_label_new("Data Pasien Baru");
+    gtk_widget_set_halign(title, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(page), title);
+
+    // Display the new patient data
+    char info[256];
+
+    snprintf(info, sizeof(info), "Nama: %s", new_patient->nama);
+    GtkWidget *nama_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), nama_label);
+
+    snprintf(info, sizeof(info), "Alamat: %s", new_patient->alamat);
+    GtkWidget *alamat_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), alamat_label);
+
+    snprintf(info, sizeof(info), "Kota: %s", new_patient->kota);
+    GtkWidget *kota_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), kota_label);
+
+    snprintf(info, sizeof(info), "Tempat Lahir: %s", new_patient->tempatLahir);
+    GtkWidget *tempat_lahir_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), tempat_lahir_label);
+
+    snprintf(info, sizeof(info), "Tanggal Lahir: %d-%d-%d", new_patient->tanggalLahir.tanggal, new_patient->tanggalLahir.bulan, new_patient->tanggalLahir.tahun);
+    GtkWidget *tanggal_lahir_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), tanggal_lahir_label);
+
+    snprintf(info, sizeof(info), "No BPJS: %s", new_patient->nomorBPJS);
+    GtkWidget *no_bpjs_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), no_bpjs_label);
+
+    snprintf(info, sizeof(info), "ID Pasien: %s", new_patient->IdPasien);
+    GtkWidget *id_label = gtk_label_new(info);
+    gtk_box_append(GTK_BOX(page), id_label);
+    
+    // Add a button to go back to the landing page
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(page), back_button);
+
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "MainGrid";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_back_tambahDataPasien_gui), callBack);
+
+    return page;
+}
+
+void on_submit_data_pasien(GtkButton *button, gpointer user_data)
+{
+    DataPasienEntry *entry = (DataPasienEntry *)user_data;
+    const gchar *nama = gtk_editable_get_text(GTK_EDITABLE(entry->entry_nama));
+    const gchar *alamat = gtk_editable_get_text(GTK_EDITABLE(entry->entry_alamat));
+    const gchar *kota = gtk_editable_get_text(GTK_EDITABLE(entry->entry_kota));
+    const gchar *tempat_lahir = gtk_editable_get_text(GTK_EDITABLE(entry->entry_tempat_lahir));
+    const gchar *tanggal_lahir = gtk_editable_get_text(GTK_EDITABLE(entry->entry_tanggal_lahir));
+    const gchar *no_bpjs = gtk_editable_get_text(GTK_EDITABLE(entry->entry_no_bpjs));
+
+    char *tempNama = strdup(nama);
+    char *tempAlamat = strdup(alamat);
+    char *tempKota = strdup(kota);
+    char *tempTempatLahir = strdup(tempat_lahir);
+    char *tempTanggalLahir = strdup(tanggal_lahir);
+    char *tempNoBPJS = strdup(no_bpjs);
+
+    // Clear the input box entry
+    const gchar *default_text = "";
+    gtk_editable_set_text(GTK_EDITABLE(entry->entry_nama), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry->entry_nama), strlen(default_text));
+
+    gtk_editable_set_text(GTK_EDITABLE(entry->entry_alamat), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry->entry_alamat), strlen(default_text));
+
+    gtk_editable_set_text(GTK_EDITABLE(entry->entry_kota), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry->entry_kota), strlen(default_text));
+
+    gtk_editable_set_text(GTK_EDITABLE(entry->entry_tempat_lahir), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry->entry_tempat_lahir), strlen(default_text));
+
+    gtk_editable_set_text(GTK_EDITABLE(entry->entry_tanggal_lahir), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry->entry_tanggal_lahir), strlen(default_text));
+
+    gtk_editable_set_text(GTK_EDITABLE(entry->entry_no_bpjs), default_text);
+    gtk_editable_set_position(GTK_EDITABLE(entry->entry_no_bpjs), strlen(default_text));
+
+    struct dataPasien newPasienHolder;
+    int confirm;
+
+    tambahPasien(&pasien, &jumlahPasien, tempNoBPJS, tempNama, tempAlamat, tempKota, tempTempatLahir, tempTanggalLahir, &newPasienHolder, &confirm);
+
+    if (confirm == 1)
+    {
+        // printf("Data Pasien berhasil ditambahkan\n");
+
+        GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "NewPatientData");
+
+        if(tempWidget != NULL){
+            gtk_stack_remove(GTK_STACK(dataPasienPage_Stack), tempWidget);
+        }
+
+        // Create and show the new patient data page
+        dataPasienPage_tambahData_pasienInfo = ShowNewPatientDataPage(&newPasienHolder);
+        gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData_pasienInfo, "NewPatientData");
+        gtk_stack_set_visible_child(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData_pasienInfo);
+    }
+    else
+    {
+        // printf("Data Pasien Telah Terdaftar\n");
+
+        GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "FailedPage");
+
+        if(tempWidget != NULL){
+            gtk_stack_remove(GTK_STACK(dataPasienPage_Stack), tempWidget);
+        }
+
+        dataPasienPage_tambahData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+        GtkWidget *failedLabel = gtk_label_new("Nomor BPJS Pasien Telah Terdaftar");
+        gtk_widget_set_halign(failedLabel, GTK_ALIGN_CENTER);
+        gtk_box_append(GTK_BOX(dataPasienPage_tambahData_pasienInfo), failedLabel);
+
+        GtkWidget *tempPasienInfo = ShowNewPatientDataPage(&newPasienHolder);
+        gtk_box_append(GTK_BOX(dataPasienPage_tambahData_pasienInfo), tempPasienInfo);
+
+        gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData_pasienInfo, "FailedPage");
+        gtk_stack_set_visible_child(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData_pasienInfo);
+    }
+}
+
+GtkWidget *DataPasienPage_TambahData()
+{
+    GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+
+    GtkWidget *entry_nama;
+    GtkWidget *entry_alamat;
+    GtkWidget *entry_kota;
+    GtkWidget *entry_tempat_lahir;
+    GtkWidget *entry_tanggal_lahir;
+    GtkWidget *entry_no_bpjs;
+
+    GtkWidget *title = gtk_label_new("Tambah Data Pasien");
+    gtk_widget_set_halign(title, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(page), title);
+
+    GtkWidget *formGrid = gtk_grid_new();
+    gtk_grid_set_column_homogeneous(GTK_GRID(formGrid), TRUE);
+    gtk_grid_set_row_homogeneous(GTK_GRID(formGrid), TRUE);
+    gtk_grid_set_row_spacing(GTK_GRID(formGrid), 10);
+    gtk_widget_set_halign(formGrid, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(page), formGrid);
+
+    // Nama
+    GtkWidget *label_nama = gtk_label_new("Nama Pasien: ");
+    entry_nama = gtk_entry_new();
+    gtk_grid_attach(GTK_GRID(formGrid), label_nama, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(formGrid), entry_nama, 1, 0, 1, 1);
+
+    // Alamat
+    GtkWidget *label_alamat = gtk_label_new("Alamat Pasien: ");
+    entry_alamat = gtk_entry_new();
+    gtk_grid_attach(GTK_GRID(formGrid), label_alamat, 0, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(formGrid), entry_alamat, 1, 1, 1, 1);
+
+    // Kota
+    GtkWidget *label_kota = gtk_label_new("Kota:");
+    entry_kota = gtk_entry_new();
+    gtk_grid_attach(GTK_GRID(formGrid), label_kota, 0, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(formGrid), entry_kota, 1, 2, 1, 1);
+
+    // Tempat Lahir
+    GtkWidget *label_tempat_lahir = gtk_label_new("Tempat Lahir:");
+    entry_tempat_lahir = gtk_entry_new();
+    gtk_grid_attach(GTK_GRID(formGrid), label_tempat_lahir, 0, 3, 1, 1);
+    gtk_grid_attach(GTK_GRID(formGrid), entry_tempat_lahir, 1, 3, 1, 1);
+
+    // Tanggal Lahir
+    GtkWidget *label_tanggal_lahir = gtk_label_new("Tanggal Lahir (DD-MM-YYYY):");
+    entry_tanggal_lahir = gtk_entry_new();
+    gtk_grid_attach(GTK_GRID(formGrid), label_tanggal_lahir, 0, 4, 1, 1);
+    gtk_grid_attach(GTK_GRID(formGrid), entry_tanggal_lahir, 1, 4, 1, 1);
+
+    // No BPJS
+    GtkWidget *label_no_bpjs = gtk_label_new("No BPJS:");
+    entry_no_bpjs = gtk_entry_new();
+    gtk_grid_attach(GTK_GRID(formGrid), label_no_bpjs, 0, 5, 1, 1);
+    gtk_grid_attach(GTK_GRID(formGrid), entry_no_bpjs, 1, 5, 1, 1);
+
+    // Submit Button
+    GtkWidget *submit_button = gtk_button_new_with_label("Submit");
+    gtk_widget_set_halign(submit_button, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(page), submit_button);
+
+    DataPasienEntry *entry_data = g_malloc(sizeof(DataPasienEntry));
+    entry_data->entry_nama = entry_nama;
+    entry_data->entry_alamat = entry_alamat;
+    entry_data->entry_kota = entry_kota;
+    entry_data->entry_tempat_lahir = entry_tempat_lahir;
+    entry_data->entry_tanggal_lahir = entry_tanggal_lahir;
+    entry_data->entry_no_bpjs = entry_no_bpjs;
+
+    g_signal_connect(submit_button, "clicked", G_CALLBACK(on_submit_data_pasien), entry_data);
+
+    GtkWidget *back_button = gtk_button_new_with_label("Back");
+    gtk_widget_set_halign(back_button, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(page), back_button);
+
+    DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = "MainGrid";
+    g_signal_connect(back_button, "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
     return page;
 }
 
@@ -332,15 +596,21 @@ GtkWidget *DataPasienPage()
     gtk_grid_set_column_homogeneous(GTK_GRID(mainGrid), TRUE);
     gtk_grid_set_row_homogeneous(GTK_GRID(mainGrid), TRUE);
 
+    // Cari Data Page
     GtkWidget *dataPasienPage_cariData = DataPasienPage_CariData();
-
     gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_cariData, page_names[0]);
-
     DataCallBack *callBack = g_malloc(sizeof(DataCallBack));
     callBack->stackContainer = dataPasienPage_Stack;
     callBack->page_name = page_names[0];
-
     g_signal_connect(funcButton[0], "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
+
+    // Tambah Data Page
+    GtkWidget *dataPasienPage_tambahData = DataPasienPage_TambahData();
+    gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), dataPasienPage_tambahData, page_names[1]);
+    callBack = g_malloc(sizeof(DataCallBack));
+    callBack->stackContainer = dataPasienPage_Stack;
+    callBack->page_name = page_names[1];
+    g_signal_connect(funcButton[1], "clicked", G_CALLBACK(on_button_clicked_with_page), callBack);
 
     GtkWidget *footer = addFooter(page);
     return page;

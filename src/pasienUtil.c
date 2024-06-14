@@ -40,47 +40,61 @@ int hitungUmur(int tanggal, int bulan, int tahun)
     return umur;
 }
 
-void tambahPasien(struct dataPasien **pasien, int *jumlahPasien)
+void parseTanggalLahir(char *tanggalLahir_input, int *tanggal, int *bulan, int *tahun)
+{
+    char *token;
+    token = strtok(tanggalLahir_input, "-");
+    *tanggal = atoi(token);
+    token = strtok(NULL, "-");
+    *bulan = atoi(token);
+    token = strtok(NULL, "-");
+    *tahun = atoi(token);
+}
+
+void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_input, char *nama_input, char *alamat_input, char *kota_input, char *tempatLahir_input, char *tanggalLahir_input, struct dataPasien *newPasienHolder, int *confirm)
 {
     struct dataPasien tempPasien;
 
     (*pasien) = (struct dataPasien *)realloc(*pasien, (*jumlahPasien + 1) * sizeof(struct dataPasien));
 
-    char temp[100];
-    printf("Masukkan Nomor BPJS pasien: ");
-    fgets(temp, 20, stdin);
-    temp[strcspn(temp, "\n")] = '\0';
+    // char temp[100];
+    // printf("Masukkan Nomor BPJS pasien: ");
+    // fgets(temp, 20, stdin);
+    // temp[strcspn(temp, "\n")] = '\0';
+    *confirm = 0;
     int cek = 0;
     for(int i = 0; i < *jumlahPasien; i++){
-        if(strcmp((*pasien)[i].nomorBPJS, temp) == 0){
+        if(strcmp((*pasien)[i].nomorBPJS, noBPJS_input) == 0){
             cek += 1;
+            *newPasienHolder = (*pasien)[i];
         }
     }
     if(cek == 0){
-        tempPasien.nomorBPJS = strdup(temp);
+        tempPasien.nomorBPJS = strdup(noBPJS_input);
 
-        printf("Masukkan Nama Pasien: ");
-        fgets(temp, 100, stdin);
-        temp[strcspn(temp, "\n")] = '\0';
-        tempPasien.nama = strdup(temp);
+        // printf("Masukkan Nama Pasien: ");
+        // fgets(temp, 100, stdin);
+        // temp[strcspn(temp, "\n")] = '\0';
+        tempPasien.nama = strdup(nama_input);
 
-        printf("Masukkan Alamat Pasien: ");
-        fgets(temp, 100, stdin);
-        temp[strcspn(temp, "\n")] = '\0';
-        tempPasien.alamat = strdup(temp);
+        // printf("Masukkan Alamat Pasien: ");
+        // fgets(temp, 100, stdin);
+        // temp[strcspn(temp, "\n")] = '\0';
+        tempPasien.alamat = strdup(alamat_input);
 
-        printf("Masukkan Kota Pasien: ");
-        fgets(temp, 100, stdin);
-        temp[strcspn(temp, "\n")] = '\0';
-        tempPasien.kota = strdup(temp);
+        // printf("Masukkan Kota Pasien: ");
+        // fgets(temp, 100, stdin);
+        // temp[strcspn(temp, "\n")] = '\0';
+        tempPasien.kota = strdup(kota_input);
 
-        printf("Masukkan Tempat Lahir Pasien: ");
-        fgets(temp, 100, stdin);
-        temp[strcspn(temp, "\n")] = '\0';
-        tempPasien.tempatLahir = strdup(temp);
+        // printf("Masukkan Tempat Lahir Pasien: ");
+        // fgets(temp, 100, stdin);
+        // temp[strcspn(temp, "\n")] = '\0';
+        tempPasien.tempatLahir = strdup(tempatLahir_input);
 
-        printf("Masukkan Tanggal Lahir Pasien (dd-mm-yyyy): ");
-        scanf("%d-%d-%d", &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
+        // printf("Masukkan Tanggal Lahir Pasien (dd-mm-yyyy): ");
+        // scanf("%d-%d-%d", &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
+        parseTanggalLahir(tanggalLahir_input, &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
 
         tempPasien.umur = hitungUmur(tempPasien.tanggalLahir.tanggal, tempPasien.tanggalLahir.bulan, tempPasien.tanggalLahir.tahun);
 
@@ -96,6 +110,7 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien)
             prevId = atoi(token);
         }
 
+        char temp[15];
         prevId += 1;
         strcpy(tempId, "KX ");
         sprintf(temp, "%d", prevId);  
@@ -105,9 +120,9 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien)
         tempPasien.no = (*jumlahPasien) + 1;
 
         (*pasien)[*jumlahPasien] = tempPasien;
+        *newPasienHolder = tempPasien;
         (*jumlahPasien)++;
-    }else{
-        printf("Pasien telah terdaftar\n");
+        *confirm = 1;
     }
 }
 
