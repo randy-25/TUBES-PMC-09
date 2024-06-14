@@ -20,6 +20,7 @@ typedef struct DataPasienEntry
     GtkWidget *entry_tempat_lahir;
     GtkWidget *entry_tanggal_lahir;
     GtkWidget *entry_no_bpjs;
+    char *id_pasien;
 } DataPasienEntry;
 
 #endif

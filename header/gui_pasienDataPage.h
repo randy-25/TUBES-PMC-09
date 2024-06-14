@@ -9,7 +9,6 @@
 
 #include "util_getData.h"
 #include "util_pasienUtil.h"
-// #include "dataType.h"
 
 void on_button_clicked(GtkButton *button, gpointer user_data);
 void on_button_clicked_with_page(GtkButton *button, gpointer user_data);
@@ -27,10 +26,19 @@ GtkWidget *DataPasienPage_CariData();
 
 void reset_tambahData_pasien_page();
 void on_back_tambahDataPasien_gui(GtkButton *button, gpointer user_data);
-GtkWidget *ShowNewPatientDataPage(struct dataPasien *new_patient);
+GtkWidget *ShowNewPatientDataPage(struct dataPasien *new_patient, void callBackFunction(GtkButton *button, gpointer user_data));
 void on_submit_data_pasien(GtkButton *button, gpointer user_data);
 GtkWidget *DataPasienPage_TambahData();
 
+void reset_ubahData_pasien_page();
+void on_back_ubahDataPasien_gui(GtkButton *button, gpointer user_data);
+void on_submit_ubahData_pasien_page(GtkButton *button, gpointer user_data);
+GtkWidget *ubahData_form_page(char *IdPasien_data);
+void on_confirm_ubahData_pasien_page(GtkButton *button, gpointer user_data);
+void on_cari_pasienData_ubahData_gui(GtkButton *button, gpointer user_data);
+GtkWidget *DataPasienPage_UbahData();
 
+
+GtkWidget *DataPasienPage_UbahData();
 GtkWidget *DataPasienPage();
 #endif

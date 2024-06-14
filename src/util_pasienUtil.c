@@ -12,22 +12,25 @@ void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, str
             *confirm = 1;
         }
     }
-
 }
 
 int hitungUmur(int tanggal, int bulan, int tahun)
-{   
+{
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     int currentYear = tm.tm_year + 1900;
     int currentMonth = tm.tm_mon + 1;
     int currentDay = tm.tm_mday;
-    
+
     int umur = currentYear - tahun;
-    if(currentMonth < bulan){
+    if (currentMonth < bulan)
+    {
         umur -= 1;
-    }else if(currentMonth == bulan){
-        if(currentDay < tanggal){
+    }
+    else if (currentMonth == bulan)
+    {
+        if (currentDay < tanggal)
+        {
             umur -= 1;
         }
     }
@@ -57,13 +60,16 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
     // temp[strcspn(temp, "\n")] = '\0';
     *confirm = 0;
     int cek = 0;
-    for(int i = 0; i < *jumlahPasien; i++){
-        if(strcmp((*pasien)[i].nomorBPJS, noBPJS_input) == 0){
+    for (int i = 0; i < *jumlahPasien; i++)
+    {
+        if (strcmp((*pasien)[i].nomorBPJS, noBPJS_input) == 0)
+        {
             cek += 1;
             *newPasienHolder = (*pasien)[i];
         }
     }
-    if(cek == 0){
+    if (cek == 0)
+    {
         tempPasien.nomorBPJS = strdup(noBPJS_input);
 
         // printf("Masukkan Nama Pasien: ");
@@ -95,9 +101,12 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
         int prevId;
         char tempId[15];
         char *token;
-        if(*jumlahPasien == 0){
+        if (*jumlahPasien == 0)
+        {
             prevId = 1230123;
-        }else{
+        }
+        else
+        {
             strcpy(tempId, (*pasien)[*jumlahPasien - 1].IdPasien);
             token = strtok(tempId, " ");
             token = strtok(NULL, " ");
@@ -107,10 +116,10 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
         char temp[15];
         prevId += 1;
         strcpy(tempId, "KX ");
-        sprintf(temp, "%d", prevId);  
+        sprintf(temp, "%d", prevId);
         strcat(tempId, temp);
         tempPasien.IdPasien = strdup(tempId);
-        
+
         tempPasien.no = (*jumlahPasien) + 1;
 
         (*pasien)[*jumlahPasien] = tempPasien;
@@ -120,104 +129,55 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
     }
 }
 
-int cekNoBPJS(char *nomorBPJS, struct dataPasien *pasien, int jumlahPasien, char *IdPasien)
+int cekNoBPJS(char *nomorBPJS, struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *newPasienHolder)
 {
-    for(int i = 0; i < jumlahPasien; i++){
-        if(strcmp(pasien[i].nomorBPJS, nomorBPJS) == 0 && strcmp(pasien[i].IdPasien, IdPasien) != 0){
+    for (int i = 0; i < jumlahPasien; i++)
+    {
+        if (strcmp(pasien[i].nomorBPJS, nomorBPJS) == 0 && strcmp(pasien[i].IdPasien, IdPasien) != 0)
+        {   
+            *newPasienHolder = pasien[i];
             return 1;
         }
     }
     return 0;
 }
 
-void ubahDataPasien(struct dataPasien **pasien, int jumlahPasien)
+void ubahDataPasien(struct dataPasien **pasien, int jumlahPasien, char *IdPasien, char *noBPJS_input, char *nama_input, char *alamat_input, char *kota_input, char *tempatLahir_input, char *tanggalLahir_input, struct dataPasien *newPasienHolder, int *confirm)
 {
-    char IdPasien[15];
-    char temp[15];
-    printf("Masukkan ID Pasien: KX ");
-    fgets(temp, 15, stdin);
-    strcpy(IdPasien, "KX ");
-    strcat(IdPasien, temp);
-    IdPasien[strcspn(IdPasien, "\n")] = '\0';
-
     int count = 0;
     for (int i = 0; i < jumlahPasien; i++)
     {
         if (strcmp((*pasien)[i].IdPasien, IdPasien) == 0)
         {
             count = 1;
-            printf("\nData Pasien %d\n", i + 1);
-            printDataPasien((*pasien)[i]);
 
-            printf("Masukkan Data Baru\n");
-            char temp[100];
-            printf("Masukkan nama pasien: ");
-            fgets(temp, 100, stdin);
-            temp[strcspn(temp, "\n")] = '\0';
-            (*pasien)[i].nama = strdup(temp);
+            (*pasien)[i].nama = strdup(nama_input);
+            (*pasien)[i].alamat = strdup(alamat_input);
+            (*pasien)[i].kota = strdup(kota_input);
+            (*pasien)[i].tempatLahir = strdup(tempatLahir_input);
 
-            printf("Masukkan alamat pasien: ");
-            fgets(temp, 100, stdin);
-            temp[strcspn(temp, "\n")] = '\0';
-            (*pasien)[i].alamat = strdup(temp);
-
-            printf("Masukkan kota pasien: ");
-            fgets(temp, 100, stdin);
-            temp[strcspn(temp, "\n")] = '\0';
-            (*pasien)[i].kota = strdup(temp);
-
-            printf("Masukkan tempat lahir pasien: ");
-            fgets(temp, 100, stdin);
-            temp[strcspn(temp, "\n")] = '\0';
-            (*pasien)[i].tempatLahir = strdup(temp);
-
-            printf("Masukkan tanggal lahir pasien (dd-mm-yyyy): ");
-            scanf("%d-%d-%d", &(*pasien)[i].tanggalLahir.tanggal, &(*pasien)[i].tanggalLahir.bulan, &(*pasien)[i].tanggalLahir.tahun);
-
+            parseTanggalLahir(tanggalLahir_input, &(*pasien)[i].tanggalLahir.tanggal, &(*pasien)[i].tanggalLahir.bulan, &(*pasien)[i].tanggalLahir.tahun);
             (*pasien)[i].umur = hitungUmur((*pasien)[i].tanggalLahir.tanggal, (*pasien)[i].tanggalLahir.bulan, (*pasien)[i].tanggalLahir.tahun);
-            
-            fgets(temp, 100, stdin);
-
 
             int cekBPJS = 0;
-            do{
-                printf("Masukkan nomor BPJS pasien: ");
-                fgets(temp, 20, stdin);
-                temp[strcspn(temp, "\n")] = '\0';
-
-                cekBPJS = cekNoBPJS(temp, *pasien, jumlahPasien, IdPasien);
-                if(cekBPJS == 1){
-                    printf("Nomor BPJS telah terdaftar\n");
-                    printf("Pasien dengan nomor BPJS tersebut adalah: \n");
-                    for(int j = 0; j < jumlahPasien; j++){
-                        if(strcmp((*pasien)[j].nomorBPJS, temp) == 0){
-                            printDataPasien((*pasien)[j]);
-                        }
-                    }
-
-                    printf("\n");
-                    printf("Lanjut mengubah data pasien? (y/n): ");
-                    char confirm;
-                    scanf("%s", &confirm);
-                    fgets(temp, 100, stdin);
-                    if(confirm == 'n'){
-                        cekBPJS = 0;
-                        break;
-                    }else{
-                        printf("Masukkan nomor BPJS yang benar\n");
-                    }
-                }else{
-                    (*pasien)[i].nomorBPJS = strdup(temp);
-                }
-            }while(cekBPJS == 1);
-            
-
-            printf("Data pasien berhasil diubah\n");
+            char temp[100];
+            strcpy(temp, noBPJS_input);
+            cekBPJS = cekNoBPJS(temp, *pasien, jumlahPasien, IdPasien, newPasienHolder);
+            if (cekBPJS == 1)
+            {
+                *confirm = 0;
+            }
+            else
+            {
+                *confirm = 1;
+                (*pasien)[i].nomorBPJS = strdup(noBPJS_input);
+                *newPasienHolder = (*pasien)[i];
+            }
         }
     }
     if (count == 0)
     {
-        printf("Data pasien tidak ditemukan\n");
+        *confirm = 0;
     }
 }
 
@@ -251,5 +211,4 @@ void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien)
             printf("Data pasien berhasil dihapus\n");
         }
     }
-    
 }

@@ -1,11 +1,9 @@
-// #include <gtk/gtk.h>
 #include "header/util_getData.h"
 #include "header/util_pasienUtil.h"
 #include "header/util_riwayatUtil.h"
 
 #include "header/guiDataType.h"
 #include "header/gui_pasienDataPage.h"
-
 
 // ------------------ GLOBAL VARIABLE ------------------
 struct dataPasien *pasien = NULL;
@@ -31,6 +29,10 @@ GtkWidget *dataPasienPage_cariData_pasienInfo;
 
 // TAMBAH DATA PASIEN PAGE VARIABLE
 GtkWidget *dataPasienPage_tambahData_pasienInfo;
+
+// UBAH DATA PASIEN PAGE VARIABLE
+GtkWidget *dataPasienPage_ubahData_pasienInfo;
+
 // --------------END OF GLOBAL VARIABLE------------------
 
 // activation function to create the main window

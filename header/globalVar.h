@@ -34,4 +34,7 @@ extern GtkWidget *dataPasienPage_cariData_pasienInfo;
 // TAMBAH DATA PASIEN PAGE
 extern GtkWidget *dataPasienPage_tambahData_pasienInfo;
 
+// UBAH DATA PASIEN PAGE VARIABLE
+extern GtkWidget *dataPasienPage_ubahData_pasienInfo;
+
 #endif
