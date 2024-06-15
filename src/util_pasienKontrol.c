@@ -1,18 +1,17 @@
 #include "../header/util_pasienKontrolUtil.h"
 
-void printPatientName (struct dataPasien *dataPasien, char *IDPasien, int jumlahDataPasien)
+int dataPasienIndex (struct dataPasien *dataPasien, char *IDPasien, int jumlahDataPasien, int *indexpasien)
 {
     for (int i = 0; i < jumlahDataPasien; i++)
     {
         if (strcmp(dataPasien[i].IdPasien, IDPasien) == 0)
-        {
-            printf("Nama Pasien : %s\n", dataPasien[i].nama);
-            break;
+        {   
+            return i;
         }
     }
 }
 
-void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien, int jumlahDataPasien, int jumlahRiwayatPasien)
+void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien, int jumlahDataPasien, int jumlahRiwayatPasien, int tempDate, int tempMonth, int tempYears, int **indexDataPasien, int **indexRiwayatPasien, int *countpasien)
 {
     int tempDate;
     int tempMonth;
@@ -21,13 +20,7 @@ void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien
     int tempindex;
 
     int ada = 0;
-
-    printf("Masukkan tanggal bulan tahun : (DD MM YYYY)\n");
-    scanf("%d %d %d", &tempDate, &tempMonth, &tempYears);
-
-    // Use getchar to consume the newline character left by scanf
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
+    *countpasien = 0;
 
     printf("Pasien yang perlu Kontrol : \n");
     for (int i = 0; i < jumlahRiwayatPasien; i++)
@@ -37,13 +30,11 @@ void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien
             printPatientName(dataPasien, riwayatPasien[i].IdPasien, jumlahDataPasien);
             printf("ID Pasien  : %s\n", riwayatPasien[i].IdPasien);
             printf("Diagnosis  : %s\n", riwayatPasien[i].diagnosis);
-            printf("\n");
-            ada = 1;
-        }
-    }
 
-    if (ada == 0)
-    {
-        printf("Tidak ada Pasien yang perlu kontrol\n");
+            //store data
+            *indexDataPasien[*countpasien] = dataPasienIndex(dataPasien, riwayatPasien[i].IdPasien, jumlahDataPasien);
+            *indexRiwayatPasien[*countpasien] = i;
+            *countpasien++;
+        }
     }
 }

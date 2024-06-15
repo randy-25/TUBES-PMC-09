@@ -41,6 +41,22 @@ extern GtkWidget *dataPasienPage_hapusData_pasienInfo;
 //---------- END OF DATA PASIEN PAGE ----------
 
 
+//---------- PENYAKIT PER WAKTU PAGE ----------
+extern GtkWidget *penyakitperWaktuPage_Stack;
+
+// DISPLAY PENYAKIT PAGE
+extern GtkWidget *displayPenyakitPage;
+//------- END OF PENYAKIT PER WAKTU PAGE -------
+
+
+//---------- LAPORAN PENDAPATAN PAGE -----------
+extern GtkWidget *laporanPendapatanPage_Stack;
+
+// DISPLAY PENYAKIT PAGE
+extern GtkWidget *displayPendapatanPage;
+//------- END OF LAPORAN PENDAPATAN PAGE -------
+
+
 
 
 #endif

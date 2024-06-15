@@ -15,45 +15,45 @@ void tambahPendapatan (struct pendapatanTahun **data, int bulan, int index, int 
     struct pendapatanTahun *curr = *data;
 
     if (bulan == 1){
-        curr[index].bulan->jan = curr[index].bulan->jan + pendapatan;
+        curr[index].bulan.jan = curr[index].bulan.jan + pendapatan;
     }
     else if (bulan == 2){
-        curr[index].bulan->feb = curr[index].bulan->feb + pendapatan;
+        curr[index].bulan.feb = curr[index].bulan.feb + pendapatan;
     }
     else if (bulan == 3){
-        curr[index].bulan->mar = curr[index].bulan->mar + pendapatan;
+        curr[index].bulan.mar = curr[index].bulan.mar + pendapatan;
     }
     else if (bulan == 4){
-        curr[index].bulan->apr = curr[index].bulan->apr + pendapatan;
+        curr[index].bulan.apr = curr[index].bulan.apr + pendapatan;
     }
     else if (bulan == 5){
-        curr[index].bulan->mei = curr[index].bulan->mei + pendapatan;
+        curr[index].bulan.mei = curr[index].bulan.mei + pendapatan;
     }
     else if (bulan == 6){
-        curr[index].bulan->jun = curr[index].bulan->jun + pendapatan;
+        curr[index].bulan.jun = curr[index].bulan.jun + pendapatan;
     }
     else if (bulan == 7){
-        curr[index].bulan->jul = curr[index].bulan->jul + pendapatan;
+        curr[index].bulan.jul = curr[index].bulan.jul + pendapatan;
     }
     else if (bulan == 8){
-        curr[index].bulan->agu = curr[index].bulan->agu + pendapatan;
+        curr[index].bulan.agu = curr[index].bulan.agu + pendapatan;
     }
     else if (bulan == 9){
-        curr[index].bulan->sep = curr[index].bulan->sep + pendapatan;
+        curr[index].bulan.sep = curr[index].bulan.sep + pendapatan;
     }
     else if (bulan == 10){
-        curr[index].bulan->okt = curr[index].bulan->okt + pendapatan;
+        curr[index].bulan.okt = curr[index].bulan.okt + pendapatan;
     }
     else if (bulan == 11){
-        curr[index].bulan->nov = curr[index].bulan->nov + pendapatan;
+        curr[index].bulan.nov = curr[index].bulan.nov + pendapatan;
     }
     else if (bulan == 12){
-        curr[index].bulan->des = curr[index].bulan->des + pendapatan;
+        curr[index].bulan.des = curr[index].bulan.des + pendapatan;
     }
     curr[index].jumlahperTahun = curr[index].jumlahperTahun + pendapatan;
 }
 
-void LaporanPendapatan (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien)
+void LaporanPendapatan (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien, struct pendapatanTahun **Hasil, int tahun, int *confirm)
 {
 
     int daftarTahun[50]; //membatasi jumlah tahun yang dapat didata
@@ -82,8 +82,18 @@ void LaporanPendapatan (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien)
     for (int i = 0; i < jumlahstruct; i++){
         LaporanPendapatan[i].tahun = daftarTahun[i];
         LaporanPendapatan[i].jumlahperTahun = 0;
-        LaporanPendapatan[i].bulan = (PerBulan *)malloc(sizeof(PerBulan));
-        memset(LaporanPendapatan[i].bulan, 0, sizeof(PerBulan));
+        LaporanPendapatan[i].bulan.jan = 0;
+        LaporanPendapatan[i].bulan.feb = 0;
+        LaporanPendapatan[i].bulan.mar = 0;
+        LaporanPendapatan[i].bulan.apr = 0;
+        LaporanPendapatan[i].bulan.mei = 0;
+        LaporanPendapatan[i].bulan.jun = 0;
+        LaporanPendapatan[i].bulan.jul = 0;
+        LaporanPendapatan[i].bulan.agu = 0;
+        LaporanPendapatan[i].bulan.sep = 0;
+        LaporanPendapatan[i].bulan.okt = 0;
+        LaporanPendapatan[i].bulan.nov = 0;
+        LaporanPendapatan[i].bulan.des = 0;
     }
     
 
@@ -99,63 +109,65 @@ void LaporanPendapatan (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien)
     }
 
     //printdata
-    int tahunprint = INT_MAX;
     int tempindex = 0;
     int validyear=0;
-    
 
-    printf ("Masukkan Tahun yang diinginkan : ");
-    scanf("%d", &tahunprint);
-
-    // Use getchar to consume the newline character left by scanf
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
-
-    for (int i = 0; i < indexTahun; i++)
+    for (int i = 0; i < jumlahstruct; i++)
     {
-        if (daftarTahun[i] == tahunprint)
-        {
-            validyear = 1;
+        if (tahun == daftarTahun[i]){
+            validyear= 1;
+            *confirm = 1;
         }
-    }
-    
+    }   
+     
     if (validyear == 0)
     {
         printf("Tahun tidak valid / Tidak ada data\n");
+        *confirm = 0;
         return;
     }
         //cari indeks tahun yang diinput
         for (int l = 0; l < jumlahstruct;l++){
-            if (LaporanPendapatan[l].tahun == tahunprint){
+            if (LaporanPendapatan[l].tahun == tahun){
                 tempindex = l;
                 break;
             }
         }
+        // printf()
+        (*Hasil) = (pendapatanTahun*)malloc(sizeof(pendapatanTahun)); 
+        (*Hasil)->bulan.jan = LaporanPendapatan[tempindex].bulan.jan;
+        (*Hasil)->bulan.feb = LaporanPendapatan[tempindex].bulan.feb;
+        (*Hasil)->bulan.mar = LaporanPendapatan[tempindex].bulan.mar;
+        (*Hasil)->bulan.apr = LaporanPendapatan[tempindex].bulan.apr;
+        (*Hasil)->bulan.mei = LaporanPendapatan[tempindex].bulan.mei;
+        (*Hasil)->bulan.jun = LaporanPendapatan[tempindex].bulan.jun;
+        (*Hasil)->bulan.jul = LaporanPendapatan[tempindex].bulan.jul;
+        (*Hasil)->bulan.agu = LaporanPendapatan[tempindex].bulan.agu;
+        (*Hasil)->bulan.sep = LaporanPendapatan[tempindex].bulan.sep;
+        (*Hasil)->bulan.okt = LaporanPendapatan[tempindex].bulan.okt;
+        (*Hasil)->bulan.nov = LaporanPendapatan[tempindex].bulan.nov;
+        (*Hasil)->bulan.des = LaporanPendapatan[tempindex].bulan.des;
+        (*Hasil)->jumlahperTahun = LaporanPendapatan[tempindex].jumlahperTahun;
+        (*Hasil)->tahun = LaporanPendapatan[tempindex].tahun;
 
-        printf("\n");
-        printf("Tahun %d \n", tahunprint);
-
-        printf("Januari %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->jan);
-        printf("Februari %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->feb);
-        printf("Maret %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->mar);
-        printf("April %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->apr);
-        printf("Mei %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->mei);
-        printf("Juni %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->jun);
-        printf("Juli %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->jul);
-        printf("Agustus %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->agu);
-        printf("September %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->sep);
-        printf("Oktober %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->okt);
-        printf("November %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->nov);
-        printf("Desember %d : %d\n", tahunprint, LaporanPendapatan[tempindex].bulan->des);
+        //debug
+        // printf("Januari %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.jan);
+        // printf("Februari %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.feb);
+        // printf("Maret %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.mar);
+        // printf("April %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.apr);
+        // printf("Mei %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.mei);
+        // printf("Juni %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.jun);
+        // printf("Juli %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.jul);
+        // printf("Agustus %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.agu);
+        // printf("September %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.sep);
+        // printf("Oktober %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.okt);
+        // printf("November %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.nov);
+        // printf("Desember %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.des);
         
-        printf("TOTAL : %d\n", LaporanPendapatan[tempindex].bulan->des);
-        printf("Rata-rata : %d\n", LaporanPendapatan[tempindex].bulan->des/12);
+        // printf("TOTAL : %d\n", LaporanPendapatan[tempindex].bulan->des);
+        // printf("Rata-rata : %d\n", LaporanPendapatan[tempindex].bulan->des/12);
 
 
     //free alocationg memori
-    for (int i = 0 ; i < jumlahstruct; i++){
-        free(LaporanPendapatan[i].bulan);
-
-    }
     free(LaporanPendapatan);
 }

@@ -62,7 +62,7 @@ void tambahData (struct perTahun **data, int bulan, int index){
     curr[index].jumlahperTahun = curr[index].jumlahperTahun +1;
 }
 
-void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien){
+void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien, struct sortPenyakit** Result, int *confirm, int *jumlahPenyakit, int tahunprint){
 
     int daftarTahun[50]; //membatasi jumlah tahun yang dapat didata
     char daftarPenyakit[50][50]; //membatasi jumlah penyakit yang terdiagnosis
@@ -119,38 +119,28 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
     }
 
     //printdata
-    int tahunprint = INT_MAX;
     int tempindextahun = 0;
     int tempjumlah = 0;
     int tempindex = 0;
     int validyear=0;
+    int tempinputindex=0;
     
-
-    printf ("Masukkan Tahun yang diinginkan : ");
-    scanf("%d", &tahunprint);
-
-    // Use getchar to consume the newline character left by scanf
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
-
-    for (int i = 0; i < indexTahun; i++)
-    {
-        if (daftarTahun[i] == tahunprint)
-        {
+    for (int i = 0; i < indexTahun; i++){
+        if (daftarTahun[i] == tahunprint){
             validyear = 1;
         }
     }
     
     if (validyear == 0)
     {
-        printf("Tahun tidak valid \n");
+        // printf("Tahun tidak valid \n");
+        *confirm = 0;
         return;
     }
-
-        printf("\n");
-        printf("Tahun %d \n", tahunprint);
-
-        printf("Januari %d : \n", tahunprint);
+    else {
+        *confirm = 1;
+        *jumlahPenyakit = indexPenyakit;
+        (*Result) = (sortPenyakit*)malloc((12*indexPenyakit)*sizeof(sortPenyakit));
 
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
@@ -160,13 +150,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->jan = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
-        
-        printf("\n");
-        printf("Februari %d : \n", tahunprint);
+
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->feb && PenyakitperWaktu[l].bulan->feb != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -175,13 +168,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->feb = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("Maret %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->mar && PenyakitperWaktu[l].bulan->mar != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -190,13 +186,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->mar = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("April %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->apr && PenyakitperWaktu[l].bulan->apr != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -205,13 +204,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->apr = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("Mei %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->mei && PenyakitperWaktu[l].bulan->mei != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -220,13 +222,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->mei = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("Juni %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->jun && PenyakitperWaktu[l].bulan->jun != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -235,13 +240,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->jun = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("Juli %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->jul && PenyakitperWaktu[l].bulan->jul != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -250,13 +258,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->jul = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("Agustus %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->agu && PenyakitperWaktu[l].bulan->agu != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -265,13 +276,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->agu = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("September %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->sep && PenyakitperWaktu[l].bulan->sep != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -280,13 +294,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->sep = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("Oktober %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->okt && PenyakitperWaktu[l].bulan->okt != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -295,13 +312,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->okt = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
-        printf("\n");
-        printf("November %d : \n", tahunprint);
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->nov && PenyakitperWaktu[l].bulan->nov != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -310,13 +330,16 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->nov = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
-        
-        printf("\n");
-        printf("Desember %d : \n", tahunprint);
+
         for (int k = 0; k < indexPenyakit; k++){
             for (int l = 0; l < jumlahstruct;l++){
                 if (tempjumlah < PenyakitperWaktu[l].bulan->des && PenyakitperWaktu[l].bulan->des != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
@@ -325,20 +348,35 @@ void DataPenyakitperWaktu (struct riwayat *RiwayatPasien, int jumlahRiwayatPasie
                 }
             }
             PenyakitperWaktu[tempindex].bulan->des = INT_MAX;
-            printf("%s : %d \n", PenyakitperWaktu[tempindex].penyakit, tempjumlah);
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
             tempjumlah = -99;
             tempindex = 0;
         }
 
         //Jumlah dalam Setahun
-        printf("\n");
-        printf("Dalam Tahun %d :\n", tahunprint);
-        for (int i = 0 ; i < jumlahstruct; i++){
-            if (PenyakitperWaktu[i].tahun == tahunprint){
-                printf("%s : %d \n", PenyakitperWaktu[i].penyakit, PenyakitperWaktu[i].jumlahperTahun);
+        for (int k = 0; k < indexPenyakit; k++){
+            for (int l = 0; l < jumlahstruct;l++){
+                if (tempjumlah < PenyakitperWaktu[l].jumlahperTahun && PenyakitperWaktu[l].jumlahperTahun != INT_MAX && PenyakitperWaktu[l].tahun == tahunprint){
+                    tempindex = l;
+                    tempjumlah = PenyakitperWaktu[l].jumlahperTahun;
+                }
             }
+            PenyakitperWaktu[tempindex].jumlahperTahun = INT_MAX;
+
+            //store value to struct
+            (*Result)[tempinputindex].namaPenyakit = strdup(PenyakitperWaktu[tempindex].penyakit);
+            (*Result)[tempinputindex].jumlah = tempjumlah; 
+            tempinputindex++;
+
+            tempjumlah = -99;
+            tempindex = 0;
         }
-    
+    }
 
     //free alocationg memori
     for (int i = 0 ; i < jumlahstruct; i++){

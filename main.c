@@ -1,10 +1,16 @@
 #include "header/util_getData.h"
 #include "header/util_pasienUtil.h"
 #include "header/util_riwayatUtil.h"
+#include "header/util_informasiPasienUtil.h"
+#include "header/util_laporanPendapatanUtil.h"
+#include "header/util_pasienKontrolUtil.h"
+#include "header/util_penyakitperWaktuUtil.h"
 
 #include "header/guiDataType.h"
 #include "header/gui_pasienDataPage.h"
 #include "header/gui_basePage.h"
+#include "header/gui_penyakitperWaktuPage.h"
+#include "header/gui_laporanPendapatanPage.h"
 
 // ------------------ GLOBAL VARIABLE ------------------
 struct dataPasien *pasien = NULL;
@@ -38,6 +44,22 @@ GtkWidget *dataPasienPage_ubahData_pasienInfo;
 GtkWidget *dataPasienPage_hapusData_pasienInfo;
 // ------END OF DATA PASIEN PAGE VARIABLE------
 
+
+//---------- PENYAKIT PER WAKTU PAGE ----------
+GtkWidget *penyakitperWaktuPage_Stack;
+
+// DISPLAY PENYAKIT PAGE
+GtkWidget *displayPenyakitPage;
+//------- END OF PENYAKIT PER WAKTU PAGE -------
+
+
+//---------- LAPORAN PENDAPATAN PAGE -----------
+GtkWidget *laporanPendapatanPage_Stack;
+
+// DISPLAY PENYAKIT PAGE
+GtkWidget *displayPendapatanPage;
+//------- END OF LAPORAN PENDAPATAN PAGE -------
+
 // --------------END OF GLOBAL VARIABLE------------------
 
 // activation function to create the main window
@@ -66,10 +88,10 @@ activate(GtkApplication *app, gpointer user_data)
     informasiPasienPage = create_page_with_back_button("Informasi Pasien");
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiPasienPage, "InformasiPasien");
 
-    laporanPendapatanPage = create_page_with_back_button("Laporan Pendapatan");
+    laporanPendapatanPage = LaporanPendapatanPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), laporanPendapatanPage, "LaporanPendapatan");
 
-    informasiPenyakitPage = create_page_with_back_button("Informasi Penyakit dan Jumlah");
+    informasiPenyakitPage = InformasiPenyakitPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiPenyakitPage, "InformasiPenyakit");
 
     informasiKontrolPage = create_page_with_back_button("Informasi Kontrol Pasien");
