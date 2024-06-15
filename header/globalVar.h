@@ -2,8 +2,7 @@
 #define GLOBAL_VAR_H
 
 #include "dataType.h"
-// #include "guiDataType.h"
-#include <gtk/gtk.h>
+#include "guiDataType.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -39,5 +38,9 @@ extern GtkWidget *dataPasienPage_ubahData_pasienInfo;
 
 // HAPUS DATA PASIEN PAGE VARIABLE
 extern GtkWidget *dataPasienPage_hapusData_pasienInfo;
+//---------- END OF DATA PASIEN PAGE ----------
+
+
+
 
 #endif
