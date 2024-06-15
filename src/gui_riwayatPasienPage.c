@@ -416,6 +416,8 @@ GtkWidget *RiwayatPasienPage_TambahData()
 }
 // -------- END OF TAMBAH RIWAYAT PASIEN PAGE --------
 
+
+
 // Base Page
 GtkWidget *RiwayatPasienPage()
 {

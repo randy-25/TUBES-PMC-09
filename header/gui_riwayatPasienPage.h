@@ -18,10 +18,19 @@ void on_back_cariRiwayatPasien_gui(GtkButton *button, gpointer user_data);
 // Callback function to search patient data
 void on_cari_riwayatPasien_data_gui(GtkButton *button, gpointer user_data);
 
-// Callback function to search patient data
-void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data);
-
 GtkWidget *RiwayatPasienPage_CariData();
+// -------- END OF CARI DATA PASIEN PAGE --------
+
+// ------- TAMBAH DATA RIWAYAT PASIEN PAGE -------
+void reset_tambahRiwayat_pasien_page();
+
+void on_back_tambahRiwayatPasien_gui(GtkButton *button, gpointer user_data);
+
+GtkWidget *ShowNewRiwayatDataPage(struct riwayat *new_riwayat, char *namaHolder, void callBackFunction(GtkButton *button, gpointer user_data));
+
+void on_submit_riwayat_pasien(GtkButton *button, gpointer user_data);
+
+GtkWidget *RiwayatPasienPage_TambahData();
 
 // Base Page
 GtkWidget *RiwayatPasienPage();
