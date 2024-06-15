@@ -9,7 +9,7 @@ OBJDIR := obj
 
 # Flags
 CFLAGS := -I$(DEPSDIR) \
- 	-I$(DEPSDIR)/include/gtk-4.0 \
+	-I$(DEPSDIR)/include/gtk-4.0 \
     -I$(DEPSDIR)/include/pango-1.0 \
     -I$(DEPSDIR)/include \
     -I$(DEPSDIR)/include/glib-2.0 \
@@ -29,7 +29,7 @@ CFLAGS := -I$(DEPSDIR) \
     -msse2
 
 LDFLAGS := -lxlsxio_read -lxlsxio_write \
- 	-lgtk-4 \
+	-lgtk-4 \
     -lpangowin32-1.0 \
     -lpangocairo-1.0 \
     -lpango-1.0 \

@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../header/getData.h"
-#include "../header/pasienKontrolUtil.h"
+#include "../header/util_pasienKontrolUtil.h"
 
 void printPatientName (struct dataPasien *dataPasien, char *IDPasien, int jumlahDataPasien)
 {

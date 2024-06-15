@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../header/getData.h"
-#include "../header/penyakitperWaktuUtil.h"
+#include "../header/util_penyakitperWaktuUtil.h"
 
 //cek apakah data tahun sudah terdata, jika belum kembalikan nilai 1
 int cekdataTahun (int *daftarTahun, int Tahun){

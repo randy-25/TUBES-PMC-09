@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../header/getData.h"
-#include "../header/laporanPendapatanUtil.h"
+#include "../header/util_laporanPendapatanUtil.h"
 
 int cekdataPendapatanTahun (int *daftarTahun, int Tahun)
 {
