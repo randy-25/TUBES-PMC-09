@@ -37,16 +37,6 @@ int hitungUmur(int tanggal, int bulan, int tahun)
     return umur;
 }
 
-void parseTanggalLahir(char *tanggalLahir_input, int *tanggal, int *bulan, int *tahun)
-{
-    char *token;
-    token = strtok(tanggalLahir_input, "-");
-    *tanggal = atoi(token);
-    token = strtok(NULL, "-");
-    *bulan = atoi(token);
-    token = strtok(NULL, "-");
-    *tahun = atoi(token);
-}
 
 void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_input, char *nama_input, char *alamat_input, char *kota_input, char *tempatLahir_input, char *tanggalLahir_input, struct dataPasien *newPasienHolder, int *confirm)
 {
@@ -94,7 +84,7 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
 
         // printf("Masukkan Tanggal Lahir Pasien (dd-mm-yyyy): ");
         // scanf("%d-%d-%d", &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
-        parseTanggalLahir(tanggalLahir_input, &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
+        parseTanggal(tanggalLahir_input, &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
 
         tempPasien.umur = hitungUmur(tempPasien.tanggalLahir.tanggal, tempPasien.tanggalLahir.bulan, tempPasien.tanggalLahir.tahun);
 
@@ -156,7 +146,7 @@ void ubahDataPasien(struct dataPasien **pasien, int jumlahPasien, char *IdPasien
             (*pasien)[i].kota = strdup(kota_input);
             (*pasien)[i].tempatLahir = strdup(tempatLahir_input);
 
-            parseTanggalLahir(tanggalLahir_input, &(*pasien)[i].tanggalLahir.tanggal, &(*pasien)[i].tanggalLahir.bulan, &(*pasien)[i].tanggalLahir.tahun);
+            parseTanggal(tanggalLahir_input, &(*pasien)[i].tanggalLahir.tanggal, &(*pasien)[i].tanggalLahir.bulan, &(*pasien)[i].tanggalLahir.tahun);
             (*pasien)[i].umur = hitungUmur((*pasien)[i].tanggalLahir.tanggal, (*pasien)[i].tanggalLahir.bulan, (*pasien)[i].tanggalLahir.tahun);
 
             int cekBPJS = 0;

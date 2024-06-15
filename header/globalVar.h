@@ -40,7 +40,14 @@ extern GtkWidget *dataPasienPage_ubahData_pasienInfo;
 extern GtkWidget *dataPasienPage_hapusData_pasienInfo;
 //---------- END OF DATA PASIEN PAGE ----------
 
+// ------- RIWAYAT PASIEN PAGE -------
+extern GtkWidget *riwayatPasienPage_Stack;
 
+// CARI DATA PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_cariRiwayat_pasienInfo;
+
+// TAMBAH DATA PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_tambahData_pasienInfo;
 
 
 #endif

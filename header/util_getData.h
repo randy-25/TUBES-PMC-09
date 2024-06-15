@@ -18,6 +18,7 @@ int getMonthNumber(const char *monthName);
 int isNumeric(const char *str);
 void convertDaysToDate(int days, int *date, int *month, int *year);
 void parseDateString(const char *dateString, int *date, int *month, int *year);
+void parseTanggal(char *tanggalLahir_input, int *tanggal, int *bulan, int *tahun);
 void getData(struct dataPasien **pasien, struct riwayat **riwayatPasien, int *jumlahPasien, int *jumlahRiwayatPasien);
 
 #endif
