@@ -45,8 +45,11 @@ GtkWidget *riwayatPasienPage_Stack;
 // CARI RIWAYAT PASIEN PAGE VARIABLE
 GtkWidget *riwayatPasienPage_cariRiwayat_pasienInfo;
 
-// TAMBAH DATA PASIEN PAGE VARIABLE
+// TAMBAH RIWAYAT PASIEN PAGE VARIABLE
 GtkWidget *riwayatPasienPage_tambahData_pasienInfo;
+
+// UBAH RIWAYAT PASIEN PAGE VARIABLE
+GtkWidget *riwayatPasienPage_ubahData_pasienInfo;
 
 // --------------END OF GLOBAL VARIABLE------------------
 
