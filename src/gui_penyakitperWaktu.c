@@ -164,7 +164,7 @@ GtkWidget *InformasiPenyakitPage()
     gtk_stack_add_named(GTK_STACK(penyakitperWaktuPage_Stack), mainGrid, "MainGrid");
 
     GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 0, 0, 1, 1);
     gtk_widget_set_size_request(mainContent, WINDOW_WIDTH, WINDOW_HEIGHT - HEADER_HEIGHT - FOOTER_HEIGHT);
     gtk_widget_set_valign(mainContent, GTK_ALIGN_CENTER);
 

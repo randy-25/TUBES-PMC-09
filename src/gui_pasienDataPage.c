@@ -953,19 +953,19 @@ GtkWidget *DataPasienPage_HapusData()
     return page;
 }
 
-// -------- DATA PASIEN BASE PAGE --------
+// BASE PAGE
 GtkWidget *DataPasienPage()
 {
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     GtkWidget *header = addHeader(page);
 
-    penyakitperWaktuPage_Stack = gtk_stack_new();
+    dataPasienPage_Stack = gtk_stack_new();
     gtk_stack_set_transition_type(GTK_STACK(dataPasienPage_Stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
 
     gtk_box_append(GTK_BOX(page), dataPasienPage_Stack);
 
     GtkWidget *mainGrid = gtk_grid_new();
-    gtk_box_append(GTK_BOX(d), mainGrid, "MainGrid");
+    gtk_stack_add_named(GTK_STACK(dataPasienPage_Stack), mainGrid, "MainGrid");
 
     GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
