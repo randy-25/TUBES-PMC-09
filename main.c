@@ -10,7 +10,7 @@
 #include "header/gui_basePage.h"
 #include "header/gui_pasienDataPage.h"
 #include "header/gui_riwayatPasienPage.h"
-#include "header/gui_basePage.h"
+#include "header/gui_informasiPasienPage.h"
 #include "header/gui_penyakitperWaktuPage.h"
 #include "header/gui_laporanPendapatanPage.h"
 
@@ -46,14 +46,26 @@ GtkWidget *dataPasienPage_ubahData_pasienInfo;
 GtkWidget *dataPasienPage_hapusData_pasienInfo;
 // ------END OF DATA PASIEN PAGE VARIABLE------
 
+
 // ------- RIWAYAT PASIEN PAGE -------
 GtkWidget *riwayatPasienPage_Stack;
 
 // CARI RIWAYAT PASIEN PAGE VARIABLE
 GtkWidget *riwayatPasienPage_cariRiwayat_pasienInfo;
 
-// TAMBAH DATA PASIEN PAGE VARIABLE
+// TAMBAH RIWAYAT PASIEN PAGE VARIABLE
 GtkWidget *riwayatPasienPage_tambahData_pasienInfo;
+
+// UBAH RIWAYAT PASIEN PAGE VARIABLE
+GtkWidget *riwayatPasienPage_ubahData_pasienInfo;
+
+// HAPUS RIWAYAT PASIEN PAGE VARIABLE
+GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
+// ------- END OF RIWAYAT PASIEN PAGE -------
+
+
+// ------- INFORMASI PASIEN PAGE -------
+GtkWidget *informasiPasienPage_pasienInfo;
 
 
 //---------- PENYAKIT PER WAKTU PAGE ----------
@@ -97,7 +109,7 @@ activate(GtkApplication *app, gpointer user_data)
     riwayatPasienPage = RiwayatPasienPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), riwayatPasienPage, "RiwayatPasien");
 
-    informasiPasienPage = create_page_with_back_button("Informasi Pasien");
+    informasiPasienPage = InformasiPasienPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiPasienPage, "InformasiPasien");
 
     laporanPendapatanPage = LaporanPendapatanPage();

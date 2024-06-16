@@ -4,8 +4,8 @@
 #include "dataType.h"
 #include "guiDataType.h"
 
-#define WINDOW_WIDTH 1000
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 #define HEADER_HEIGHT 50
 #define FOOTER_HEIGHT 50
 
@@ -65,6 +65,17 @@ extern GtkWidget *riwayatPasienPage_cariRiwayat_pasienInfo;
 
 // TAMBAH RIWAYAT PASIEN PAGE VARIABLE
 extern GtkWidget *riwayatPasienPage_tambahData_pasienInfo;
+
+// UBAH DATA PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_ubahData_pasienInfo;
+
+// HAPUS RIWAYAT PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
+// ------- END OF RIWAYAT PASIEN PAGE -------
+
+
+// ------- INFORMASI PASIEN PAGE -------
+extern GtkWidget *informasiPasienPage_pasienInfo;
 
 
 #endif

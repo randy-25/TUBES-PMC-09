@@ -14,6 +14,7 @@ void on_button_clicked(GtkButton *button, gpointer user_data);
 void on_button_clicked_with_page(GtkButton *button, gpointer user_data);
 GtkWidget *addHeader(GtkWidget *page);
 GtkWidget *addFooter(GtkWidget *page);
+GtkWidget *addFooterWithReset(GtkWidget *page, GtkWidget *stackContainer, const char *page_name, void *callBackFunction);
 GtkWidget *create_page_with_back_button(const char *title);
 GtkWidget *LandingPage();
 

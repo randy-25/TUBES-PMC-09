@@ -30,6 +30,9 @@ typedef struct RiwayatPasienEntry
     GtkWidget *entry_diagnosis;
     GtkWidget *entry_tindakan;
     GtkWidget *entry_tanggal_kontrol;
+    GtkWidget *entry_nomor_riwayat;
+    int nomorRiwayat;
+    char *id_pasien;
     // GtkWidget *entry_biaya;
 } RiwayatPasienEntry;
 
