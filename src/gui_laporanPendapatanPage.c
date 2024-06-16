@@ -152,18 +152,8 @@ GtkWidget *LaporanPendapatanPage()
     laporanPendapatanPage_Stack = gtk_stack_new();
     gtk_stack_set_transition_type(GTK_STACK(laporanPendapatanPage_Stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
 
-    gtk_box_append(GTK_BOX(page), laporanPendapatanPage_Stack);
-
-    GtkWidget *mainGrid = gtk_grid_new();
-    gtk_box_append(GTK_BOX(page), mainGrid);
-
-    GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
-    // gtk_widget_set_size_request(mainContent, WINDOW_WIDTH, WINDOW_HEIGHT - HEADER_HEIGHT - FOOTER_HEIGHT);
-    gtk_widget_set_valign(mainContent, GTK_ALIGN_CENTER);
-
     GtkWidget *topLabel = gtk_label_new("Laporan Pendapatan per Tahun");
-    gtk_box_append(GTK_BOX(mainContent), topLabel);
+    gtk_box_append(GTK_BOX(page), topLabel);
     gtk_widget_set_halign(topLabel, GTK_ALIGN_CENTER);
 
     GtkWidget *cmdLabel = gtk_label_new("Masukkan Tahun ");
@@ -176,6 +166,16 @@ GtkWidget *LaporanPendapatanPage()
     GtkWidget *button = gtk_button_new_with_label("Cari");
     gtk_widget_set_size_request(button, 100, 30);
     gtk_box_append(GTK_BOX(page), button);
+
+    gtk_box_append(GTK_BOX(page), laporanPendapatanPage_Stack);
+
+    GtkWidget *mainGrid = gtk_grid_new();
+    gtk_box_append(GTK_BOX(page), mainGrid);
+
+    GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
+    gtk_widget_set_size_request(mainContent, WINDOW_WIDTH, WINDOW_HEIGHT - HEADER_HEIGHT - FOOTER_HEIGHT);
+    gtk_widget_set_valign(mainContent, GTK_ALIGN_CENTER);
 
     g_signal_connect(button, "clicked", G_CALLBACK(integer_validation_laporanPendapatanPage), entry);
 

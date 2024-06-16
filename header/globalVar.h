@@ -4,8 +4,8 @@
 #include "dataType.h"
 #include "guiDataType.h"
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 1000
+#define WINDOW_HEIGHT 800
 #define HEADER_HEIGHT 50
 #define FOOTER_HEIGHT 50
 
