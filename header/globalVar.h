@@ -40,6 +40,7 @@ extern GtkWidget *dataPasienPage_ubahData_pasienInfo;
 extern GtkWidget *dataPasienPage_hapusData_pasienInfo;
 //---------- END OF DATA PASIEN PAGE ----------
 
+
 // ------- RIWAYAT PASIEN PAGE -------
 extern GtkWidget *riwayatPasienPage_Stack;
 
@@ -54,6 +55,9 @@ extern GtkWidget *riwayatPasienPage_ubahData_pasienInfo;
 
 // HAPUS RIWAYAT PASIEN PAGE VARIABLE
 extern GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
+// ------- END OF RIWAYAT PASIEN PAGE -------
 
 
+// ------- INFORMASI PASIEN PAGE -------
+extern GtkWidget *informasiPasienPage_pasienInfo;
 #endif
