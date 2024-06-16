@@ -12,7 +12,7 @@ GtkWidget *addFooter(GtkWidget *page);
 GtkWidget *create_page_with_back_button(const char *title);
 GtkWidget *LandingPage();
 
-GtkWidget *DisplayPendapatanPage(int tahun);
+void *DisplayPendapatanPage(int tahun);
 void integer_validation_laporanPendapatanPage(GtkButton *button, gpointer user_data) ;
 void reset_laporanPendapatanPage_Stack(GtkButton *button, gpointer user_data);
 GtkWidget *addFooter_with_laporanPendapatanPage_reset(GtkWidget *page);
