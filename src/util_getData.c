@@ -285,3 +285,14 @@ void parseDateString(const char *dateString, int *date, int *month, int *year)
         }
     }
 }
+
+void parseTanggal(char *tanggalLahir_input, int *tanggal, int *bulan, int *tahun)
+{
+    char *token;
+    token = strtok(tanggalLahir_input, "-");
+    *tanggal = atoi(token);
+    token = strtok(NULL, "-");
+    *bulan = atoi(token);
+    token = strtok(NULL, "-");
+    *tahun = atoi(token);
+}

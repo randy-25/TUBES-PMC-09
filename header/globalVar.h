@@ -57,6 +57,14 @@ extern GtkWidget *displayPendapatanPage;
 //------- END OF LAPORAN PENDAPATAN PAGE -------
 
 
+// ------- RIWAYAT PASIEN PAGE -------
+extern GtkWidget *riwayatPasienPage_Stack;
+
+// CARI RIWAYAT PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_cariRiwayat_pasienInfo;
+
+// TAMBAH RIWAYAT PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_tambahData_pasienInfo;
 
 
 #endif

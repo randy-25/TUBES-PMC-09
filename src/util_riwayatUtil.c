@@ -1,21 +1,29 @@
 #include "../header/util_riwayatUtil.h"
 
-void cariRiwayat(struct riwayat *riwayatPasien, int jumlahRiwayatPasien)
+void cariRiwayat(struct riwayat *riwayatPasien, int jumlahRiwayatPasien, char *IdPasien, struct riwayat **dataHolder, int *jumlahDataHolder, int *confirm, char **nameHolder, struct dataPasien *pasien, int jumlahPasien)
 {
-    char IdPasien[15];
-    char temp[15];
-    printf("Masukkan ID Pasien: KX ");
-    fgets(temp, 15, stdin);
-    strcpy(IdPasien, "KX ");
-    strcat(IdPasien, temp);
-    IdPasien[strcspn(IdPasien, "\n")] = '\0';
-    printf("ID Pasien: %s\n", IdPasien);
+    for(int i = 0; i < jumlahPasien; i++){
+        if(strcmp(pasien[i].IdPasien, IdPasien) == 0){
+            *nameHolder = strdup(pasien[i].nama);
+        }
+    }
+    // printf("jumlah riwayat: %d\n", jumlahRiwayatPasien);
+    *confirm = 0;
     for (int i = 0; i < jumlahRiwayatPasien; i++)
     {
         if (strcmp(riwayatPasien[i].IdPasien, IdPasien) == 0)
         {
-            printf("\nRiwayat Pasien %d\n", i + 1);
-            printRiwayatPasien(riwayatPasien[i]);
+            *jumlahDataHolder += 1;
+            if ((*dataHolder) == NULL)
+            {
+                (*dataHolder) = (struct riwayat *)malloc((*jumlahDataHolder) * sizeof(struct riwayat));
+            }
+            else
+            {
+                (*dataHolder) = (struct riwayat *)realloc((*dataHolder), (*jumlahDataHolder) * sizeof(struct riwayat));
+            }
+            (*dataHolder)[*jumlahDataHolder - 1] = riwayatPasien[i];
+            *confirm = 1;
         }
     }
 }
@@ -52,44 +60,46 @@ int biayaTindakan(char tindakan[100])
     }
 }
 
-void tambahRiwayat(struct riwayat **riwayatPasien, int *jumlahRiwayatPasien)
+void tambahRiwayat(struct riwayat **riwayatPasien, int *jumlahRiwayatPasien, char *IdPasien, char *tanggal_periksa, char *diagnosis, char *tindakan, char *tanggal_kontrol, struct riwayat *newRiwayatHolder, char **namaHolder, struct dataPasien *pasien, int jumlahPasien, int *confirm)
 {
-    struct riwayat tempRiwayat;
+    *confirm = 0;
+    for (int i = 0; i < jumlahPasien; i++)
+    {
+        if (strcmp(pasien[i].IdPasien, IdPasien) == 0)
+        {
+            *namaHolder = strdup(pasien[i].nama);
+            // strcpy(namaHolder, pasien[i].nama);
+            *confirm = 1;
+        }
+    }
+    if (*confirm == 1)
+    {
+        struct riwayat tempRiwayat;
 
-    *riwayatPasien = (struct riwayat *)realloc(*riwayatPasien, (*jumlahRiwayatPasien + 1) * sizeof(struct riwayat));
+        // *riwayatPasien = (struct riwayat *)realloc(*riwayatPasien, (*jumlahRiwayatPasien + 1) * sizeof(struct riwayat));
 
-    char temp[100];
-    printf("Masukkan ID Pasien: KX ");
-    fgets(temp, 20, stdin);
-    temp[strcspn(temp, "\n")] = '\0';
-    char tempNew[20];
-    strcpy(tempNew, "KX ");
-    strcat(tempNew, temp);
-    tempRiwayat.IdPasien = strdup(tempNew);
+        char temp[100];
+        tempRiwayat.IdPasien = strdup(IdPasien);
 
-    printf("Masukkan Tanggal Periksa (dd-mm-yyyy): ");
-    scanf("%d-%d-%d", &tempRiwayat.tanggalPeriksa.tanggal, &tempRiwayat.tanggalPeriksa.bulan, &tempRiwayat.tanggalPeriksa.tahun);
+        parseTanggal(tanggal_periksa, &tempRiwayat.tanggalPeriksa.tanggal, &tempRiwayat.tanggalPeriksa.bulan, &tempRiwayat.tanggalPeriksa.tahun);
 
-    fgets(temp, 100, stdin);
+        tempRiwayat.diagnosis = strdup(diagnosis);
 
-    printf("Masukkan Diagnosis: ");
-    fgets(temp, 100, stdin);
-    temp[strcspn(temp, "\n")] = '\0';
-    tempRiwayat.diagnosis = strdup(temp);
+        tempRiwayat.tindakan = strdup(tindakan);
 
-    printf("Masukkan Tindakan: ");
-    fgets(temp, 100, stdin);
-    temp[strcspn(temp, "\n")] = '\0';
-    tempRiwayat.tindakan = strdup(temp);
+        parseTanggal(tanggal_kontrol, &tempRiwayat.tanggalKontrol.tanggal, &tempRiwayat.tanggalKontrol.bulan, &tempRiwayat.tanggalKontrol.tahun);
 
-    printf("Masukkan Tanggal Kontrol (dd-mm-yyyy): ");
-    scanf("%d-%d-%d", &tempRiwayat.tanggalKontrol.tanggal, &tempRiwayat.tanggalKontrol.bulan, &tempRiwayat.tanggalKontrol.tahun);
-
-    tempRiwayat.biaya = biayaTindakan(tempRiwayat.tindakan);
-    tempRiwayat.no = (*jumlahRiwayatPasien) + 1;
-
-    (*riwayatPasien)[*jumlahRiwayatPasien] = tempRiwayat;
-    (*jumlahRiwayatPasien)++;
+        tempRiwayat.biaya = biayaTindakan(tempRiwayat.tindakan);
+        tempRiwayat.no = (*jumlahRiwayatPasien) + 1;
+        if(*riwayatPasien == NULL){
+            *riwayatPasien = (struct riwayat *)malloc(sizeof(struct riwayat));
+        }else{
+            *riwayatPasien = (struct riwayat *)realloc(*riwayatPasien, (*jumlahRiwayatPasien + 1) * sizeof(struct riwayat));
+        }
+        (*riwayatPasien)[*jumlahRiwayatPasien] = tempRiwayat;
+        (*newRiwayatHolder) = tempRiwayat;
+        (*jumlahRiwayatPasien)++;
+    }
 }
 
 void ubahRiwayat(struct riwayat **riwayatPasien, int jumlahRiwayatPasien)
