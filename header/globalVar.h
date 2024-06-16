@@ -52,5 +52,8 @@ extern GtkWidget *riwayatPasienPage_tambahData_pasienInfo;
 // UBAH DATA PASIEN PAGE VARIABLE
 extern GtkWidget *riwayatPasienPage_ubahData_pasienInfo;
 
+// HAPUS RIWAYAT PASIEN PAGE VARIABLE
+extern GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
+
 
 #endif
