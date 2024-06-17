@@ -159,9 +159,6 @@ void *DisplayPenyakitPage(int tahun)
             help++;
         }
     }
-
-    // Free the allocated memory for hasil after use.
-    free(hasil);
 }
 
 // This function validates the input year and displays the penyakit page if valid.
