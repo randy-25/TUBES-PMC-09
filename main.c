@@ -5,6 +5,7 @@
 #include "header/util_laporanPendapatanUtil.h"
 #include "header/util_pasienKontrolUtil.h"
 #include "header/util_penyakitperWaktuUtil.h"
+#include "header/util_saveData.h"
 
 #include "header/guiDataType.h"
 #include "header/gui_basePage.h"
@@ -164,6 +165,7 @@ int main(int argc, char **argv){
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
 
     status = g_application_run(G_APPLICATION(app), argc, argv);
+    printf("status: %d\n", status);
 
     for (int i = 0; i < jumlahPasien; i++)
     {
@@ -185,7 +187,11 @@ int main(int argc, char **argv){
     free(riwayatPasien);
 
     g_object_unref(app);
-
+    // printf("status 2: %d\n", status);
+    if(status == 0){
+        write_DataPasien_CSV(pasien, jumlahPasien);
+        write_RiwayatPasien_CSV(riwayatPasien, jumlahRiwayatPasien);
+    }
     return status;
 
 }
