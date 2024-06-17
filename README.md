@@ -115,8 +115,8 @@ After installing the required dependencies, you can build the project using the 
     ```sh
     cmake ..
     ```
-    **OR**
-    **On windows using MSYS Makefiles Generator**
+    
+    **Or on windows using MSYS Makefiles Generator**
     ```sh
     cmake -G "MSYS Makefiles" ..
     ```
