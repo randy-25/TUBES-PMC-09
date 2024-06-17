@@ -1,36 +1,53 @@
 #include "../header/util_pasienKontrolUtil.h"
 
-int dataPasienIndex (struct dataPasien *dataPasien, char *IDPasien, int jumlahDataPasien)
+
+void findNamaPasien(char *idPasien, struct dataPasien *dataPasien, int jumlahDataPasien, char **namaPasien)
 {
     for (int i = 0; i < jumlahDataPasien; i++)
     {
-        if (strcmp(dataPasien[i].IdPasien, IDPasien) == 0)
-        {   
-            return i;
+        if (strcmp(dataPasien[i].IdPasien, idPasien) == 0)
+        {
+            *namaPasien = strdup(dataPasien[i].nama);
+            break;
         }
     }
 }
 
-void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien, int jumlahDataPasien, int jumlahRiwayatPasien, char *temp_tanggalKontrol, int **indexDataPasien, int **indexRiwayatPasien, int *countpasien)
+void pasienKontrol (struct dataPasien *dataPasien, int jumlahDataPasien, struct riwayat *riwayatPasien, int jumlahRiwayatPasien, struct tanggal tanggalKontrol, struct DataPasienKontrol **newDataPasienKontrol, int *jumlahDataPasienKontrol)
 {
-    *countpasien = 0;
-    int tempDate, tempMonth, tempYears;
-
-    parseTanggal(temp_tanggalKontrol, &tempDate, &tempMonth, &tempYears);
-
-    printf("Pasien yang perlu Kontrol : \n");
+    // printf("Tanggal Kontrol: %d-%d-%d\n", tanggalKontrol.tanggal, tanggalKontrol.bulan, tanggalKontrol.tahun);
+    // printf("jumlahRiwayatPasien: %d\n", jumlahRiwayatPasien);
     for (int i = 0; i < jumlahRiwayatPasien; i++)
     {   
-        if (tempDate == riwayatPasien[i].tanggalKontrol.tanggal && tempMonth == riwayatPasien[i].tanggalKontrol.bulan && tempYears == riwayatPasien[i].tanggalKontrol.tahun)
+        // printf("%d Tanggal Riwayat Pasien: %d-%d-%d\n", (i+1),riwayatPasien[i].tanggalKontrol.tanggal, riwayatPasien[i].tanggalKontrol.bulan, riwayatPasien[i].tanggalKontrol.tahun);
+        if (tanggalKontrol.tanggal == riwayatPasien[i].tanggalKontrol.tanggal && tanggalKontrol.bulan == riwayatPasien[i].tanggalKontrol.bulan && tanggalKontrol.tahun == riwayatPasien[i].tanggalKontrol.tahun)
         {   
-            // printPatientName(dataPasien, riwayatPasien[i].IdPasien, jumlahDataPasien);
-            // printf("ID Pasien  : %s\n", riwayatPasien[i].IdPasien);
-            // printf("Diagnosis  : %s\n", riwayatPasien[i].diagnosis);
+            // printf("ID Pasien: %s\n", riwayatPasien[i].IdPasien);
+            *jumlahDataPasienKontrol += 1;
+            if(*newDataPasienKontrol == NULL)
+            {
+                *newDataPasienKontrol = (struct DataPasienKontrol *) malloc(sizeof(struct DataPasienKontrol));
+            }
+            else
+            {
+                *newDataPasienKontrol = (struct DataPasienKontrol *) realloc(*newDataPasienKontrol, *jumlahDataPasienKontrol * sizeof(struct DataPasienKontrol));
+            }
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].IdPasien = strdup(riwayatPasien[i].IdPasien);
+            // (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].nama = strdup(dataPasien[i].nama);
 
-            //store data
-            *indexDataPasien[*countpasien] = dataPasienIndex(dataPasien, riwayatPasien[i].IdPasien, jumlahDataPasien);
-            *indexRiwayatPasien[*countpasien] = i;
-            *countpasien++;
+            findNamaPasien(riwayatPasien[i].IdPasien, dataPasien, jumlahDataPasien, &(*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].nama);
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tanggalPeriksa.tanggal = riwayatPasien[i].tanggalPeriksa.tanggal;
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tanggalPeriksa.bulan = riwayatPasien[i].tanggalPeriksa.bulan;
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tanggalPeriksa.tahun = riwayatPasien[i].tanggalPeriksa.tahun;
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].diagnosis = strdup(riwayatPasien[i].diagnosis);
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tindakan = strdup(riwayatPasien[i].tindakan);
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].biaya = riwayatPasien[i].biaya;
         }
     }
 }

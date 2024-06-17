@@ -82,4 +82,14 @@ typedef struct sortPenyakit{
 }sortPenyakit;
 
 
+
+typedef struct DataPasienKontrol{
+    char *IdPasien;
+    char *nama;
+    tanggal tanggalPeriksa;
+    char *diagnosis;
+    char *tindakan;
+    int biaya;
+}DataPasienKontrol;
+
 #endif

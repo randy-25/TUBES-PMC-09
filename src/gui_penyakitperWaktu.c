@@ -19,7 +19,7 @@ void reset_displayPenyakitPage()
     while (child != NULL)
     {
         GtkWidget *next = gtk_widget_get_next_sibling(child);
-        gtk_widget_unparent(child);
+        gtk_box_remove(GTK_BOX(displayPenyakitPage), child);
         child = next;
     }
 }
@@ -246,9 +246,12 @@ GtkWidget *InformasiPenyakitPage()
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(page), button);
 
+    penyakitperWaktuPage_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_widget_set_size_request(penyakitperWaktuPage_pasienInfo, WINDOW_WIDTH, 450);
     displayPenyakitPage = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    gtk_widget_set_size_request(displayPenyakitPage, WINDOW_WIDTH, 400);
-    gtk_box_append(GTK_BOX(page), displayPenyakitPage);
+    gtk_box_append(GTK_BOX(penyakitperWaktuPage_pasienInfo), displayPenyakitPage);
+        gtk_box_append(GTK_BOX(page), penyakitperWaktuPage_pasienInfo);
+
 
     g_signal_connect(button, "clicked", G_CALLBACK(integer_validation_penyakitperWaktuPage), entry);
 

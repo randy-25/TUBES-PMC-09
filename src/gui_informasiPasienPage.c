@@ -173,7 +173,7 @@ GtkWidget *InformasiPasienPage()
     gtk_box_append(GTK_BOX(page), button);
 
     informasiPasienPage_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    gtk_widget_set_size_request(informasiPasienPage_pasienInfo, WINDOW_WIDTH, 400);
+    gtk_widget_set_size_request(informasiPasienPage_pasienInfo, WINDOW_WIDTH, 450);
     gtk_box_append(GTK_BOX(page), informasiPasienPage_pasienInfo);
 
     g_signal_connect(button, "clicked", G_CALLBACK(on_cari_informasiPasien_data_gui), entry);

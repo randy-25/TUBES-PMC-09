@@ -1,279 +1,116 @@
 #include "../header/util_getData.h"
 
-void getData(struct dataPasien **pasien, struct riwayat **riwayatPasien, int *jumlahPasien, int *jumlahRiwayatPasien)
-{
-    const char *filename = "data/DataPMC20232024.xlsx";
-    // open .xlsx file for reading
-    xlsxioreader xlsxioread;
-    if ((xlsxioread = xlsxioread_open(filename)) == NULL)
-    {
-        fprintf(stderr, "Error opening .xlsx file\n");
-        return;
-    }
-
-    *jumlahPasien = 0;
-    *jumlahRiwayatPasien = 0;
-
-    // read values from first sheet
-    char *value;
-    xlsxioreadersheet sheet;
-    xlsxioreadersheetlist sheetlist;
-    const char *sheetname = NULL;
-    int sheetsIndex, rowIndex, colIndex;
-    
-    if ((sheetlist = xlsxioread_sheetlist_open(xlsxioread)) != NULL)
-    {
-        sheetsIndex = 0;
-        while ((sheetname = xlsxioread_sheetlist_next(sheetlist)) != NULL)
-        {
-            sheet = xlsxioread_sheet_open(xlsxioread, sheetname, XLSXIOREAD_SKIP_NONE);
-            if (sheet == NULL)
-            {
-                fprintf(stderr, "Error opening sheet %s\n", sheetname);
-                continue;
-            }
-            // printf("\n");
-            // printf("Sheet: %s\n", sheetname);
-            rowIndex = -2; // -2 to skip the header row
-            while (xlsxioread_sheet_next_row(sheet))
-            {
-                if (sheetsIndex == 0)
-                {
-                    if (rowIndex >= 0)
-                    {
-                        if ((*pasien) == NULL)
-                        {
-                            (*pasien) = (struct dataPasien*)malloc(sizeof(struct dataPasien));
-                        }
-                        else
-                        {
-                            (*pasien) = (struct dataPasien*)realloc((*pasien), (rowIndex + 1) * sizeof(struct dataPasien));
-                        }
-                        memset(&((*pasien)[rowIndex]), 0, sizeof(struct dataPasien));
-                    }
-                }
-                else if (sheetsIndex == 1)
-                {
-                    if (rowIndex >= 0)
-                    {
-                        if ((*riwayatPasien) == NULL)
-                        {
-                            (*riwayatPasien) = (riwayat *)malloc(sizeof(struct riwayat));
-                        }
-                        else
-                        {
-                            (*riwayatPasien) = (riwayat *)realloc((*riwayatPasien), (rowIndex + 1) * sizeof(struct riwayat));
-                        }
-                        memset(&((*riwayatPasien)[rowIndex]), 0, sizeof(struct riwayat));
-                    }
-                }
-                colIndex = 0;
-                while ((value = xlsxioread_sheet_next_cell(sheet)) != NULL)
-                {
-                    if (sheetsIndex == 0 && rowIndex >= 0)
-                    {
-                        getDataPasien(&((*pasien)[rowIndex]), value, colIndex);
-                    }else if (sheetsIndex == 1 && rowIndex >= 0)
-                    {
-                        getRiwayatPasien(&((*riwayatPasien)[rowIndex]), value, colIndex);
-                    }
-                    free(value);
-                    colIndex++;
-                }
-                rowIndex++;
-            }
-            if(sheetsIndex == 0){
-                *jumlahPasien = rowIndex;
-            }else if(sheetsIndex == 1){
-                *jumlahRiwayatPasien = rowIndex;
-            }
-            xlsxioread_sheet_close(sheet);
-            sheetsIndex++;
-        }
-        xlsxioread_sheetlist_close(sheetlist);
-    }
-
-    // clean up
-    xlsxioread_close(xlsxioread);
-}
-
-void getDataPasien(struct dataPasien *pasien, char *value, int colIndex)
-{
-    switch (colIndex)
-    {
-    case 0:
-        pasien->no = atoi(value);
-        break;
-    case 1:
-        pasien->nama = strdup(value);
-        break;
-    case 2:
-        pasien->alamat = strdup(value);
-        break;
-    case 3:
-        pasien->kota = strdup(value);
-        break;
-    case 4:
-        pasien->tempatLahir = strdup(value);
-        break;
-    case 5:
-        parseDateString(value, &pasien->tanggalLahir.tanggal, &pasien->tanggalLahir.bulan, &pasien->tanggalLahir.tahun);
-        break;
-    case 6:
-        pasien->umur = atoi(value);
-        break;
-    case 7:
-        pasien->nomorBPJS = strdup(value);
-        break;
-    case 8:
-        pasien->IdPasien = strdup(value);
-        break;
-    default:
-        break;
-    }
-}
-
-void printDataPasien(struct dataPasien pasien)
-{
-    printf("No: %d\n", pasien.no);
-    printf("Nama: %s\n", pasien.nama);
-    printf("Alamat: %s\n", pasien.alamat);
-    printf("Kota: %s\n", pasien.kota);
-    printf("Tempat Lahir: %s\n", pasien.tempatLahir);
-    printf("Tanggal Lahir: %d-%d-%d \n", pasien.tanggalLahir.tanggal, pasien.tanggalLahir.bulan, pasien.tanggalLahir.tahun);
-    printf("Umur: %d\n", pasien.umur);
-    printf("Nomor BPJS: %s\n", pasien.nomorBPJS);
-    printf("Id Pasien: %s\n", pasien.IdPasien);
-}
-
-void printRiwayatPasien(struct riwayat riwayatPasien)
-{
-    printf("No: %d\n", riwayatPasien.no);
-    printf("Tanggal Periksa: %d-%d-%d \n", riwayatPasien.tanggalPeriksa.tanggal, riwayatPasien.tanggalPeriksa.bulan, riwayatPasien.tanggalPeriksa.tahun);
-    printf("Id Pasien: %s\n", riwayatPasien.IdPasien);
-    printf("Diagnosis: %s\n", riwayatPasien.diagnosis);
-    printf("Tindakan: %s\n", riwayatPasien.tindakan);
-    printf("Tanggal Kontrol: %d-%d-%d \n", riwayatPasien.tanggalKontrol.tanggal, riwayatPasien.tanggalKontrol.bulan, riwayatPasien.tanggalKontrol.tahun);
-    printf("Biaya: %d\n", riwayatPasien.biaya);
-}
-
-void getRiwayatPasien(struct riwayat *riwayatPasien, char *value, int colIndex)
-{
-    switch (colIndex)
-    {
-    case 0:
-        riwayatPasien->no = atoi(value);
-        break;
-    case 1:
-        parseDateString(value, &riwayatPasien->tanggalPeriksa.tanggal, &riwayatPasien->tanggalPeriksa.bulan, &riwayatPasien->tanggalPeriksa.tahun);
-        break;
-    case 2:
-        riwayatPasien->IdPasien = strdup(value);
-        break;
-    case 3:
-        riwayatPasien->diagnosis = strdup(value);
-        break;
-    case 4:
-        riwayatPasien->tindakan = strdup(value);
-        break;
-    case 5:
-        parseDateString(value, &riwayatPasien->tanggalKontrol.tanggal, &riwayatPasien->tanggalKontrol.bulan, &riwayatPasien->tanggalKontrol.tahun);
-        break;
-    case 6:
-        riwayatPasien->biaya = atoi(value);
-        break;
-    default:
-        break;
-    }
-}
-
-void getBiaya(struct biaya **biaya){
-    (*biaya) = (struct biaya*)malloc(sizeof(struct biaya));
-    (*biaya)->pendaftaran = 15000;
-    (*biaya)->pemeriksaan = 125000;
-    (*biaya)->vaksinasi = 100000;
-    (*biaya)->cekGulaDarah = 25000;
-    (*biaya)->pemasanganInfus = 125000;
-    (*biaya)->pengobatan = 150000;
-}
-
 // Function to get the month number from the month name
-int getMonthNumber(const char *monthName)
+int getMonthNumber_CSV(const char *monthName)
 {
-    const char *months[] = {"Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                            "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
-    int numMonths = sizeof(months) / sizeof(months[0]);
-    for (int i = 0; i < numMonths; i++)
-    {
-        if (strcmp(monthName, months[i]) == 0)
-        {
-            return i + 1;
-        }
-    }
-    return -1; // Return -1 if the month name is not found
+    if (strcmp(monthName, "Jan") == 0 || strcmp(monthName, "Januari") == 0)
+        return 1;
+    if (strcmp(monthName, "Feb") == 0 || strcmp(monthName, "Februari") == 0)
+        return 2;
+    if (strcmp(monthName, "Mar") == 0 || strcmp(monthName, "Maret") == 0)
+        return 3;
+    if (strcmp(monthName, "Apr") == 0 || strcmp(monthName, "April") == 0)
+        return 4;
+    if (strcmp(monthName, "Mei") == 0)
+        return 5;
+    if (strcmp(monthName, "Jun") == 0 || strcmp(monthName, "Juni") == 0)
+        return 6;
+    if (strcmp(monthName, "Jul") == 0 || strcmp(monthName, "Juli") == 0)
+        return 7;
+    if (strcmp(monthName, "Agu") == 0 || strcmp(monthName, "Agustus") == 0)
+        return 8;
+    if (strcmp(monthName, "Sep") == 0 || strcmp(monthName, "September") == 0)
+        return 9;
+    if (strcmp(monthName, "Okt") == 0 || strcmp(monthName, "Oktober") == 0)
+        return 10;
+    if (strcmp(monthName, "Nov") == 0 || strcmp(monthName, "November") == 0)
+        return 11;
+    if (strcmp(monthName, "Des") == 0 || strcmp(monthName, "Desember") == 0)
+        return 12;
+    return -1;
 }
 
-// Function to check if a string contains only digits
-int isNumeric(const char *str)
+int is_format_CSV(char *Date)
 {
-    for (int i = 0; str[i] != '\0'; i++)
+    char *tempDate = strdup(Date);
+    char *temp1 = strtok(tempDate, " ");
+    char *temp2 = strtok(NULL, " ");
+
+    if (temp2 != NULL)
     {
-        if (!isdigit(str[i]))
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-// Function to convert days since 1 January 1900 to date, month, and year
-void convertDaysToDate(int days, int *date, int *month, int *year)
-{
-    // Base date is 1 January 1900
-    int baseYear = 1900;
-    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int isLeap;
-
-    *year = baseYear;
-    while (days >= 365)
-    {
-        isLeap = ((*year % 4 == 0 && *year % 100 != 0) || (*year % 400 == 0));
-        if (days < (isLeap ? 366 : 365))
-            break;
-        days -= isLeap ? 366 : 365;
-        (*year)++;
-    }
-
-    isLeap = ((*year % 4 == 0 && *year % 100 != 0) || (*year % 400 == 0));
-    for (*month = 0; *month < 12; (*month)++)
-    {
-        int daysInThisMonth = daysInMonth[*month] + (isLeap && *month == 1 ? 1 : 0);
-        if (days < daysInThisMonth)
-            break;
-        days -= daysInThisMonth;
-    }
-    *month += 1;
-    *date = days + 1;
-}
-
-// Function to parse date string
-void parseDateString(const char *dateString, int *date, int *month, int *year)
-{
-    char monthName[20];
-
-    // Check if the string is numeric
-    if (isNumeric(dateString))
-    {
-        // Handle the "number of days" format
-        int days = atoi(dateString);
-        convertDaysToDate(days - 2, date, month, year);
+        return 1;
     }
     else
     {
-        // Handle the "day month year" format
-        if (sscanf(dateString, "%d %19s %d", date, monthName, year) == 3)
+        return 0;
+    }
+}
+
+void printDataPasien_CSV(struct dataPasien DataPasien)
+{
+    printf("No: %d\n", DataPasien.no);
+    printf("Nama: %s\n", DataPasien.nama);
+    printf("Alamat: %s\n", DataPasien.alamat);
+    printf("Kota: %s\n", DataPasien.kota);
+    printf("Tempat Lahir: %s\n", DataPasien.tempatLahir);
+    printf("Tanggal Lahir: %d-%d-%d \n", DataPasien.tanggalLahir.tanggal, DataPasien.tanggalLahir.bulan, DataPasien.tanggalLahir.tahun);
+    printf("Umur: %d\n", DataPasien.umur);
+    printf("Nomor BPJS: %s\n", DataPasien.nomorBPJS);
+    printf("Id Pasien: %s\n", DataPasien.IdPasien);
+    printf("\n");
+}
+
+void printRiwayatPasien_CSV(struct riwayat RiwayatPasien)
+{
+    printf("No: %d\n", RiwayatPasien.no);
+    printf("Tanggal Periksa: %d-%d-%d \n", RiwayatPasien.tanggalPeriksa.tanggal, RiwayatPasien.tanggalPeriksa.bulan, RiwayatPasien.tanggalPeriksa.tahun);
+    printf("ID Pasien: %s\n", RiwayatPasien.IdPasien);
+    printf("diagnosis: %s\n", RiwayatPasien.diagnosis);
+    printf("tingakan: %s\n", RiwayatPasien.tindakan);
+    printf("Tanggal Kontrol: %d-%d-%d \n", RiwayatPasien.tanggalKontrol.tanggal, RiwayatPasien.tanggalKontrol.bulan, RiwayatPasien.tanggalKontrol.tahun);
+    printf("Biaya: %d\n", RiwayatPasien.biaya);
+    printf("\n");
+}
+
+void parseDate_CSV(char *Date, int *day, int *month, int *year)
+{
+    char *tempmonth;
+    char monthName[20];
+
+    // handle DD-MM-YY format
+    if (is_format_CSV(Date) == 0)
+    {
+
+        int *tempyears;
+
+        *day = atoi(strtok(Date, "-"));
+        tempmonth = strtok(NULL, "-");
+        *year = atoi(strtok(NULL, " "));
+
+        // if the years above 30, assumed that it is in 19 century
+        if ((*year) > 30)
         {
-            *month = getMonthNumber(monthName);
+            *year = *year + 1900;
+        }
+        else
+        {
+            *year = 2000 + *year;
+        }
+
+        // convert the month to
+        *month = getMonthNumber_CSV(tempmonth);
+        if (*month == -1)
+        {
+            printf("failed to parsed date \n");
+        }
+    }
+    else
+    {
+
+        // format1_Date(Date, day, tempmonth, year);
+        if (sscanf(Date, "%d %19s %d", day, monthName, year) == 3)
+        {
+            *month = getMonthNumber_CSV(monthName);
             if (*month == -1)
             {
                 printf("Invalid month name.\n");
@@ -284,6 +121,162 @@ void parseDateString(const char *dateString, int *date, int *month, int *year)
             printf("Failed to parse date string.\n");
         }
     }
+}
+
+void get_DataPasien_CSV(struct dataPasien **Data, int *JumlahDataPasien)
+{
+    FILE *file = fopen("data/Data Pasien.csv", "r");
+
+    if (file == NULL)
+    {
+        printf("Tidak ada file");
+    }
+
+    char temp[500];
+    int Index = 0;
+
+    while (fgets(temp, 400, file) != NULL)
+    {
+
+        if ((*Data) == NULL)
+        {
+            (*Data) = (dataPasien *)malloc((Index + 1) * sizeof(struct dataPasien));
+        }
+        else
+        {
+            (*Data) = (dataPasien *)realloc((*Data), (Index + 1) * sizeof(struct dataPasien));
+            if ((*Data) == NULL)
+            {
+                printf("gagal\n");
+            }
+        }
+
+        struct dataPasien *current = &(*Data)[Index];
+
+        current->no = atoi(strtok(temp, ","));
+
+        current->nama = strdup(strtok(NULL, ","));
+
+        current->alamat = strdup(strtok(NULL, ","));
+
+        current->kota = strdup(strtok(NULL, ","));
+
+        current->tempatLahir = strdup(strtok(NULL, ","));
+
+        char *tempDate = strtok(NULL, ",");
+
+        current->umur = atoi(strtok(NULL, ","));
+
+        current->nomorBPJS = strdup(strtok(NULL, ","));
+
+        current->IdPasien = strdup(strtok(NULL, "\n"));
+
+        parseDate_CSV(tempDate, &current->tanggalLahir.tanggal, &current->tanggalLahir.bulan, &current->tanggalLahir.tahun);
+
+        Index++;
+    }
+    *JumlahDataPasien = Index;
+    fclose(file);
+}
+
+void get_RiwayatPasien_CSV(struct riwayat **RiwayatPasien, int *JumlahRiwayatPasien)
+{
+    FILE *file = fopen("data/Riwayat Pasien.csv", "r");
+
+    if (file == NULL)
+    {
+        printf("Tidak ada file");
+    }
+
+    char temp[500];
+    int Index = 0;
+
+    while (fgets(temp, 400, file))
+    {
+
+        if ((*RiwayatPasien) == NULL)
+        {
+            (*RiwayatPasien) = (riwayat *)malloc((Index + 1) * sizeof(struct riwayat));
+        }
+        else
+        {
+            (*RiwayatPasien) = (riwayat *)realloc((*RiwayatPasien), (Index + 1) * sizeof(struct riwayat));
+        }
+
+        struct riwayat *current = &(*RiwayatPasien)[Index];
+
+        current->no = atoi(strtok(temp, ","));
+
+        char *tempDatePeriksa = strtok(NULL, ",");
+
+        current->IdPasien = strdup(strtok(NULL, ","));
+        current->diagnosis = strdup(strtok(NULL, ","));
+        current->tindakan = strdup(strtok(NULL, ","));
+
+        char *tempDateKontrol = strtok(NULL, ",");
+
+        current->biaya = atoi(strtok(NULL, "\n"));
+
+        parseDate_CSV(tempDatePeriksa, &current->tanggalPeriksa.tanggal, &current->tanggalPeriksa.bulan, &current->tanggalPeriksa.tahun);
+        parseDate_CSV(tempDateKontrol, &current->tanggalKontrol.tanggal, &current->tanggalKontrol.bulan, &current->tanggalKontrol.tahun);
+
+        Index++;
+    }
+    *JumlahRiwayatPasien = Index;
+    fclose(file);
+}
+
+void get_BiayaTindakan_CSV(struct biaya **BiayaPerawatan)
+{
+    FILE *file = fopen("data/Biaya Tindakan.csv", "r");
+
+    if (file == NULL)
+    {
+        printf("Tidak ada file");
+    }
+
+    char temp[500];
+    char *tempAktivitas[50];
+    char *tempNo[50];
+
+    (*BiayaPerawatan) = (biaya *)malloc(sizeof(struct biaya));
+
+    while (fgets(temp, 400, file) != NULL)
+    {
+
+        *tempNo = strtok(temp, ",");
+        *tempAktivitas = strtok(NULL, ",");
+
+        if (strcmp(*tempAktivitas, "Pendaftaran") == 0)
+        {
+            (*BiayaPerawatan)->pendaftaran = atoi(strtok(NULL, " "));
+        }
+        else if (strcmp(*tempAktivitas, "Pemeriksaan") == 0)
+        {
+            (*BiayaPerawatan)->pemeriksaan = atoi(strtok(NULL, " "));
+        }
+        else if (strcmp(*tempAktivitas, "Vaksinasi") == 0)
+        {
+            (*BiayaPerawatan)->vaksinasi = atoi(strtok(NULL, " "));
+        }
+        else if (strcmp(*tempAktivitas, "Cek gula darah") == 0)
+        {
+            (*BiayaPerawatan)->cekGulaDarah = atoi(strtok(NULL, " "));
+        }
+        else if (strcmp(*tempAktivitas, "Pemasangan infus") == 0)
+        {
+            (*BiayaPerawatan)->pemasanganInfus = atoi(strtok(NULL, " "));
+        }
+        else if (strcmp(*tempAktivitas, "Pengobatan") == 0)
+        {
+            (*BiayaPerawatan)->pengobatan = atoi(strtok(NULL, " "));
+        }
+        else
+        {
+            printf("Biaya tidak ada");
+        }
+    }
+    fclose(file);
 }
 
 void parseTanggal(char *tanggalLahir_input, int *tanggal, int *bulan, int *tahun)

@@ -41,26 +41,6 @@ extern GtkWidget *dataPasienPage_hapusData_pasienInfo;
 //---------- END OF DATA PASIEN PAGE ----------
 
 
-//---------- PENYAKIT PER WAKTU PAGE ----------
-extern GtkWidget *penyakitperWaktuPage_Stack;
-
-// DISPLAY PENYAKIT PAGE
-extern GtkWidget *displayPenyakitPage;
-
-// DISPLAY PENYAKIT PERBULAN PAGE
-extern GtkWidget *displayBulanBox;
-
-//------- END OF PENYAKIT PER WAKTU PAGE -------
-
-
-//---------- LAPORAN PENDAPATAN PAGE -----------
-extern GtkWidget *laporanPendapatanPage_Stack;
-
-// DISPLAY PENYAKIT PAGE
-extern GtkWidget *displayPendapatanPage;
-//------- END OF LAPORAN PENDAPATAN PAGE -------
-
-
 // ------- RIWAYAT PASIEN PAGE -------
 extern GtkWidget *riwayatPasienPage_Stack;
 
@@ -80,6 +60,30 @@ extern GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
 
 // ------- INFORMASI PASIEN PAGE -------
 extern GtkWidget *informasiPasienPage_pasienInfo;
+// ------- END OF INFORMASI PASIEN PAGE -------
 
+
+//---------- PENYAKIT PER WAKTU PAGE ----------
+extern GtkWidget *penyakitperWaktuPage_pasienInfo;
+
+// DISPLAY PENYAKIT PAGE
+extern GtkWidget *displayPenyakitPage;
+
+// DISPLAY PENYAKIT PERBULAN PAGE
+extern GtkWidget *displayBulanBox;
+//------- END OF PENYAKIT PER WAKTU PAGE -------
+
+
+//---------- LAPORAN PENDAPATAN PAGE -----------
+extern GtkWidget *laporanPendapatanPage_Stack;
+
+// DISPLAY PENYAKIT PAGE 
+extern GtkWidget *displayPendapatanPage;
+//------- END OF LAPORAN PENDAPATAN PAGE -------
+
+
+// ------- INFORMASI PASIEN KONTROL PAGE -------
+extern GtkWidget *informasiPasienKontrolPage_pasienInfo;
+// ------- END OF INFORMASI PASIEN KONTROL PAGE -------
 
 #endif
