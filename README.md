@@ -1,4 +1,10 @@
 # TUBES PMC KELOMPOK 09
+- Randy Revaldo Pratama (13222012)
+- Wilbert Jay Hydro (13222024)
+- Kenny Aprian Duallo (13222030)
+- Muhammad Al-Faaris (13220033)
+- Amelia Dina Savitri (18322006)
+
 
 ## Deskripsi
 
