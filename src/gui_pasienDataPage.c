@@ -953,7 +953,7 @@ GtkWidget *DataPasienPage_HapusData()
     return page;
 }
 
-// -------- DATA PASIEN BASE PAGE --------
+// BASE PAGE
 GtkWidget *DataPasienPage()
 {
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);

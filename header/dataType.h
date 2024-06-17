@@ -67,8 +67,20 @@ typedef struct perTahun {
 typedef struct pendapatanTahun {
     int tahun;
     int jumlahperTahun;
-    PerBulan *bulan; 
+    PerBulan bulan; 
 }pendapatanTahun;
+
+typedef struct pasienKontrolFinal{
+    char *nama;
+    char *IdPasien;
+    char *diagnosis;
+}pasienKontrolFinal;
+
+typedef struct sortPenyakit{
+    char *namaPenyakit;
+    int jumlah;
+}sortPenyakit;
+
 
 
 typedef struct DataPasienKontrol{

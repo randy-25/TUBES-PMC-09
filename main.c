@@ -1,12 +1,18 @@
 #include "header/util_getData.h"
 #include "header/util_pasienUtil.h"
 #include "header/util_riwayatUtil.h"
+#include "header/util_informasiPasienUtil.h"
+#include "header/util_laporanPendapatanUtil.h"
+#include "header/util_pasienKontrolUtil.h"
+#include "header/util_penyakitperWaktuUtil.h"
 
 #include "header/guiDataType.h"
 #include "header/gui_basePage.h"
 #include "header/gui_pasienDataPage.h"
 #include "header/gui_riwayatPasienPage.h"
 #include "header/gui_informasiPasienPage.h"
+#include "header/gui_penyakitperWaktuPage.h"
+#include "header/gui_laporanPendapatanPage.h"
 
 
 #include "header/gui_pasienKontrol.h"
@@ -66,9 +72,28 @@ GtkWidget *informasiPasienPage_pasienInfo;
 // ------- END OF INFORMASI PASIEN PAGE -------
 
 
+//---------- PENYAKIT PER WAKTU PAGE ----------
+GtkWidget *penyakitperWaktuPage_Stack;
+
+// DISPLAY PENYAKIT PAGE
+GtkWidget *displayPenyakitPage;
+//------- END OF PENYAKIT PER WAKTU PAGE -------
+
+
+//---------- LAPORAN PENDAPATAN PAGE -----------
+GtkWidget *laporanPendapatanPage_Stack;
+
+// DISPLAY PENYAKIT PAGE
+GtkWidget *displayPendapatanPage;
+//------- END OF LAPORAN PENDAPATAN PAGE -------
+
+
 // ------- INFORMASI PASIEN KONTROL PAGE -------
 GtkWidget *informasiPasienKontrolPage_pasienInfo;
 // ------- END OF INFORMASI PASIEN KONTROL PAGE -------
+
+
+
 
 // --------------END OF GLOBAL VARIABLE------------------
 
@@ -99,10 +124,10 @@ activate(GtkApplication *app, gpointer user_data)
     informasiPasienPage = InformasiPasienPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiPasienPage, "InformasiPasien");
 
-    laporanPendapatanPage = create_page_with_back_button("Laporan Pendapatan");
+    laporanPendapatanPage = LaporanPendapatanPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), laporanPendapatanPage, "LaporanPendapatan");
 
-    informasiPenyakitPage = create_page_with_back_button("Informasi Penyakit dan Jumlah");
+    informasiPenyakitPage = InformasiPenyakitPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiPenyakitPage, "InformasiPenyakit");
 
     informasiKontrolPage = PasienKontrolPage();
