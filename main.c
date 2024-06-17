@@ -147,7 +147,7 @@ int main(int argc, char **argv){
     get_RiwayatPasien_CSV(&riwayatPasien, &jumlahRiwayatPasien);
     get_BiayaTindakan_CSV(&biayaPerawatan);
 
-    //print data pasien
+    // print data pasien
     // printf("%d\n", jumlahPasien);
     // for (int i = 0; i < jumlahPasien; i++){
     //     printDataPasien_CSV(pasien[i]);
@@ -166,6 +166,12 @@ int main(int argc, char **argv){
 
     status = g_application_run(G_APPLICATION(app), argc, argv);
     printf("status: %d\n", status);
+
+    // printf("status 2: %d\n", status);
+    if(status == 0){
+        write_DataPasien_CSV(pasien, jumlahPasien);
+        write_RiwayatPasien_CSV(riwayatPasien, jumlahRiwayatPasien);
+    }
 
     for (int i = 0; i < jumlahPasien; i++)
     {
@@ -187,11 +193,7 @@ int main(int argc, char **argv){
     free(riwayatPasien);
 
     g_object_unref(app);
-    // printf("status 2: %d\n", status);
-    if(status == 0){
-        write_DataPasien_CSV(pasien, jumlahPasien);
-        write_RiwayatPasien_CSV(riwayatPasien, jumlahRiwayatPasien);
-    }
+
     return status;
 
 }
