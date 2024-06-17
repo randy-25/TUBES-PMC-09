@@ -9,7 +9,6 @@ void cariRiwayat(struct riwayat *riwayatPasien, int jumlahRiwayatPasien, char *I
             *nameHolder = strdup(pasien[i].nama);
         }
     }
-    // printf("jumlah riwayat: %d\n", jumlahRiwayatPasien);
     *confirm = 0;
     for (int i = 0; i < jumlahRiwayatPasien; i++)
     {
@@ -70,15 +69,12 @@ void tambahRiwayat(struct riwayat **riwayatPasien, int *jumlahRiwayatPasien, cha
         if (strcmp(pasien[i].IdPasien, IdPasien) == 0)
         {
             *namaHolder = strdup(pasien[i].nama);
-            // strcpy(namaHolder, pasien[i].nama);
             *confirm = 1;
         }
     }
     if (*confirm == 1)
     {
         struct riwayat tempRiwayat;
-
-        // *riwayatPasien = (struct riwayat *)realloc(*riwayatPasien, (*jumlahRiwayatPasien + 1) * sizeof(struct riwayat));
 
         char temp[100];
         tempRiwayat.IdPasien = strdup(IdPasien);

@@ -121,6 +121,7 @@ void parseDate_CSV(char *Date, int *day, int *month, int *year)
             printf("Failed to parse date string.\n");
         }
     }
+    
 }
 
 void get_DataPasien_CSV(struct dataPasien **Data, int *JumlahDataPasien)
@@ -131,10 +132,8 @@ void get_DataPasien_CSV(struct dataPasien **Data, int *JumlahDataPasien)
     {
         printf("Tidak ada file");
     }
-
     char temp[500];
     int Index = 0;
-
     while (fgets(temp, 400, file) != NULL)
     {
 

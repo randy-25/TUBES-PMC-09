@@ -2,7 +2,6 @@
 
 void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder, int *confirm)
 {
-    // printf("ID Pasien: %s\n", IdPasien);
     *confirm = 0;
     for (int i = 0; i < jumlahPasien; i++)
     {
@@ -44,10 +43,6 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
 
     (*pasien) = (struct dataPasien *)realloc(*pasien, (*jumlahPasien + 1) * sizeof(struct dataPasien));
 
-    // char temp[100];
-    // printf("Masukkan Nomor BPJS pasien: ");
-    // fgets(temp, 20, stdin);
-    // temp[strcspn(temp, "\n")] = '\0';
     *confirm = 0;
     int cek = 0;
     for (int i = 0; i < *jumlahPasien; i++)
@@ -62,28 +57,14 @@ void tambahPasien(struct dataPasien **pasien, int *jumlahPasien, char *noBPJS_in
     {
         tempPasien.nomorBPJS = strdup(noBPJS_input);
 
-        // printf("Masukkan Nama Pasien: ");
-        // fgets(temp, 100, stdin);
-        // temp[strcspn(temp, "\n")] = '\0';
         tempPasien.nama = strdup(nama_input);
 
-        // printf("Masukkan Alamat Pasien: ");
-        // fgets(temp, 100, stdin);
-        // temp[strcspn(temp, "\n")] = '\0';
         tempPasien.alamat = strdup(alamat_input);
 
-        // printf("Masukkan Kota Pasien: ");
-        // fgets(temp, 100, stdin);
-        // temp[strcspn(temp, "\n")] = '\0';
         tempPasien.kota = strdup(kota_input);
 
-        // printf("Masukkan Tempat Lahir Pasien: ");
-        // fgets(temp, 100, stdin);
-        // temp[strcspn(temp, "\n")] = '\0';
         tempPasien.tempatLahir = strdup(tempatLahir_input);
 
-        // printf("Masukkan Tanggal Lahir Pasien (dd-mm-yyyy): ");
-        // scanf("%d-%d-%d", &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
         parseTanggal(tanggalLahir_input, &tempPasien.tanggalLahir.tanggal, &tempPasien.tanggalLahir.bulan, &tempPasien.tanggalLahir.tahun);
 
         tempPasien.umur = hitungUmur(tempPasien.tanggalLahir.tanggal, tempPasien.tanggalLahir.bulan, tempPasien.tanggalLahir.tahun);

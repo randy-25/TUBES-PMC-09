@@ -142,6 +142,13 @@ void on_cari_informasiPasien_data_gui(GtkButton *button, gpointer user_data)
         GtkWidget *not_found_label = gtk_label_new("Data Pasien tidak ditemukan");
         gtk_box_append(GTK_BOX(informasiPasienPage_pasienInfo), not_found_label);
     }
+
+    free(idPasien);
+    free(riwayatHolder->diagnosis);
+    free(riwayatHolder->tindakan);
+    free(riwayatHolder->IdPasien);
+    free(riwayatHolder);
+    free(nameHolder);
 }
 
 GtkWidget *InformasiPasienPage()

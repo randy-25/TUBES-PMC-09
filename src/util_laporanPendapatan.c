@@ -149,24 +149,6 @@ void LaporanPendapatan (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien, 
         (*Hasil)->jumlahperTahun = LaporanPendapatan[tempindex].jumlahperTahun;
         (*Hasil)->tahun = LaporanPendapatan[tempindex].tahun;
 
-        //debug
-        // printf("Januari %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.jan);
-        // printf("Februari %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.feb);
-        // printf("Maret %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.mar);
-        // printf("April %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.apr);
-        // printf("Mei %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.mei);
-        // printf("Juni %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.jun);
-        // printf("Juli %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.jul);
-        // printf("Agustus %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.agu);
-        // printf("September %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.sep);
-        // printf("Oktober %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.okt);
-        // printf("November %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.nov);
-        // printf("Desember %d : %d\n", tahun, LaporanPendapatan[tempindex].bulan.des);
-        
-        // printf("TOTAL : %d\n", LaporanPendapatan[tempindex].bulan->des);
-        // printf("Rata-rata : %d\n", LaporanPendapatan[tempindex].bulan->des/12);
-
-
     //free alocationg memori
     free(LaporanPendapatan);
 }

@@ -97,8 +97,6 @@ GtkWidget *informasiPasienKontrolPage_pasienInfo;
 // ------- END OF INFORMASI PASIEN KONTROL PAGE -------
 
 
-
-
 // --------------END OF GLOBAL VARIABLE------------------
 
 
@@ -147,21 +145,10 @@ int main(int argc, char **argv){
     get_RiwayatPasien_CSV(&riwayatPasien, &jumlahRiwayatPasien);
     get_BiayaTindakan_CSV(&biayaPerawatan);
 
-    //print data pasien
-    // printf("%d\n", jumlahPasien);
-    // for (int i = 0; i < jumlahPasien; i++){
-    //     printDataPasien_CSV(pasien[i]);
-    // }
-
-    // //print riwayat pasien
-    // for (int i = 0; i < jumlahRiwayatPasien; i++){
-    //     printRiwayatPasien_CSV(riwayatPasien[i]);
-    // }
-
     GtkApplication *app;
     int status;
 
-    app = gtk_application_new("com.PatientManagement.Application3", G_APPLICATION_DEFAULT_FLAGS);
+    app = gtk_application_new("com.PatientManagement.Application3", 0);
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
 
     status = g_application_run(G_APPLICATION(app), argc, argv);
@@ -188,10 +175,10 @@ int main(int argc, char **argv){
 
     g_object_unref(app);
     // printf("status 2: %d\n", status);
-    if(status == 0){
-        write_DataPasien_CSV(pasien, jumlahPasien);
-        write_RiwayatPasien_CSV(riwayatPasien, jumlahRiwayatPasien);
-    }
+    // if(status == 0){
+    //     write_DataPasien_CSV(pasien, jumlahPasien);
+    //     write_RiwayatPasien_CSV(riwayatPasien, jumlahRiwayatPasien);
+    // }
     return status;
 
 }
