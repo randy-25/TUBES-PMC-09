@@ -131,22 +131,12 @@ void integer_validation_laporanPendapatanPage(GtkButton *button, gpointer user_d
     const char *input = gtk_editable_get_text(GTK_EDITABLE(data));
     char *endptr;
     int value = strtol(input, &endptr, 10); // Convert input to integer
-    
-    // GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(laporanPendapatanPage_Stack), "displayPendapatanPage");
 
-    //     if (tempWidget != NULL)
-    //     {   
-    //         gtk_stack_remove(GTK_STACK(laporanPendapatanPage_Stack), tempWidget);
-    //     }
     reset_displayPendapatanPage();
 
     if (*endptr == '\0') {
         // Create the new page
         DisplayPendapatanPage(value);
-        // gtk_stack_add_named(GTK_STACK(laporanPendapatanPage_Stack), displayPendapatanPage, "displayPendapatanPage");
-
-        // // Get the window and replace its child with the new page
-        // gtk_stack_set_visible_child_name(GTK_STACK(laporanPendapatanPage_Stack), "displayPendapatanPage");
     } else {
         g_print("Invalid input, not an integer.\n");
     }
@@ -154,12 +144,6 @@ void integer_validation_laporanPendapatanPage(GtkButton *button, gpointer user_d
 
 void reset_laporanPendapatanPage(GtkButton *button, gpointer user_data)
 {
-    // GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(laporanPendapatanPage_Stack), "displayPendapatanPage");
-
-    //     if (tempWidget != NULL)
-    //     {
-    //         gtk_stack_remove(GTK_STACK(laporanPendapatanPage_Stack), tempWidget);
-    //     }
     reset_displayPendapatanPage();
 
     //back to landing page
@@ -180,34 +164,6 @@ GtkWidget *addFooter_with_laporanPendapatanPage(GtkWidget *page)
 
 GtkWidget *LaporanPendapatanPage()
 {
-    // GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 20);
-    // GtkWidget *header = addHeader(page);
-
-    // laporanPendapatanPage_Stack = gtk_stack_new();
-    // gtk_stack_set_transition_type(GTK_STACK(laporanPendapatanPage_Stack), GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
-
-    // GtkWidget *topLabel = gtk_label_new("Laporan Pendapatan Tahunan");
-    // gtk_box_append(GTK_BOX(page), topLabel);
-    // gtk_widget_set_halign(topLabel, GTK_ALIGN_CENTER);
-
-    // GtkWidget *cmdLabel = gtk_label_new("Masukkan Tahun ");
-    // GtkWidget *entry = gtk_entry_new();
-    // gtk_box_append(GTK_BOX(page), cmdLabel);
-
-    // gtk_widget_set_size_request(entry, 200, 30);
-    // gtk_box_append(GTK_BOX(page), entry);
-
-    // GtkWidget *button = gtk_button_new_with_label("Cari");
-    // gtk_widget_set_size_request(button, 100, 30);
-    // gtk_box_append(GTK_BOX(page), button);
-
-    // gtk_box_append(GTK_BOX(page), laporanPendapatanPage_Stack);
-    // gtk_widget_set_size_request(laporanPendapatanPage_Stack, WINDOW_WIDTH, 400);
-
-    // g_signal_connect(button, "clicked", G_CALLBACK(integer_validation_laporanPendapatanPage), entry);
-
-    // GtkWidget *footer = addFooter_with_laporanPendapatanPage_reset(page);
-
     GtkWidget *page;
     GtkWidget *entry;
     GtkWidget *button;

@@ -70,7 +70,6 @@ void write_RiwayatPasien_CSV(struct riwayat *RiwayatPasien, int JumlahRiwayatPas
     }
 
     fclose(file);
-    // printf("RiwayatPasien successfully written to %s\n", filename);
 }
 
 

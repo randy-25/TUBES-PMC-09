@@ -48,21 +48,16 @@ void on_cari_pasienKontrol_data_gui(GtkButton *button, gpointer user_data)
 
     parseTanggal(tempTanggalKontrol, &(tanggalPasienKontrol.tanggal), &(tanggalPasienKontrol.bulan), &(tanggalPasienKontrol.tahun));
 
-    // printf("tanggalKontrol: %d-%d-%d\n", tanggalPasienKontrol.tanggal, tanggalPasienKontrol.bulan, tanggalPasienKontrol.tahun);
-
     struct DataPasienKontrol *dataPasienKontrolHolder = NULL;
     int jumlahDataPasienKontrolHolder = 0;
 
     pasienKontrol(pasien, jumlahPasien, riwayatPasien, jumlahRiwayatPasien, tanggalPasienKontrol, &dataPasienKontrolHolder, &jumlahDataPasienKontrolHolder);
-
-    // printf("jumlahDataPasienKontrolHolder: %d\n", jumlahDataPasienKontrolHolder);
 
     GtkWidget *infoBox;
     if (jumlahDataPasienKontrolHolder != 0)
     {
         char info[256];
         infoBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-        // gtk_box_append(GTK_BOX(informasiPasienKontrolPage_pasienInfo), infoBox);
 
         GtkWidget *title = gtk_label_new("Informasi Kontrol Pasien");
 

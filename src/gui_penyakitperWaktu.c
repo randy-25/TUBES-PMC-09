@@ -1,7 +1,5 @@
 #include "../header/gui_penyakitperWaktuPage.h"
 
-// This function clears the current display page.
-
 void reset_displayBulanBox()
 {
     GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(displayBulanBox));
@@ -82,7 +80,6 @@ void *displayBulan(GtkButton *button, gpointer user_data)
 // This function displays the penyakit information for a given year.
 void *DisplayPenyakitPage(int tahun)
 {     
-
     char *month_labels[12] = {
         "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
         "Juli", "Agustus", "September", "Oktober", "November", "Desember"
@@ -138,26 +135,6 @@ void *DisplayPenyakitPage(int tahun)
         entry_data->entry_data = entry;
 
         g_signal_connect(button, "clicked", G_CALLBACK(displayBulan), entry_data);
-
-        // for (int j = 0; j < 12; j++) {
-        //     GtkWidget *monthLabel = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-        //     GtkWidget *tempMonth = gtk_label_new(month_labels[j]);
-        //     gtk_box_append(GTK_BOX(monthLabel), tempMonth);
-        //     gtk_widget_set_halign(tempMonth, GTK_ALIGN_CENTER);
-
-        //     for (int k = 0; k < penyakit; k++) {
-        //         if (hasil[help].jumlah != 0) {
-        //             char info[256];
-        //             snprintf(info, sizeof(info), "%s = %d", hasil[help].namaPenyakit, hasil[help].jumlah);
-        //             GtkWidget *id_label = gtk_label_new(info);
-        //             gtk_box_append(GTK_BOX(monthLabel), id_label);
-        //         }
-        //         help++;
-        //     }
-        //     gtk_box_append(GTK_BOX(rightHalf), monthLabel);
-        //     GtkWidget *separator = gtk_label_new("-------------------------------------------------");
-        //     gtk_box_append(GTK_BOX(rightHalf), separator);
-        // }
 
         GtkWidget *rightHalfScrolledWindow = gtk_scrolled_window_new();
         gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(rightHalfScrolledWindow), rightHalf);
