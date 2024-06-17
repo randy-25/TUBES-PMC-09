@@ -13,7 +13,7 @@ const char* getMonthName_CSV(int month)
 }
 
 // Function to write dataPasien to CSV
-void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien, const char *filename)
+void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien)
 {
     FILE *file = fopen("../data/Data Pasien.csv", "w");
     if (file == NULL)
@@ -41,12 +41,12 @@ void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien, c
     }
 
     fclose(file);
-    printf("DataPasien successfully written to %s\n", filename);
+    printf("DataPasien successfully written to %s\n");
 }
 
 
 // Function to write riwayat to CSV
-void write_RiwayatPasien_CSV(const struct riwayat *RiwayatPasien, int JumlahRiwayatPasien, const char *filename)
+void write_RiwayatPasien_CSV(const struct riwayat *RiwayatPasien, int JumlahRiwayatPasien)
 {
     FILE *file = fopen("../data/Riwayat Pasien.csv", "w");
     if (file == NULL)
@@ -74,7 +74,7 @@ void write_RiwayatPasien_CSV(const struct riwayat *RiwayatPasien, int JumlahRiwa
     }
 
     fclose(file);
-    printf("RiwayatPasien successfully written to %s\n", filename);
+    printf("RiwayatPasien successfully written to \n");
 }
 
 
