@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "util_getData.h"
+#include "util_riwayatUtil.h"
 
 void cariPasien(struct dataPasien *pasien, int jumlahPasien, char *IdPasien, struct dataPasien *dataHolder, int *confirm);
 int hitungUmur(int tanggal, int bulan, int tahun);

@@ -177,16 +177,11 @@ void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien, char *IdPasi
     {
         *confirm = 0;
     }else{
-        int jumlahRiwayat = *jumlahRiwayatPasien;
-        for(int i = 0; i < jumlahRiwayat; i++){
+        // int jumlahRiwayat = *jumlahRiwayatPasien;
+        for(int i = 0; i < *jumlahRiwayatPasien; i++){
             if(strcmp((*riwayatPasien)[i].IdPasien, IdPasien) == 0){
-                int tempJumlahRiwayat = (*jumlahRiwayatPasien);
-                for(int j = i; j < tempJumlahRiwayat; j++){
-                    (*riwayatPasien)[j] = (*riwayatPasien)[j+1];
-                    (*riwayatPasien)[j].no -= 1;
-                    (*riwayatPasien) = (struct riwayat *)realloc(*riwayatPasien, (*jumlahRiwayatPasien - 1) * sizeof(struct riwayat));
-                }
-                (*jumlahRiwayatPasien) -= 1;
+                int nomorRiwayat = (*riwayatPasien)[i].no;
+                hapusRiwayat(riwayatPasien, jumlahRiwayatPasien, nomorRiwayat);
             }
         }
     }
