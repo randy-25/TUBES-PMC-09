@@ -122,7 +122,6 @@ void LaporanPendapatan (struct riwayat *RiwayatPasien, int jumlahRiwayatPasien, 
      
     if (validyear == 0)
     {
-        printf("Tahun tidak valid / Tidak ada data\n");
         *confirm = 0;
         return;
     }

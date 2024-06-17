@@ -152,7 +152,7 @@ void integer_validation_laporanPendapatanPage(GtkButton *button, gpointer user_d
     }
 }
 
-void reset_laporanPendapatanPage_Stack(GtkButton *button, gpointer user_data)
+void reset_laporanPendapatanPage(GtkButton *button, gpointer user_data)
 {
     // GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(laporanPendapatanPage_Stack), "displayPendapatanPage");
 
@@ -167,14 +167,14 @@ void reset_laporanPendapatanPage_Stack(GtkButton *button, gpointer user_data)
     gtk_stack_set_visible_child_name(GTK_STACK(stackContainer), page_name);
 }
 
-GtkWidget *addFooter_with_laporanPendapatanPage_reset(GtkWidget *page)
+GtkWidget *addFooter_with_laporanPendapatanPage(GtkWidget *page)
 {
     GtkWidget *fixed = gtk_fixed_new();
     gtk_box_append(GTK_BOX(page), fixed);
 
     GtkWidget *footer = gtk_button_new_with_label("Back to Landing Page");
     gtk_fixed_put(GTK_FIXED(fixed), footer, 0, FOOTER_HEIGHT);
-    g_signal_connect(footer, "clicked", G_CALLBACK(reset_laporanPendapatanPage_Stack), (gpointer) "LandingPage");
+    g_signal_connect(footer, "clicked", G_CALLBACK(reset_laporanPendapatanPage), (gpointer) "LandingPage");
     return fixed;
 }
 
@@ -235,6 +235,6 @@ GtkWidget *LaporanPendapatanPage()
     gtk_box_append(GTK_BOX(page), displayPendapatanPage);
 
     g_signal_connect(button, "clicked", G_CALLBACK(integer_validation_laporanPendapatanPage), entry);
-    GtkWidget *footer = addFooter_with_laporanPendapatanPage_reset(page);
+    GtkWidget *footer = addFooter_with_laporanPendapatanPage(page);
     return page;
 }
