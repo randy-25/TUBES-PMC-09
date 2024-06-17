@@ -187,7 +187,7 @@ int main(int argc, char **argv){
     free(riwayatPasien);
 
     g_object_unref(app);
-    printf("status 2: %d\n", status);
+    // printf("status 2: %d\n", status);
     if(status == 0){
         write_DataPasien_CSV(pasien, jumlahPasien);
         write_RiwayatPasien_CSV(riwayatPasien, jumlahRiwayatPasien);
