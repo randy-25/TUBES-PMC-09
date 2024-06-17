@@ -183,6 +183,8 @@ void hapusDataPasien(struct dataPasien **pasien, int *jumlahPasien, char *IdPasi
                 int tempJumlahRiwayat = (*jumlahRiwayatPasien);
                 for(int j = i; j < tempJumlahRiwayat; j++){
                     (*riwayatPasien)[j] = (*riwayatPasien)[j+1];
+                    (*riwayatPasien)[j].no -= 1;
+                    (*riwayatPasien) = (struct riwayat *)realloc(*riwayatPasien, (*jumlahRiwayatPasien - 1) * sizeof(struct riwayat));
                 }
                 (*jumlahRiwayatPasien) -= 1;
             }
