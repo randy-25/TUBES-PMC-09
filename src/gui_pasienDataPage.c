@@ -773,7 +773,7 @@ void on_confirm_hapusData_pasien_page(GtkButton *button, gpointer user_data)
 {
     char *IdPasien_data = user_data;
     int confirm;
-    hapusDataPasien(&pasien, &jumlahPasien, IdPasien_data, &confirm);
+    hapusDataPasien(&pasien, &jumlahPasien, IdPasien_data, &riwayatPasien, &jumlahRiwayatPasien, &confirm);
 
     GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "HapusDataPasienFormPage");
 
