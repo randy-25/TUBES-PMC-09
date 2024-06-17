@@ -103,6 +103,7 @@ void *DisplayPenyakitPage(int tahun)
         gtk_box_append(GTK_BOX(invalidbox), invalidLabel);
         gtk_widget_set_halign(invalidLabel, GTK_ALIGN_CENTER);
         gtk_box_append(GTK_BOX(displayPenyakitPage), invalidbox);
+        gtk_widget_set_vexpand(invalidbox, TRUE);
     } else {
         GtkWidget *baseGrid = gtk_grid_new();
         gtk_widget_set_size_request(baseGrid, WINDOW_WIDTH, 200);
@@ -246,7 +247,7 @@ GtkWidget *InformasiPenyakitPage()
     gtk_box_append(GTK_BOX(page), button);
 
     displayPenyakitPage = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    gtk_widget_set_size_request(displayPenyakitPage, WINDOW_WIDTH, 450);
+    gtk_widget_set_size_request(displayPenyakitPage, WINDOW_WIDTH, 400);
     gtk_box_append(GTK_BOX(page), displayPenyakitPage);
 
     g_signal_connect(button, "clicked", G_CALLBACK(integer_validation_penyakitperWaktuPage), entry);
