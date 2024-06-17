@@ -40,11 +40,9 @@ void on_cari_pasien_data_gui(GtkButton *button, gpointer user_data)
     const char *input_text = gtk_editable_get_text(GTK_EDITABLE(data)); // get the input text from the entry
 
     char *idPasien = strdup(input_text); // get the data from the entry
-    // printf("Data: %s\n", idPasien);
     struct dataPasien dataHolder;
     int confirm;
     cariPasien(pasien, jumlahPasien, idPasien, &dataHolder, &confirm); // search the data from the patient data
-    // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
     const gchar *default_text = "KX ";
@@ -133,7 +131,6 @@ GtkWidget *DataPasienPage_CariData()
 
     button = gtk_button_new_with_label("Cari");
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
-    // gtk_widget_set_size_request(button, 100, 30);
     gtk_box_append(GTK_BOX(page), button);
 
     dataPasienPage_cariData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -280,7 +277,6 @@ void on_submit_data_pasien(GtkButton *button, gpointer user_data)
 
     if (confirm == 1)
     {
-        // printf("Data Pasien berhasil ditambahkan\n");
 
         GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "NewPatientData");
 
@@ -453,14 +449,6 @@ void on_submit_ubahData_pasien_page(GtkButton *button, gpointer user_data)
     char *tempTanggalLahir = strdup(tanggal_lahir);
     char *tempNoBPJS = strdup(no_bpjs);
     char *idPasien = strdup(entry->id_pasien);
-    // printf("ID Pasien: %s\n", idPasien);
-    // printf("Nama: %s\n", tempNama);
-    // printf("Alamat: %s\n", tempAlamat);
-    // printf("Kota: %s\n", tempKota);
-    // printf("Tempat Lahir: %s\n", tempTempatLahir);
-    // printf("Tanggal Lahir: %s\n", tempTanggalLahir);
-    // printf("No BPJS: %s\n", tempNoBPJS);
-
 
     // Clear the input box entry
     const gchar *default_text = "";
@@ -489,7 +477,6 @@ void on_submit_ubahData_pasien_page(GtkButton *button, gpointer user_data)
 
     if (confirm == 1)
     {
-        // printf("Data Pasien berhasil diubah\n");
 
         GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "NewPatientData");
 
@@ -505,7 +492,6 @@ void on_submit_ubahData_pasien_page(GtkButton *button, gpointer user_data)
     }
     else
     {
-        // printf("Data Pasien Telah Terdaftar\n");
 
         GtkWidget *tempWidget = gtk_stack_get_child_by_name(GTK_STACK(dataPasienPage_Stack), "FailedPage");
 
@@ -530,7 +516,6 @@ void on_submit_ubahData_pasien_page(GtkButton *button, gpointer user_data)
 GtkWidget *ubahData_form_page(char *IdPasien_data)
 {
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    // printf("ID Pasien: %s\n", IdPasien_data);
 
     GtkWidget *entry_nama;
     GtkWidget *entry_alamat;
@@ -618,7 +603,6 @@ GtkWidget *ubahData_form_page(char *IdPasien_data)
 void on_confirm_ubahData_pasien_page(GtkButton *button, gpointer user_data)
 {
     char *IdPasien_data = user_data;
-    // printf("ID Pasien: %s\n", IdPasien_data);
 
     GtkWidget *ubahPage = ubahData_form_page(IdPasien_data);
 
@@ -638,11 +622,9 @@ void on_cari_pasienData_ubahData_gui(GtkButton *button, gpointer user_data)
     const char *input_text = gtk_editable_get_text(GTK_EDITABLE(data)); // get the input text from the entry
 
     char *idPasien = strdup(input_text); // get the data from the entry
-    // printf("Data: %s\n", idPasien);
     struct dataPasien dataHolder;
     int confirm;
     cariPasien(pasien, jumlahPasien, idPasien, &dataHolder, &confirm); // search the data from the patient data
-    // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
     const gchar *default_text = "KX ";
@@ -738,7 +720,6 @@ GtkWidget *DataPasienPage_UbahData()
 
     button = gtk_button_new_with_label("Cari");
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
-    // gtk_widget_set_size_request(button, 100, 30);
     gtk_box_append(GTK_BOX(page), button);
 
     dataPasienPage_ubahData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -791,7 +772,6 @@ void on_back_hapusDataPasien_gui(GtkButton *button, gpointer user_data)
 void on_confirm_hapusData_pasien_page(GtkButton *button, gpointer user_data)
 {
     char *IdPasien_data = user_data;
-    // printf("ID Pasien: %s\n", IdPasien_data);
     int confirm;
     hapusDataPasien(&pasien, &jumlahPasien, IdPasien_data, &confirm);
 
@@ -834,11 +814,9 @@ void on_cari_pasienData_hapusData_gui(GtkButton *button, gpointer user_data)
     const char *input_text = gtk_editable_get_text(GTK_EDITABLE(data)); // get the input text from the entry
 
     char *idPasien = strdup(input_text); // get the data from the entry
-    // printf("Data: %s\n", idPasien);
     struct dataPasien dataHolder;
     int confirm;
     cariPasien(pasien, jumlahPasien, idPasien, &dataHolder, &confirm); // search the data from the patient data
-    // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
     const gchar *default_text = "KX ";
@@ -934,7 +912,6 @@ GtkWidget *DataPasienPage_HapusData()
 
     button = gtk_button_new_with_label("Cari");
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
-    // gtk_widget_set_size_request(button, 100, 30);
     gtk_box_append(GTK_BOX(page), button);
 
     dataPasienPage_hapusData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);

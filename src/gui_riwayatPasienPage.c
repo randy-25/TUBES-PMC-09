@@ -46,9 +46,6 @@ void on_cari_riwayatPasien_data_gui(GtkButton *button, gpointer user_data)
     int confirm;
     char *nameHolder;
     cariRiwayat(riwayatPasien, jumlahRiwayatPasien, idPasien, &dataHolder, &jumlahDataHolder, &confirm, &nameHolder, pasien, jumlahPasien); // search the data from the patient data
-    // printf("Jumlah Data Holder: %d\n", jumlahDataHolder);
-    // printf("Jumlah riwayatPasien: %d\n", jumlahRiwayatPasien);
-    // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
     const gchar *default_text = "KX ";
@@ -189,12 +186,6 @@ void on_back_tambahRiwayatPasien_gui(GtkButton *button, gpointer user_data)
 
 GtkWidget *ShowNewRiwayatDataPage(struct riwayat *new_riwayat, char *namaHolder, void callBackFunction(GtkButton *button, gpointer user_data))
 {
-    // printf("ID Pasien: %s\n", new_riwayat->IdPasien);
-    // printf("Tanggal Periksa: %d-%d-%d\n", new_riwayat->tanggalPeriksa.tanggal, new_riwayat->tanggalPeriksa.bulan, new_riwayat->tanggalPeriksa.tahun);
-    // printf("Diagnosis: %s\n", new_riwayat->diagnosis);
-    // printf("Tindakan: %s\n", new_riwayat->tindakan);
-    // printf("Tanggal Kontrol: %d-%d-%d\n", new_riwayat->tanggalKontrol.tanggal, new_riwayat->tanggalKontrol.bulan, new_riwayat->tanggalKontrol.tahun);
-    // printf("Biaya: %d\n", new_riwayat->biaya);
     GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
     // Title
@@ -260,11 +251,6 @@ void on_submit_riwayat_pasien(GtkButton *button, gpointer user_data)
     char *temp_diagnosis = strdup(diagnosis);
     char *temp_tindakan = strdup(tindakan);
     char *temp_tanggal_kontrol = strdup(tanggal_kontrol);
-    // printf("ID Pasien: %s\n", tempIdPasien);
-    // printf("Tanggal Periksa: %s\n", temp_tanggal_periksa);
-    // printf("Diagnosis: %s\n", temp_diagnosis);
-    // printf("Tindakan: %s\n", temp_tindakan);
-    // printf("Tanggal Kontrol: %s\n", temp_tanggal_kontrol);
 
     // Clear the input box entry
     const gchar *default_text = "";
@@ -288,15 +274,6 @@ void on_submit_riwayat_pasien(GtkButton *button, gpointer user_data)
     int confirm;
 
     tambahRiwayat(&riwayatPasien, &jumlahRiwayatPasien, tempIdPasien, temp_tanggal_periksa, temp_diagnosis, temp_tindakan, temp_tanggal_kontrol, &newRiwayatHolder, &namaHolder, pasien, jumlahPasien, &confirm);
-    // printRiwayatPasien(riwayatPasien[jumlahRiwayatPasien - 1]);
-    // printf("Nama: %s\n", namaHolder);
-    // printf("ID Pasien: %s\n", newRiwayatHolder.IdPasien);
-    // printf("Tanggal Periksa: %d-%d-%d\n", newRiwayatHolder.tanggalPeriksa.tanggal, newRiwayatHolder.tanggalPeriksa.bulan, newRiwayatHolder.tanggalPeriksa.tahun);
-    // printf("Diagnosis: %s\n", newRiwayatHolder.diagnosis);
-    // printf("Tindakan: %s\n", newRiwayatHolder.tindakan);
-    // printf("Tanggal Kontrol: %d-%d-%d\n", newRiwayatHolder.tanggalKontrol.tanggal, newRiwayatHolder.tanggalKontrol.bulan, newRiwayatHolder.tanggalKontrol.tahun);
-    // printf("Biaya: %d\n", newRiwayatHolder.biaya);
-    // printf("Data Pasien berhasil ditambahkan\n");
 
     if (confirm == 1)
     {
@@ -462,13 +439,6 @@ void on_submit_ubahRiwayat_pasien_page(GtkButton *button, gpointer user_data)
     char *temp_tindakan = strdup(tindakan);
     char *temp_tanggal_kontrol = strdup(tanggal_kontrol);
 
-    // printf("Nomor Riwayat: %d\n", entry->nomorRiwayat);
-    // printf("Tanggal Periksa: %s\n", temp_tanggal_periksa);
-    // printf("Diagnosis: %s\n", temp_diagnosis);
-    // printf("Tindakan: %s\n", temp_tindakan);
-    // printf("Tanggal Kontrol: %s\n", temp_tanggal_kontrol);
-    // printf("nomor riwayat: %d\n", entry->nomorRiwayat);
-
     // Clear the input box entry
     const gchar *default_text = "";
     gtk_editable_set_text(GTK_EDITABLE(entry->entry_tanggal_periksa), default_text);
@@ -563,8 +533,6 @@ GtkWidget *ubahRiwayat_form_page(int nomorRiwayat)
     entry_data->entry_tanggal_kontrol = entry_tanggal_kontrol;
     entry_data->nomorRiwayat = nomorRiwayat;
 
-    // printf("Nomor Riwayat: %d\n", entry_data->nomorRiwayat);
-
     g_signal_connect(submit_button, "clicked", G_CALLBACK(on_submit_ubahRiwayat_pasien_page), entry_data);
 
     GtkWidget *back_button = gtk_button_new_with_label("Back");
@@ -586,8 +554,6 @@ void on_ubah_riwayatPasien_gui(GtkButton *button, gpointer user_data)
 
     int no_ubah = atoi(tempUbahNomorRiwayat);
     char *idPasien = strdup(entry_data->id_pasien);
-    // printf("%d \n", no_ubah);
-    // printf("%s \n", idPasien);
 
     int confirm = cekNomorRiwayat(no_ubah, idPasien, riwayatPasien);
     // printf("confirm %d\n", confirm);
@@ -641,9 +607,6 @@ void on_cari_riwayatPasien_ubahData_gui(GtkButton *button, gpointer user_data)
     int confirm;
     char *nameHolder;
     cariRiwayat(riwayatPasien, jumlahRiwayatPasien, idPasien, &dataHolder, &jumlahDataHolder, &confirm, &nameHolder, pasien, jumlahPasien); // search the data from the patient data
-    // printf("Jumlah Data Holder: %d\n", jumlahDataHolder);
-    // printf("Jumlah riwayatPasien: %d\n", jumlahRiwayatPasien);
-    // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
     const gchar *default_text = "KX ";
@@ -809,18 +772,13 @@ void on_hapus_riwayatPasien_gui(GtkButton *button, gpointer user_data)
 
     int no_hapus = atoi(tempUbahNomorRiwayat);
     char *idPasien = strdup(entry_data->id_pasien);
-    // printf("%d \n", no_hapus);
-    // printf("%s \n", idPasien);
 
     int confirm = cekNomorRiwayat(no_hapus, idPasien, riwayatPasien);
-    // printf("confirm %d\n", confirm);
     GtkWidget *hapusRiwayatPage;
     if (confirm == 1)
     {
         hapusRiwayat(&riwayatPasien, &jumlahRiwayatPasien, no_hapus);
-        // for(int i = 0; i < jumlahRiwayatPasien; i++){
-        //     printRiwayatPasien(riwayatPasien[i]);
-        // }
+
         hapusRiwayatPage = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
         GtkWidget *hapus_label = gtk_label_new("Data Pasien berhasil dihapus");
         gtk_box_append(GTK_BOX(hapusRiwayatPage), hapus_label);
@@ -854,15 +812,11 @@ void on_cari_riwayatPasien_hapusData_gui(GtkButton *button, gpointer user_data)
     const char *input_text = gtk_editable_get_text(GTK_EDITABLE(data)); // get the input text from the entry
 
     char *idPasien = strdup(input_text); // get the data from the entry
-    // printf("Data: %s\n", idPasien);
     struct riwayat *dataHolder = NULL;
     int jumlahDataHolder = 0;
     int confirm;
     char *nameHolder;
     cariRiwayat(riwayatPasien, jumlahRiwayatPasien, idPasien, &dataHolder, &jumlahDataHolder, &confirm, &nameHolder, pasien, jumlahPasien); // search the data from the patient data
-    // printf("Jumlah Data Holder: %d\n", jumlahDataHolder);
-    // printf("Jumlah riwayatPasien: %d\n", jumlahRiwayatPasien);
-    // printDataPasien(dataHolder); // print the data to the console
 
     // Clear the input box entry
     const gchar *default_text = "KX ";
@@ -970,7 +924,6 @@ GtkWidget *RiwayatPasienPage_HapusData()
 
     button = gtk_button_new_with_label("Cari");
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
-    // gtk_widget_set_size_request(button, 100, 30);
     gtk_box_append(GTK_BOX(page), button);
 
     riwayatPasienPage_hapusData_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);

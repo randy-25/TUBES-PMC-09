@@ -71,7 +71,6 @@ void on_cari_informasiPasien_data_gui(GtkButton *button, gpointer user_data)
 
         GtkWidget *leftLabel = gtk_label_new("Data Pasien");
         gtk_box_append(GTK_BOX(leftHalf), leftLabel);
-        // gtk_center_box_set_center_widget(GTK_CENTER_BOX(leftHalf), leftLabel);
         gtk_grid_attach(GTK_GRID(baseGrid), leftHalf, 0, 0, 1, 1);
 
         // Create new labels to display the data

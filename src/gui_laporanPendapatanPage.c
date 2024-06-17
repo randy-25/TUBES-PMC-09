@@ -13,18 +13,6 @@ void reset_displayPendapatanPage()
 
 void *DisplayPendapatanPage(int tahun)
 {
-    // //setup page
-    // GtkWidget *page = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-
-
-    // GtkWidget *mainGrid = gtk_grid_new();
-    // gtk_box_append(GTK_BOX(page), mainGrid);
-
-    // GtkWidget *mainContent = gtk_box_new(GTK_ORIENTATION_VERTICAL, 1);
-    // gtk_grid_attach(GTK_GRID(mainGrid), mainContent, 1, 1, 1, 1);
-    // // gtk_widget_set_size_request(mainContent, WINDOW_WIDTH, WINDOW_HEIGHT - HEADER_HEIGHT - FOOTER_HEIGHT);
-    // gtk_widget_set_valign(mainContent, GTK_ALIGN_CENTER);
-
     char *month_labels[12] = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
 
     //finding data
@@ -64,7 +52,6 @@ void *DisplayPendapatanPage(int tahun)
         GtkWidget *id_label = gtk_label_new(info);
         gtk_box_append(GTK_BOX(leftHalf), id_label);
 
-        // gtk_center_box_set_center_widget(GTK_CENTER_BOX(leftHalf), leftLabel);
         gtk_grid_attach(GTK_GRID(baseGrid), leftHalf, 0, 0, 1, 1);
 
         // right half of the page
@@ -121,8 +108,6 @@ void *DisplayPendapatanPage(int tahun)
         gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(rightHalf_scrolled_window), rightHalf);
         gtk_grid_attach(GTK_GRID(baseGrid), rightHalf_scrolled_window, 1, 0, 1, 1);
     }
-
-    // Center the mainContent
 }
 
 void integer_validation_laporanPendapatanPage(GtkButton *button, gpointer user_data) 
