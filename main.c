@@ -73,10 +73,13 @@ GtkWidget *informasiPasienPage_pasienInfo;
 
 
 //---------- PENYAKIT PER WAKTU PAGE ----------
-GtkWidget *penyakitperWaktuPage_Stack;
+GtkWidget *penyakitperWaktuPage_pasienInfo;
 
 // DISPLAY PENYAKIT PAGE
 GtkWidget *displayPenyakitPage;
+
+// DISPLAY PENYAKIT PERBULAN PAGE
+GtkWidget *displayBulanBox;
 //------- END OF PENYAKIT PER WAKTU PAGE -------
 
 

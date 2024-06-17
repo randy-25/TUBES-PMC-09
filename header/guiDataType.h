@@ -36,5 +36,10 @@ typedef struct RiwayatPasienEntry
     // GtkWidget *entry_biaya;
 } RiwayatPasienEntry;
 
+typedef struct InformasiPenyakitEntry
+{
+    int tahun;
+    GtkWidget *entry_data;
+}InformasiPenyakitEntry;
 
 #endif

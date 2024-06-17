@@ -106,7 +106,7 @@ void parseDate_CSV (char *Date, int *day, int *month, int *year){
 }
 
 void get_DataPasien_CSV(struct dataPasien **Data, int *JumlahDataPasien) {
-    FILE *file = fopen("data/Data Pasien.csv", "r");
+    FILE *file = fopen("../data/Data Pasien.csv", "r");
 
     if (file == NULL){
         printf("Tidak ada file");
@@ -158,7 +158,7 @@ void get_DataPasien_CSV(struct dataPasien **Data, int *JumlahDataPasien) {
 }
 
 void get_RiwayatPasien_CSV(struct riwayat **RiwayatPasien, int *JumlahRiwayatPasien){
-    FILE *file = fopen("data/Riwayat Pasien.csv", "r");
+    FILE *file = fopen("../data/Riwayat Pasien.csv", "r");
 
     if (file == NULL){
         printf("Tidak ada file");
@@ -200,7 +200,7 @@ void get_RiwayatPasien_CSV(struct riwayat **RiwayatPasien, int *JumlahRiwayatPas
 }
 
 void get_BiayaTindakan_CSV (struct biaya **BiayaPerawatan){
-    FILE *file = fopen("data/Biaya Tindakan.csv", "r");
+    FILE *file = fopen("../data/Biaya Tindakan.csv", "r");
 
     if (file == NULL){
         printf("Tidak ada file");

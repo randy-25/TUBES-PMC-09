@@ -1,14 +1,81 @@
 #include "../header/gui_penyakitperWaktuPage.h"
 
 // This function clears the current display page.
+
+void reset_displayBulanBox()
+{
+    GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(displayBulanBox));
+    while (child != NULL)
+    {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_widget_unparent(child);
+        child = next;
+    }
+}
+
 void reset_displayPenyakitPage()
 {
     GtkWidget *child = gtk_widget_get_first_child(GTK_WIDGET(displayPenyakitPage));
     while (child != NULL)
     {
         GtkWidget *next = gtk_widget_get_next_sibling(child);
-        gtk_widget_unparent(child);
+        gtk_box_remove(GTK_BOX(displayPenyakitPage), child);
         child = next;
+    }
+}
+
+void *displayBulan(GtkButton *button, gpointer user_data)
+{   
+    reset_displayBulanBox();
+    InformasiPenyakitEntry *entry = (InformasiPenyakitEntry*)user_data;
+
+    const char *input = gtk_editable_get_text(GTK_EDITABLE(entry->entry_data));
+    
+    int tahun = entry->tahun;
+
+    char *month_labels[12] = {
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    };
+
+    // Finding data
+    int confirm;
+    int penyakit;
+    int help = 0;
+    struct sortPenyakit *hasil = NULL;
+
+    // Call the function to get data for the given year.
+    DataPenyakitperWaktu(riwayatPasien, jumlahRiwayatPasien, &hasil, &confirm, &penyakit, tahun);
+
+    int valid = 0;
+
+    for (int j = 0; j < 12; j++) {
+        if (strcmp(month_labels[j], input) == 0){
+            help = j * penyakit;
+            GtkWidget *monthLabel = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+            GtkWidget *tempMonth = gtk_label_new(month_labels[j]);
+            gtk_box_append(GTK_BOX(monthLabel), tempMonth);
+            gtk_widget_set_halign(tempMonth, GTK_ALIGN_CENTER);
+
+            for (int k = 0; k < penyakit; k++) {
+                if (hasil[help].jumlah != 0) {
+                    valid = 1;
+                    char info[256];
+                    snprintf(info, sizeof(info), "%s = %d", hasil[help].namaPenyakit, hasil[help].jumlah);
+                    GtkWidget *id_label = gtk_label_new(info);
+                    gtk_box_append(GTK_BOX(monthLabel), id_label);
+                }
+                help++;
+            }
+            gtk_box_append(GTK_BOX(displayBulanBox), monthLabel);
+            GtkWidget *separator = gtk_label_new("-------------------------------------------------");
+            gtk_box_append(GTK_BOX(displayBulanBox), separator);
+            break;
+        }
+    }
+    if (valid == 0){
+        GtkWidget *invalidLabel = gtk_label_new("Tidak ada data");
+        gtk_box_append(GTK_BOX(displayBulanBox), invalidLabel);
     }
 }
 
@@ -24,11 +91,11 @@ void *DisplayPenyakitPage(int tahun)
     // Finding data
     int confirm;
     int penyakit;
-    int help = 0;
     struct sortPenyakit *hasil = NULL;
 
     // Call the function to get data for the given year.
     DataPenyakitperWaktu(riwayatPasien, jumlahRiwayatPasien, &hasil, &confirm, &penyakit, tahun);
+    
 
     if (confirm == 0) {
         GtkWidget *invalidLabel = gtk_label_new("Tidak ada data");
@@ -49,25 +116,47 @@ void *DisplayPenyakitPage(int tahun)
         GtkWidget *bulanLabel = gtk_label_new("Informasi Bulanan");
         gtk_box_append(GTK_BOX(rightHalf), bulanLabel);
 
-        for (int j = 0; j < 12; j++) {
-            GtkWidget *monthLabel = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-            GtkWidget *tempMonth = gtk_label_new(month_labels[j]);
-            gtk_box_append(GTK_BOX(monthLabel), tempMonth);
-            gtk_widget_set_halign(tempMonth, GTK_ALIGN_CENTER);
+        GtkWidget *formLabel = gtk_label_new("Masukkan Bulan : ");
+        GtkWidget *entry = gtk_entry_new();
+        
+        gtk_box_append(GTK_BOX(rightHalf), formLabel);
+        gtk_box_append(GTK_BOX(rightHalf), entry);
 
-            for (int k = 0; k < penyakit; k++) {
-                if (hasil[help].jumlah != 0) {
-                    char info[256];
-                    snprintf(info, sizeof(info), "%s = %d", hasil[help].namaPenyakit, hasil[help].jumlah);
-                    GtkWidget *id_label = gtk_label_new(info);
-                    gtk_box_append(GTK_BOX(monthLabel), id_label);
-                }
-                help++;
-            }
-            gtk_box_append(GTK_BOX(rightHalf), monthLabel);
-            GtkWidget *separator = gtk_label_new("-------------------------------------------------");
-            gtk_box_append(GTK_BOX(rightHalf), separator);
-        }
+        GtkWidget *button = gtk_button_new_with_label("Cari");
+        gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
+        gtk_box_append(GTK_BOX(rightHalf), button);
+
+        displayBulanBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+        gtk_widget_set_size_request(displayPenyakitPage, WINDOW_WIDTH/2, 100);
+        gtk_box_append(GTK_BOX(rightHalf), displayBulanBox);
+
+        reset_displayBulanBox();
+
+        InformasiPenyakitEntry *entry_data = g_malloc(sizeof(InformasiPenyakitEntry));
+        entry_data->tahun = tahun;
+        entry_data->entry_data = entry;
+
+        g_signal_connect(button, "clicked", G_CALLBACK(displayBulan), entry_data);
+
+        // for (int j = 0; j < 12; j++) {
+        //     GtkWidget *monthLabel = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+        //     GtkWidget *tempMonth = gtk_label_new(month_labels[j]);
+        //     gtk_box_append(GTK_BOX(monthLabel), tempMonth);
+        //     gtk_widget_set_halign(tempMonth, GTK_ALIGN_CENTER);
+
+        //     for (int k = 0; k < penyakit; k++) {
+        //         if (hasil[help].jumlah != 0) {
+        //             char info[256];
+        //             snprintf(info, sizeof(info), "%s = %d", hasil[help].namaPenyakit, hasil[help].jumlah);
+        //             GtkWidget *id_label = gtk_label_new(info);
+        //             gtk_box_append(GTK_BOX(monthLabel), id_label);
+        //         }
+        //         help++;
+        //     }
+        //     gtk_box_append(GTK_BOX(rightHalf), monthLabel);
+        //     GtkWidget *separator = gtk_label_new("-------------------------------------------------");
+        //     gtk_box_append(GTK_BOX(rightHalf), separator);
+        // }
 
         GtkWidget *rightHalfScrolledWindow = gtk_scrolled_window_new();
         gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(rightHalfScrolledWindow), rightHalf);
@@ -79,6 +168,8 @@ void *DisplayPenyakitPage(int tahun)
         GtkWidget *yearLabel = gtk_label_new("Informasi per Tahun");
         gtk_box_append(GTK_BOX(leftHalf), yearLabel);
         gtk_grid_attach(GTK_GRID(baseGrid), leftHalf, 0, 0, 1, 1);
+
+        int help = 12*penyakit;
 
         for (int k = 0; k < penyakit; k++) {
             if (hasil[help].jumlah != 0) {
@@ -154,9 +245,12 @@ GtkWidget *InformasiPenyakitPage()
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(page), button);
 
+    penyakitperWaktuPage_pasienInfo = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    gtk_widget_set_size_request(penyakitperWaktuPage_pasienInfo, WINDOW_WIDTH, 450);
     displayPenyakitPage = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-    gtk_widget_set_size_request(displayPenyakitPage, WINDOW_WIDTH, 450);
-    gtk_box_append(GTK_BOX(page), displayPenyakitPage);
+    gtk_box_append(GTK_BOX(penyakitperWaktuPage_pasienInfo), displayPenyakitPage);
+        gtk_box_append(GTK_BOX(page), penyakitperWaktuPage_pasienInfo);
+
 
     g_signal_connect(button, "clicked", G_CALLBACK(integer_validation_penyakitperWaktuPage), entry);
 

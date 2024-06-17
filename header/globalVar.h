@@ -64,10 +64,13 @@ extern GtkWidget *informasiPasienPage_pasienInfo;
 
 
 //---------- PENYAKIT PER WAKTU PAGE ----------
-extern GtkWidget *penyakitperWaktuPage_Stack;
+extern GtkWidget *penyakitperWaktuPage_pasienInfo;
 
 // DISPLAY PENYAKIT PAGE
 extern GtkWidget *displayPenyakitPage;
+
+// DISPLAY PENYAKIT PERBULAN PAGE
+extern GtkWidget *displayBulanBox;
 //------- END OF PENYAKIT PER WAKTU PAGE -------
 
 
