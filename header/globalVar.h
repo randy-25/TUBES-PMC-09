@@ -46,6 +46,10 @@ extern GtkWidget *penyakitperWaktuPage_Stack;
 
 // DISPLAY PENYAKIT PAGE
 extern GtkWidget *displayPenyakitPage;
+
+// DISPLAY PENYAKIT PERBULAN PAGE
+extern GtkWidget *displayBulanBox;
+
 //------- END OF PENYAKIT PER WAKTU PAGE -------
 
 

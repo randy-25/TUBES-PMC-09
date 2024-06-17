@@ -73,6 +73,9 @@ GtkWidget *penyakitperWaktuPage_Stack;
 
 // DISPLAY PENYAKIT PAGE
 GtkWidget *displayPenyakitPage;
+
+// DISPLAY PENYAKIT PERBULAN PAGE
+GtkWidget *displayBulanBox;
 //------- END OF PENYAKIT PER WAKTU PAGE -------
 
 
