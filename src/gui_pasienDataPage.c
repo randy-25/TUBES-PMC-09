@@ -524,7 +524,7 @@ GtkWidget *ubahData_form_page(char *IdPasien_data)
     GtkWidget *entry_tanggal_lahir;
     GtkWidget *entry_no_bpjs;
 
-    GtkWidget *title = gtk_label_new("Tambah Data Pasien");
+    GtkWidget *title = gtk_label_new("Ubah Data Pasien");
     gtk_widget_set_halign(title, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(page), title);
 
