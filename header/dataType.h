@@ -70,4 +70,14 @@ typedef struct pendapatanTahun {
     PerBulan *bulan; 
 }pendapatanTahun;
 
+
+typedef struct DataPasienKontrol{
+    char *IdPasien;
+    char *nama;
+    tanggal tanggalPeriksa;
+    char *diagnosis;
+    char *tindakan;
+    int biaya;
+}DataPasienKontrol;
+
 #endif

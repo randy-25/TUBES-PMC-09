@@ -3,7 +3,9 @@
 
 #include "util_getData.h"
 
-void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien, int jumlahDataPasien, int jumlahRiwayatPasien);
-void printPatientName (struct dataPasien *dataPasien, char *IDPasien, int jumlahDataPasien);
+void findNamaPasien(char *idPasien, struct dataPasien *dataPasien, int jumlahDataPasien, char **namaPasien);
+
+void pasienKontrol (struct dataPasien *dataPasien, int jumlahDataPasien, struct riwayat *riwayatPasien, int jumlahRiwayatPasien, struct tanggal tanggalKontrol, struct DataPasienKontrol **newDataPasienKontrol, int *jumlahDataPasienKontrol);
+
 
 #endif

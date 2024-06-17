@@ -36,4 +36,5 @@ typedef struct RiwayatPasienEntry
     // GtkWidget *entry_biaya;
 } RiwayatPasienEntry;
 
+
 #endif

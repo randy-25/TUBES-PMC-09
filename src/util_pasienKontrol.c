@@ -1,49 +1,53 @@
 #include "../header/util_pasienKontrolUtil.h"
 
-void printPatientName (struct dataPasien *dataPasien, char *IDPasien, int jumlahDataPasien)
+
+void findNamaPasien(char *idPasien, struct dataPasien *dataPasien, int jumlahDataPasien, char **namaPasien)
 {
     for (int i = 0; i < jumlahDataPasien; i++)
     {
-        if (strcmp(dataPasien[i].IdPasien, IDPasien) == 0)
+        if (strcmp(dataPasien[i].IdPasien, idPasien) == 0)
         {
-            printf("Nama Pasien : %s\n", dataPasien[i].nama);
+            *namaPasien = strdup(dataPasien[i].nama);
             break;
         }
     }
 }
 
-void pasienKontrol (struct dataPasien *dataPasien, struct riwayat *riwayatPasien, int jumlahDataPasien, int jumlahRiwayatPasien)
+void pasienKontrol (struct dataPasien *dataPasien, int jumlahDataPasien, struct riwayat *riwayatPasien, int jumlahRiwayatPasien, struct tanggal tanggalKontrol, struct DataPasienKontrol **newDataPasienKontrol, int *jumlahDataPasienKontrol)
 {
-    int tempDate;
-    int tempMonth;
-    int tempYears;
-
-    int tempindex;
-
-    int ada = 0;
-
-    printf("Masukkan tanggal bulan tahun : (DD MM YYYY)\n");
-    scanf("%d %d %d", &tempDate, &tempMonth, &tempYears);
-
-    // Use getchar to consume the newline character left by scanf
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
-
-    printf("Pasien yang perlu Kontrol : \n");
+    // printf("Tanggal Kontrol: %d-%d-%d\n", tanggalKontrol.tanggal, tanggalKontrol.bulan, tanggalKontrol.tahun);
+    // printf("jumlahRiwayatPasien: %d\n", jumlahRiwayatPasien);
     for (int i = 0; i < jumlahRiwayatPasien; i++)
     {   
-        if (tempDate == riwayatPasien[i].tanggalKontrol.tanggal && tempMonth == riwayatPasien[i].tanggalKontrol.bulan && tempYears == riwayatPasien[i].tanggalKontrol.tahun)
+        // printf("%d Tanggal Riwayat Pasien: %d-%d-%d\n", (i+1),riwayatPasien[i].tanggalKontrol.tanggal, riwayatPasien[i].tanggalKontrol.bulan, riwayatPasien[i].tanggalKontrol.tahun);
+        if (tanggalKontrol.tanggal == riwayatPasien[i].tanggalKontrol.tanggal && tanggalKontrol.bulan == riwayatPasien[i].tanggalKontrol.bulan && tanggalKontrol.tahun == riwayatPasien[i].tanggalKontrol.tahun)
         {   
-            printPatientName(dataPasien, riwayatPasien[i].IdPasien, jumlahDataPasien);
-            printf("ID Pasien  : %s\n", riwayatPasien[i].IdPasien);
-            printf("Diagnosis  : %s\n", riwayatPasien[i].diagnosis);
-            printf("\n");
-            ada = 1;
-        }
-    }
+            // printf("ID Pasien: %s\n", riwayatPasien[i].IdPasien);
+            *jumlahDataPasienKontrol += 1;
+            if(*newDataPasienKontrol == NULL)
+            {
+                *newDataPasienKontrol = (struct DataPasienKontrol *) malloc(sizeof(struct DataPasienKontrol));
+            }
+            else
+            {
+                *newDataPasienKontrol = (struct DataPasienKontrol *) realloc(*newDataPasienKontrol, *jumlahDataPasienKontrol * sizeof(struct DataPasienKontrol));
+            }
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].IdPasien = strdup(riwayatPasien[i].IdPasien);
+            // (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].nama = strdup(dataPasien[i].nama);
 
-    if (ada == 0)
-    {
-        printf("Tidak ada Pasien yang perlu kontrol\n");
+            findNamaPasien(riwayatPasien[i].IdPasien, dataPasien, jumlahDataPasien, &(*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].nama);
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tanggalPeriksa.tanggal = riwayatPasien[i].tanggalPeriksa.tanggal;
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tanggalPeriksa.bulan = riwayatPasien[i].tanggalPeriksa.bulan;
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tanggalPeriksa.tahun = riwayatPasien[i].tanggalPeriksa.tahun;
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].diagnosis = strdup(riwayatPasien[i].diagnosis);
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].tindakan = strdup(riwayatPasien[i].tindakan);
+
+            (*newDataPasienKontrol)[*jumlahDataPasienKontrol - 1].biaya = riwayatPasien[i].biaya;
+        }
     }
 }

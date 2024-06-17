@@ -8,6 +8,9 @@
 #include "header/gui_riwayatPasienPage.h"
 #include "header/gui_informasiPasienPage.h"
 
+
+#include "header/gui_pasienKontrol.h"
+
 // ------------------ GLOBAL VARIABLE ------------------
 struct dataPasien *pasien = NULL;
 struct riwayat *riwayatPasien = NULL;
@@ -60,6 +63,12 @@ GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
 
 // ------- INFORMASI PASIEN PAGE -------
 GtkWidget *informasiPasienPage_pasienInfo;
+// ------- END OF INFORMASI PASIEN PAGE -------
+
+
+// ------- INFORMASI PASIEN KONTROL PAGE -------
+GtkWidget *informasiPasienKontrolPage_pasienInfo;
+// ------- END OF INFORMASI PASIEN KONTROL PAGE -------
 
 // --------------END OF GLOBAL VARIABLE------------------
 
@@ -96,7 +105,7 @@ activate(GtkApplication *app, gpointer user_data)
     informasiPenyakitPage = create_page_with_back_button("Informasi Penyakit dan Jumlah");
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiPenyakitPage, "InformasiPenyakit");
 
-    informasiKontrolPage = create_page_with_back_button("Informasi Kontrol Pasien");
+    informasiKontrolPage = PasienKontrolPage();
     gtk_stack_add_named(GTK_STACK(stackContainer), informasiKontrolPage, "InformasiKontrol");
 
     gtk_widget_set_visible(GTK_WIDGET(window), TRUE);

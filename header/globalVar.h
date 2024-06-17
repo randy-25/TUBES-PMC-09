@@ -60,4 +60,11 @@ extern GtkWidget *riwayatPasienPage_hapusData_pasienInfo;
 
 // ------- INFORMASI PASIEN PAGE -------
 extern GtkWidget *informasiPasienPage_pasienInfo;
+// ------- END OF INFORMASI PASIEN PAGE -------
+
+
+// ------- INFORMASI PASIEN KONTROL PAGE -------
+extern GtkWidget *informasiPasienKontrolPage_pasienInfo;
+// ------- END OF INFORMASI PASIEN KONTROL PAGE -------
+
 #endif
