@@ -145,8 +145,8 @@ int main(int argc, char **argv){
     get_RiwayatPasien_CSV(&riwayatPasien, &jumlahRiwayatPasien);
     get_BiayaTindakan_CSV(&biayaPerawatan);
 
-<<<<<<<<< Temporary merge branch 1
-=========
+// <<<<<<<<< Temporary merge branch 1
+// =========
     // print data pasien
     // printf("%d\n", jumlahPasien);
     // for (int i = 0; i < jumlahPasien; i++){
@@ -158,7 +158,7 @@ int main(int argc, char **argv){
     //     printRiwayatPasien_CSV(riwayatPasien[i]);
     // }
 
->>>>>>>>> Temporary merge branch 2
+// >>>>>>>>> Temporary merge branch 2
     GtkApplication *app;
     int status;
 
