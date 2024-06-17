@@ -43,11 +43,11 @@ int biayaTindakan(char tindakan[100])
     {
         return 240000;
     }
-    else if (strcmp(tindakan, "Cek Gula Darah") == 0)
+    else if (strcmp(tindakan, "Cek gula darah") == 0)
     {
         return 165000;
     }
-    else if (strcmp(tindakan, "Pemasangan Infus") == 0)
+    else if (strcmp(tindakan, "Pemasangan infus") == 0)
     {
         return 265000;
     }

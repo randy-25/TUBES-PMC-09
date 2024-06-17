@@ -100,6 +100,7 @@ void *DisplayPenyakitPage(int tahun)
         gtk_box_append(GTK_BOX(invalidbox), invalidLabel);
         gtk_widget_set_halign(invalidLabel, GTK_ALIGN_CENTER);
         gtk_box_append(GTK_BOX(displayPenyakitPage), invalidbox);
+        gtk_widget_set_vexpand(invalidbox, TRUE);
     } else {
         GtkWidget *baseGrid = gtk_grid_new();
         gtk_widget_set_size_request(baseGrid, WINDOW_WIDTH, 200);

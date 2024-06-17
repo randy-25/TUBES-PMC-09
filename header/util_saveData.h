@@ -9,7 +9,7 @@
 #include "dataType.h"
 
 const char* getMonthName_CSV(int month);
-void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien);
-void write_RiwayatPasien_CSV(const struct riwayat *RiwayatPasien, int JumlahRiwayatPasien);
+void write_DataPasien_CSV(struct dataPasien *Data, int JumlahDataPasien);
+void write_RiwayatPasien_CSV(struct riwayat *RiwayatPasien, int JumlahRiwayatPasien);
 
 #endif

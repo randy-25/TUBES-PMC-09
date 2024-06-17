@@ -13,7 +13,7 @@ const char* getMonthName_CSV(int month)
 }
 
 // Function to write dataPasien to CSV
-void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien)
+void write_DataPasien_CSV(struct dataPasien *Data, int JumlahDataPasien)
 {
     FILE *file = fopen("data/Data Pasien.csv", "w");
     if (file == NULL)
@@ -21,11 +21,10 @@ void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien)
         printf("Failed to open file for writing.\n");
         return;
     }
-
     // Write each patient's data
     for (int i = 0; i < JumlahDataPasien; i++)
     {
-        const struct dataPasien *current = &Data[i];
+        struct dataPasien *current = &Data[i];
         fprintf(file, "%d,%s,%s,%s,%s,%d %s %d,%d,%s,%s\n",
                 current->no,
                 current->nama,
@@ -39,14 +38,12 @@ void write_DataPasien_CSV(const struct dataPasien *Data, int JumlahDataPasien)
                 current->nomorBPJS,
                 current->IdPasien);
     }
-
     fclose(file);
-    // printf("DataPasien successfully written to %s\n", filename);
 }
 
 
 // Function to write riwayat to CSV
-void write_RiwayatPasien_CSV(const struct riwayat *RiwayatPasien, int JumlahRiwayatPasien)
+void write_RiwayatPasien_CSV(struct riwayat *RiwayatPasien, int JumlahRiwayatPasien)
 {
     FILE *file = fopen("data/Riwayat Pasien.csv", "w");
     if (file == NULL)
@@ -54,23 +51,22 @@ void write_RiwayatPasien_CSV(const struct riwayat *RiwayatPasien, int JumlahRiwa
         printf("Failed to open file for writing.\n");
         return;
     }
-
+    struct riwayat *current =(riwayat*)(sizeof(riwayat));
     // Write each patient's history
     for (int i = 0; i < JumlahRiwayatPasien; i++)
     {
-        const struct riwayat *current = &RiwayatPasien[i];
-        fprintf(file, "%d,%d %s %d,%s,%s,%d %s %d,%d\n",
-                current->no,
-                current->tanggalPeriksa.tanggal,
-                getMonthName_CSV(current->tanggalPeriksa.bulan),
-                current->tanggalPeriksa.tahun,
-                current->IdPasien,
-                current->diagnosis,
-                current->tindakan,
-                current->tanggalKontrol.tanggal,
-                getMonthName_CSV(current->tanggalKontrol.bulan),
-                current->tanggalKontrol.tahun,
-                current->biaya);
+        fprintf(file, "%d,%d %s %d,%s,%s,%s,%d %s %d,%d\n",
+                RiwayatPasien[i].no,
+                RiwayatPasien[i].tanggalPeriksa.tanggal,
+                getMonthName_CSV(RiwayatPasien[i].tanggalPeriksa.bulan),
+                RiwayatPasien[i].tanggalPeriksa.tahun,
+                RiwayatPasien[i].IdPasien,
+                RiwayatPasien[i].diagnosis,
+                RiwayatPasien[i].tindakan,
+                RiwayatPasien[i].tanggalKontrol.tanggal,
+                getMonthName_CSV(RiwayatPasien[i].tanggalKontrol.bulan),
+                RiwayatPasien[i].tanggalKontrol.tahun,
+                RiwayatPasien[i].biaya);
     }
 
     fclose(file);
