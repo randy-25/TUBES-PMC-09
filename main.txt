@@ -139,23 +139,10 @@ activate(GtkApplication *app, gpointer user_data)
     gtk_widget_set_visible(GTK_WIDGET(window), TRUE);
 }
 
-int main(int argc, char **argv){
-    struct biaya *biayaPerawatan = NULL;
-
-    get_DataPasien_CSV(&pasien, &jumlahPasien);
-    get_RiwayatPasien_CSV(&riwayatPasien, &jumlahRiwayatPasien);
-    get_BiayaTindakan_CSV(&biayaPerawatan);
-
-    //print data pasien
-    // printf("%d\n", jumlahPasien);
-    // for (int i = 0; i < jumlahPasien; i++){
-    //     printDataPasien_CSV(pasien[i]);
-    // }
-
-    // //print riwayat pasien
-    // for (int i = 0; i < jumlahRiwayatPasien; i++){
-    //     printRiwayatPasien_CSV(riwayatPasien[i]);
-    // }
+int main(int argc, char **argv)
+{
+    // Function to get data from excel file
+    getData(&pasien, &riwayatPasien, &jumlahPasien, &jumlahRiwayatPasien);
 
     GtkApplication *app;
     int status;
@@ -187,5 +174,4 @@ int main(int argc, char **argv){
     g_object_unref(app);
 
     return status;
-
 }
