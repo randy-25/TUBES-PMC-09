@@ -132,7 +132,7 @@ After installing the required dependencies, you can build the project using the 
     cmake --build .
     ```
 
-## Using make (only)
+## Using make (only windows)
  ```sh
     Make
 ```
